@@ -52,15 +52,6 @@
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
-                        <%--  <asp:TemplateField HeaderText="Quantidade">
-                        <ItemTemplate>
-                            <asp:Label ID="lblQuantidade" runat="server" Text='<%# Eval("quantidade") %>'></asp:Label>
-                        </ItemTemplate>
-                        <FooterTemplate>
-                            <asp:Label ID="lblTotal" runat="server"></asp:Label>
-                        </FooterTemplate>
-                    </asp:TemplateField>--%>
-
                         <asp:BoundField DataField="mes_referencia" HeaderText="Mês Referência" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
