@@ -272,7 +272,7 @@ namespace RelatorioFinanceiroV5.Classes
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
-                Debug.WriteLine(dt.Rows[0].Field<decimal>("receita").GetType());
+                //Debug.WriteLine(dt.Rows[0].Field<decimal>("receita").GetType());
                 decimal receita = dt.Rows[0].Field<decimal>("receita");
                 myConn.Close();
                 return receita;

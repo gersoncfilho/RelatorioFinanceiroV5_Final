@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RelatorioPorGrupo.aspx.cs" Inherits="RelatorioFinanceiroV5.RelatorioPorGrupo" MasterPageFile="~/Site1.Master" %>
+﻿<%@ Language="C#" AutoEventWireup="true" CodeBehind="RelatorioPorGrupo.aspx.cs" Inherits="RelatorioFinanceiroV5.RelatorioPorGrupo" MasterPageFile="~/Site1.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script src="Scripts/jquery-2.2.3.js"></script>
@@ -24,9 +24,9 @@
                 <div class="col-md-3">
                     <asp:Button ID="btnOK" runat="server" Width="100" Text="OK" CssClass="btn btn-primary" OnClick="btnOK_OnClick" />
                 </div>
-                <%--<div class="col-md-3">
+                <div class="col-md-3">
                     <asp:Button ID="btnGerarPDFs" runat="server" Width="100" Text="OK" CssClass="btn btn-primary" OnClick="btnGerarPDFs_OnClick" />
-                </div>--%>
+                </div>
             </div>
             <div class="panel-body" runat="server" id="pnlBodyOld">
                 <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" OnRowCommand="GridViewQuantidades_RowCommand" OnRowDataBound="GridViewQuantidadesOld_RowDataBound">

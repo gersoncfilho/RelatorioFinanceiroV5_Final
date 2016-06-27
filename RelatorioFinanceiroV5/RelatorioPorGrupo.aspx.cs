@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using RelatorioFinanceiroV5.Classes;
+using RelatorioFinanceiroV5.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -27,6 +29,9 @@ namespace RelatorioFinanceiroV5
         private decimal _valorPorAcesso = 0m;
         private decimal _valorTotal = 0m;
         private const int round = 6;
+        private List<Grupo> grupos = new List<Grupo>();
+        private int i = 0;
+        
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -177,105 +182,92 @@ namespace RelatorioFinanceiroV5
         protected void btnPDF_Click(object sender, EventArgs e)
         {
             MakePDF();
+            //MakePDFNew();
+
         }
 
 
-        private void MakePDF(string grupo, string mes, int quantidade, decimal percentualEditora, int totalMaisAcessados, decimal percentualMaisAcessados, decimal receita, decimal receita10, decimal receita20, decimal receitaASerDividida, string repasseQuantidade, string repasseMaisAcessados, string valorTotalRepasse)
+        private void MakePDF(Grupo grupo)
         {
-            using (StringWriter sw = new StringWriter())
-            {
-                using (HtmlTextWriter hw = new HtmlTextWriter(sw))
-                {
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
-                    sb.Append(grupo);
-                    sb.Append("</strong></th><th width='100'><strong>");
-                    sb.Append(mes);
-                    sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
-                    sb.Append(quantidade);
-                    sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
-                    sb.Append(percentualEditora);
-                    sb.Append("</strong></td></tr><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Conteúdo de ref. e mais acessados</i></td><td class='text-center'><strong>");
-                    sb.Append(totalMaisAcessados);
-                    sb.Append("</strong></td></tr><tr><td><i>% da editora dos 10% mais acessados e referência</i></td><td class='text-center'><strong>");
-                    sb.Append(percentualMaisAcessados);
-                    sb.Append("</strong></td></tr><tr><td><i>Receita líquida total da Nuvem de Livros</i></td><td class='text-center'><strong>");
-                    sb.Append(receita);
-                    sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i></td><td class='text-center'><strong>");
-                    sb.Append(receita20);
-                    sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i></td><td class='text-center'><strong>");
-                    sb.Append(receita10);
-                    sb.Append("</strong></td></tr><tr><td><i>Receita total a ser dividida entre as editoras</i></td><td class='text-center'><strong>");
-                    sb.Append(receitaASerDividida);
-                    sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pela quantidade de conteúdos</i></td><td class='text-center'><strong>");
-                    sb.Append(lblValorRepasseQuantidade);
-                    sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i></td><td class='text-center'><strong>");
-                    sb.Append(lblValorRepasseRefMaisAcessados);
-                    sb.Append("</strong></td></tr><tr><td><i>Valor total ser repassado para a editora</i></td><td class='text-center'><strong>");
-                    sb.Append(valorTotalRepasse);
-                    sb.Append("</strong></td></tr></tbody></table>");
+            
+            StringBuilder sb = new StringBuilder();
+            sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
+            sb.Append(grupo.NomeGrupo);
+            sb.Append("</strong></th><th width='100'><strong>");
+            sb.Append(grupo.Mes_Referencia);
+            sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
+            sb.Append(grupo.Quantidade);
+            sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
+            sb.Append(Math.Round(grupo.Percentual_Quantidade, 2).ToString());
+            sb.Append("</strong></td></tr><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Conteúdo de ref. e mais acessados</i></td><td class='text-center'><strong>");
+            sb.Append(grupo.Quant_Ref_Mais_Acessados.ToString());
+            sb.Append("</strong></td></tr><tr><td><i>% da editora dos 10% mais acessados e referência</i></td><td class='text-center'><strong>");
+            sb.Append(Math.Round(grupo.Percentual_Ref_Mais_Acessados, 2).ToString());
+            sb.Append("</strong></td></tr><tr><td><i>Receita líquida total da Nuvem de Livros</i></td><td class='text-center'><strong>");
+            sb.Append(grupo.Receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"))); ;
+            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i></td><td class='text-center'><strong>");
+            sb.Append(grupo.Receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i></td><td class='text-center'><strong>");
+            sb.Append(grupo.Receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Receita total a ser dividida entre as editoras</i></td><td class='text-center'><strong>");
+            sb.Append(grupo.ReceitaASerDividida.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pela quantidade de conteúdos</i></td><td class='text-center'><strong>");
+            sb.Append(grupo.Valor_Conteudo.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i></td><td class='text-center'><strong>");
+            sb.Append(grupo.Valor_Mais_Acessados.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Valor total ser repassado para a editora</i></td><td class='text-center'><strong>");
+            sb.Append(grupo.Valor_Repasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr></tbody></table>");
 
 
 
-                    string myFile = HttpUtility.HtmlDecode(grupo);
+            string myFile = HttpUtility.HtmlDecode(grupo.NomeGrupo);
 
-                    string myFileName = Service.RemoveAccents(myFile);
+            string myFileName = Service.RemoveAccents(myFile);
 
-                    PDFHelper.Export(sb.ToString(), "RelFin_" + mes + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
-
-                }
-            }
+            PDFHelper.Export(sb.ToString(), "RelFin_" + grupo.Mes_Referencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
+            
+            
         }
 
         private void MakePDF()
         {
-            using (StringWriter sw = new StringWriter())
-            {
-                using (HtmlTextWriter hw = new HtmlTextWriter(sw))
-                {
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
-                    sb.Append(lblGrupo.Text);
-                    sb.Append("</strong></th><th width='100'><strong>");
-                    sb.Append(lblMes.Text);
-                    sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
-                    sb.Append(lblQuantidadeConteudos.Text);
-                    sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
-                    sb.Append(lblPercentualEditoraTotal.Text);
-                    sb.Append("</strong></td></tr><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Conteúdo de ref. e mais acessados</i></td><td class='text-center'><strong>");
-                    sb.Append(lblTotalRefMaisAcessados.Text);
-                    sb.Append("</strong></td></tr><tr><td><i>% da editora dos 10% mais acessados e referência</i></td><td class='text-center'><strong>");
-                    sb.Append(lblPercentual10MaisAcessados.Text);
-                    sb.Append("</strong></td></tr><tr><td><i>Receita líquida total da Nuvem de Livros</i></td><td class='text-center'><strong>");
-                    sb.Append(lblReceita.Text);
-                    sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i></td><td class='text-center'><strong>");
-                    sb.Append(lblReceita_20.Text);
-                    sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i></td><td class='text-center'><strong>");
-                    sb.Append(lblReceita_10.Text);
-                    sb.Append("</strong></td></tr><tr><td><i>Receita total a ser dividida entre as editoras</i></td><td class='text-center'><strong>");
-                    sb.Append(lblReceitaTotalASerDividida.Text);
-                    sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pela quantidade de conteúdos</i></td><td class='text-center'><strong>");
-                    sb.Append(lblValorRepasseQuantidade.Text);
-                    sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i></td><td class='text-center'><strong>");
-                    sb.Append(lblValorRepasseRefMaisAcessados.Text);
-                    sb.Append("</strong></td></tr><tr><td><i>Valor total ser repassado para a editora</i></td><td class='text-center'><strong>");
-                    sb.Append(lblValorTotalRepasse.Text);
-                    sb.Append("</strong></td></tr></tbody></table>");
+            StringBuilder sb = new StringBuilder();
+            sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
+            sb.Append(lblGrupo.Text);
+            sb.Append("</strong></th><th width='100'><strong>");
+            sb.Append(lblMes.Text);
+            sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
+            sb.Append(lblQuantidadeConteudos.Text);
+            sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
+            sb.Append(lblPercentualEditoraTotal.Text);
+            sb.Append("</strong></td></tr><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Conteúdo de ref. e mais acessados</i></td><td class='text-center'><strong>");
+            sb.Append(lblTotalRefMaisAcessados.Text);
+            sb.Append("</strong></td></tr><tr><td><i>% da editora dos 10% mais acessados e referência</i></td><td class='text-center'><strong>");
+            sb.Append(lblPercentual10MaisAcessados.Text);
+            sb.Append("</strong></td></tr><tr><td><i>Receita líquida total da Nuvem de Livros</i></td><td class='text-center'><strong>");
+            sb.Append(lblReceita.Text);
+            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i></td><td class='text-center'><strong>");
+            sb.Append(lblReceita_20.Text);
+            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i></td><td class='text-center'><strong>");
+            sb.Append(lblReceita_10.Text);
+            sb.Append("</strong></td></tr><tr><td><i>Receita total a ser dividida entre as editoras</i></td><td class='text-center'><strong>");
+            sb.Append(lblReceitaTotalASerDividida.Text);
+            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pela quantidade de conteúdos</i></td><td class='text-center'><strong>");
+            sb.Append(lblValorRepasseQuantidade.Text);
+            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i></td><td class='text-center'><strong>");
+            sb.Append(lblValorRepasseRefMaisAcessados.Text);
+            sb.Append("</strong></td></tr><tr><td><i>Valor total ser repassado para a editora</i></td><td class='text-center'><strong>");
+            sb.Append(lblValorTotalRepasse.Text);
+            sb.Append("</strong></td></tr></tbody></table>");
 
 
 
-                    string myFile = HttpUtility.HtmlDecode(lblGrupo.Text);
+            string myFile = HttpUtility.HtmlDecode(lblGrupo.Text);
 
-                    string myFileName = Service.RemoveAccents(myFile);
+            string myFileName = Service.RemoveAccents(myFile);
 
-                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "closeModal();", true);
-
-                    PDFHelper.Export(sb.ToString(), "RelFin_" + lblMes.Text + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
-
-                }
-            }
+            PDFHelper.Export(sb.ToString(), "RelFin_" + lblMes.Text + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
         }
 
         protected void btnOK_OnClick(object sender, EventArgs e)
@@ -289,6 +281,14 @@ namespace RelatorioFinanceiroV5
 
         protected void btnGerarPDFs_OnClick(object sender, EventArgs e)
         {
+            MakePDFNew();
+            
+        }
+
+        private void MakePDFNew()
+        {
+            Grupo newGrupo;
+            List<Grupo> grupos = new List<Grupo>();
             var myConn = Connection.conn();
             string _grupo = "";
             string _mes = "";
@@ -300,13 +300,16 @@ namespace RelatorioFinanceiroV5
             decimal _receita10 = 0.0m;
             decimal _receita20 = 0.0m;
             decimal _receitaASerDividida = 0.0m;
-            string _repasseQuantidade = "";
-            string _repasseMaisAcessados = "";
-            string _valorTotalRepasse = "";
+            decimal _repasseQuantidade = 0.0m;
+            decimal _repasseMaisAcessados = 0.0m;
+            decimal _valorTotalRepasse = 0.0m;
             GridView grd = GridViewQuantidades;
+            int _idGrupo = 0;
+
+
+
             foreach (GridViewRow row in grd.Rows)
-            {
-                Debug.WriteLine(grd.Rows.Count);
+            {              
                 _grupo = row.Cells[0].Text;
                 _mes = row.Cells[1].Text;
                 _quantidade = Convert.ToInt32(row.Cells[2].Text);
@@ -317,15 +320,45 @@ namespace RelatorioFinanceiroV5
                 _receita10 = Math.Round((decimal)_receita * (decimal)0.1, 6);
                 _receita20 = Math.Round((decimal)_receita * (decimal)0.2, 6);
                 _receitaASerDividida = Service.GetReceitaADividir(myConn, _mes);
-                _repasseQuantidade = row.Cells[6].Text;
-                _repasseMaisAcessados = row.Cells[7].Text;
-                _valorTotalRepasse = row.Cells[8].Text;
+                _repasseQuantidade = (_percentualEditora * _receita20)/100;
+                _repasseMaisAcessados = (_percentualMaisAcessados * _receita10)/100;
+                _valorTotalRepasse = _repasseQuantidade + _repasseMaisAcessados;
+                _idGrupo = Convert.ToInt32(row.Cells[9].Text);
 
-                Thread myThread = new Thread(() => this.MakePDF(_grupo, _mes, _quantidade, _percentualEditora, _totalMaisAcessados, _percentualMaisAcessados, _receita, _receita10, _receita20, _receitaASerDividida, _repasseQuantidade, _repasseMaisAcessados, _valorTotalRepasse));
+                newGrupo = new Grupo();
+                newGrupo.NomeGrupo = _grupo;
+                newGrupo.IdGrupo = _idGrupo;
+                newGrupo.Mes_Referencia = _mes;
+                newGrupo.Quantidade = _quantidade;
+                newGrupo.Percentual_Quantidade = _percentualEditora;
+                newGrupo.Quant_Ref_Mais_Acessados = _totalMaisAcessados;
+                newGrupo.Percentual_Ref_Mais_Acessados = _percentualMaisAcessados;
+                newGrupo.Receita = _receita;
+                newGrupo.Receita10 = _receita10;
+                newGrupo.Receita20 = _receita20;
+                newGrupo.Valor_Conteudo = _repasseQuantidade;
+                newGrupo.Valor_Mais_Acessados = _repasseMaisAcessados;
+                newGrupo.Valor_Repasse = _valorTotalRepasse;
+                newGrupo.ReceitaASerDividida = _receitaASerDividida;
 
-                myThread.Start();
+                //Debug.WriteLine(newGrupo.NomeGrupo);
 
+                grupos.Add(newGrupo);
 
+               
+            }
+            Debug.WriteLine("Fim da geração de lista de grupos");
+            Debug.WriteLine("Grupo tem " + grupos.Count + " grupos");
+            ListGrupos(grupos);
+
+        }
+
+        private void ListGrupos(List<Grupo> grupos)
+        {
+            foreach (Grupo grupo in grupos)
+            {
+                Debug.WriteLine(grupo.NomeGrupo);
+                MakePDF(grupo);
             }
         }
 

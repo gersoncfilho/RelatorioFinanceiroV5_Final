@@ -8,9 +8,11 @@ using iTextSharp.tool.xml.pipeline.end;
 using iTextSharp.tool.xml.pipeline.html;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace RelatorioFinanceiroV5.Classes
@@ -37,44 +39,55 @@ namespace RelatorioFinanceiroV5.Classes
             //Gera o arquivo PDF
             using (var document = new Document(PageSize.A4, 10, 10, 10, 10))
             {
-                html = FormatImageLinks(html);
+                try
+                {
+                    html = FormatImageLinks(html);
 
-                //define o  output do  HTML
-                var memStream = new MemoryStream();
-                TextReader xmlString = new StringReader(html);
+                    //define o  output do  HTML
+                    var memStream = new MemoryStream();
+                    TextReader xmlString = new StringReader(html);
 
-                PdfWriter writer = PdfWriter.GetInstance(document, memStream);
+                    PdfWriter writer = PdfWriter.GetInstance(document, memStream);
+                    writer.CloseStream = false;
+                    document.Open();
+                    document.NewPage();
 
-                document.Open();
+                    //Registra todas as fontes no computador cliente.
+                    FontFactory.RegisterDirectories();
 
-                //Registra todas as fontes no computador cliente.
-                FontFactory.RegisterDirectories();
+                    // Set factories
+                    var htmlContext = new HtmlPipelineContext(null);
+                    htmlContext.SetTagFactory(Tags.GetHtmlTagProcessorFactory());
 
-                // Set factories
-                var htmlContext = new HtmlPipelineContext(null);
-                htmlContext.SetTagFactory(Tags.GetHtmlTagProcessorFactory());
+                    // Set css
+                    ICSSResolver cssResolver = XMLWorkerHelper.GetInstance().GetDefaultCssResolver(false);
+                    cssResolver.AddCssFile(HttpContext.Current.Server.MapPath(linkCss), true);
 
-                // Set css
-                ICSSResolver cssResolver = XMLWorkerHelper.GetInstance().GetDefaultCssResolver(false);
-                cssResolver.AddCssFile(HttpContext.Current.Server.MapPath(linkCss), true);
+                    // Exporta
 
-                // Exporta
-                IPipeline pipeline = new CssResolverPipeline(cssResolver,
+                    IPipeline pipeline = new CssResolverPipeline(cssResolver,
                                                              new HtmlPipeline(htmlContext,
                                                                               new PdfWriterPipeline(document, writer)));
-                var worker = new XMLWorker(pipeline, true);
-                var xmlParse = new XMLParser(true, worker);
-                xmlParse.Parse(xmlString);
-                xmlParse.Flush();
+                    var worker = new XMLWorker(pipeline, true);
+                    var xmlParse = new XMLParser(true, worker);
+                    xmlParse.Parse(xmlString);
+                    xmlParse.Flush();
 
-                document.Close();
-                document.Dispose();
+                    document.Close();
+                    document.Dispose();
 
-                HttpContext.Current.Response.BinaryWrite(memStream.ToArray());
+                    HttpContext.Current.Response.BinaryWrite(memStream.ToArray());
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+
+
+
             }
 
             HttpContext.Current.Response.End();
-            HttpContext.Current.Response.Flush();
         }
 
         ///
