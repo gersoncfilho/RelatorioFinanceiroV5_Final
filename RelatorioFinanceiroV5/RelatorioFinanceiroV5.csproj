@@ -166,6 +166,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Grupo.cs" />
+    <Compile Include="Models\ReceitaChartDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelatorioPorEditora.aspx.cs">
       <DependentUpon>RelatorioPorEditora.aspx</DependentUpon>

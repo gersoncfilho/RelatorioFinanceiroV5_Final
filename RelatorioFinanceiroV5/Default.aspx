@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading" id="receitaMesMes">
                             Receita Mês a Mês
                         </div>
                         <!-- /.panel-heading -->
@@ -110,5 +110,56 @@
                 <!-- /.col-lg-6 -->
             </div>
             <!-- /.row -->
+
+    <script src="Scripts/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json',
+                url: 'default.aspx/GetChartData',
+                data: {},
+                success: function (response) {
+                    drawchart(response.d);
+                },
+                error: function () {
+                    alert("Erro carregando os dados! Por favor, tente novamente");
+                }
+            });
+        })
+        //Variavel global para reter a informacao
+        google.charts.load('visualization', '1', { packages: ['corechart'] });
+
+        google.charts.setOnLoadCallback(drawchart);
+
+        function drawchart(dataValues) {
+            // Callback que cria e popula o data table, instancia o grafico, passa as informacoes e desenha
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Mês');
+            data.addColumn('number', 'Receita Mensal');
+
+            for (var i = 0; i < dataValues.length; i++) {
+                data.addRow([dataValues[i].Mes, dataValues[i].ReceitaMensal]);
+            }
+
+            var options = {
+                'title': 'Receita Mensal',
+                'width': 600,
+                'height': 400
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('receitaMesMes'));
+            chart.draw(data, options);
+        }
+    </script>
+
+    <script type="text/javascript">
+        
+
+        
+
+    </script>
 
 </asp:Content>

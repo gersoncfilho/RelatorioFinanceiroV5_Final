@@ -368,5 +368,39 @@ namespace RelatorioFinanceiroV5.Classes
             return sbReturn.ToString();
         }
 
+        public static DataTable GetReceitaGrafico(MySqlConnection myConn)
+        {
+            DataSet ds = new DataSet();
+            DataTable dt = new DataTable();
+
+            try
+            {
+                myConn.Open();
+            }
+            catch (SystemException ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            if (myConn.State == System.Data.ConnectionState.Open)
+            {
+                string query = "select receita, mes_referencia from receita";
+                MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
+                myAdapter.Fill(ds);
+                dt = ds.Tables[0];
+               
+                myConn.Close();
+                return dt;
+
+            }
+            else
+            {
+                Debug.Write("Erro no acesso ao banco");
+                myConn.Close();
+                return null;
+            }
+        }
+
     }
+
+   
 }
