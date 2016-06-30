@@ -15,13 +15,13 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading" id="receitaMesMes">
+                        <div class="panel-heading">
                             Receita Mês a Mês
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="flot-chart">
-                                <div class="flot-chart-content" id="flot-line-chart"></div>
+                                <div class="flot-chart-content"  id="receitaMesMes"></div>
                             </div>
                         </div>
                         <!-- /.panel-body -->
@@ -147,7 +147,8 @@
             var options = {
                 'title': 'Receita Mensal',
                 'width': 600,
-                'height': 400
+                'height': 400,
+                'is3D': true
             };
 
             var chart = new google.visualization.ColumnChart(document.getElementById('receitaMesMes'));

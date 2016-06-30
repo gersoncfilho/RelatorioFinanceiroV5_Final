@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="panel-body" runat="server" id="pnlBodyOld">
-                <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" OnRowCommand="GridViewQuantidades_RowCommand" OnRowDataBound="GridViewQuantidadesOld_RowDataBound">
+                <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" OnRowCommand="GridViewQuantidades_RowCommand" OnRowDataBound="GridViewQuantidadesOld_RowDataBound" Font-Size="Smaller">
                     <Columns>
                         <%--<asp:BoundField DataField="id" HeaderText="ID" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" VerticalAlign="Middle" HorizontalAlign="Center" />
