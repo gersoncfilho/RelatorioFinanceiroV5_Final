@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.Office.Interop.Excel;
 
 namespace RelatorioFinanceiroV5
 {
@@ -31,12 +32,14 @@ namespace RelatorioFinanceiroV5
         private const int round = 6;
         private List<Grupo> grupos = new List<Grupo>();
         private int i = 0;
-        
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
             var myConn = Connection.conn();
-            _quantidadeTotal = Service.QuantidadeTotal(myConn, "Jan_16");
+            _quantidadeTotal = Service.QuantidadeTotal(myConn, "Fev_16");
+            Debug.WriteLine("Quantidade total: " + _quantidadeTotal);
 
             if (!this.IsPostBack)
             {
@@ -51,7 +54,7 @@ namespace RelatorioFinanceiroV5
         private void BindGrid(string mesReferencia, MySqlConnection conn)
         {
 
-            DataTable dt = new DataTable();
+            System.Data.DataTable dt = new System.Data.DataTable();
             using (conn)
             {
                 dt = Service.getQuantidadeConteudoPorGrupo(mesReferencia, conn);
@@ -59,7 +62,6 @@ namespace RelatorioFinanceiroV5
 
                 using (dt)
                 {
-
                     GridViewQuantidades.DataSource = dt;
                     GridViewQuantidades.DataBind();
                     GridViewQuantidades.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
@@ -189,7 +191,7 @@ namespace RelatorioFinanceiroV5
 
         private void MakePDF(Grupo grupo)
         {
-            
+
             StringBuilder sb = new StringBuilder();
             sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
             sb.Append(grupo.NomeGrupo);
@@ -226,8 +228,8 @@ namespace RelatorioFinanceiroV5
             string myFileName = Service.RemoveAccents(myFile);
 
             PDFHelper.Export(sb.ToString(), "RelFin_" + grupo.Mes_Referencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
-            
-            
+
+
         }
 
         private void MakePDF()
@@ -282,7 +284,7 @@ namespace RelatorioFinanceiroV5
         protected void btnGerarPDFs_OnClick(object sender, EventArgs e)
         {
             MakePDFNew();
-            
+
         }
 
         private void MakePDFNew()
@@ -309,7 +311,7 @@ namespace RelatorioFinanceiroV5
 
 
             foreach (GridViewRow row in grd.Rows)
-            {              
+            {
                 _grupo = row.Cells[0].Text;
                 _mes = row.Cells[1].Text;
                 _quantidade = Convert.ToInt32(row.Cells[2].Text);
@@ -320,8 +322,8 @@ namespace RelatorioFinanceiroV5
                 _receita10 = Math.Round((decimal)_receita * (decimal)0.1, 6);
                 _receita20 = Math.Round((decimal)_receita * (decimal)0.2, 6);
                 _receitaASerDividida = Service.GetReceitaADividir(myConn, _mes);
-                _repasseQuantidade = (_percentualEditora * _receita20)/100;
-                _repasseMaisAcessados = (_percentualMaisAcessados * _receita10)/100;
+                _repasseQuantidade = (_percentualEditora * _receita20) / 100;
+                _repasseMaisAcessados = (_percentualMaisAcessados * _receita10) / 100;
                 _valorTotalRepasse = _repasseQuantidade + _repasseMaisAcessados;
                 _idGrupo = Convert.ToInt32(row.Cells[9].Text);
 
@@ -345,13 +347,15 @@ namespace RelatorioFinanceiroV5
 
                 grupos.Add(newGrupo);
 
-               
+
             }
             Debug.WriteLine("Fim da geração de lista de grupos");
             Debug.WriteLine("Grupo tem " + grupos.Count + " grupos");
             ListGrupos(grupos);
 
         }
+
+
 
         private void ListGrupos(List<Grupo> grupos)
         {
@@ -373,6 +377,12 @@ namespace RelatorioFinanceiroV5
 
 
         #endregion
+
+        protected void btnExporta_Click(object sender, EventArgs e)
+        {
+            GridViewExport.Export("Fev_16.xls", this.GridViewQuantidades);
+        }
+
 
     }
 }

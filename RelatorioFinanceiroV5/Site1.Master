@@ -8,8 +8,7 @@
     <link href="Content/bootstrap.css" rel="stylesheet" />
     <link href="Content/metisMenu.css" rel="stylesheet" />
     <link href="Content/sb-admin-2.css" rel="stylesheet" />
-
-
+    <link href="Content/font-awesome.min.css" rel="stylesheet" />
     <link href="Content/dashboard.css" rel="stylesheet" />
 
     <asp:ContentPlaceHolder ID="head" runat="server">

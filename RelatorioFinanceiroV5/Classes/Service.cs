@@ -62,12 +62,12 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select sum(floor(quantidade)) total from quantidades a inner join grupos b on a.id_grupo = b.id where b.ativo = 1 and mes_referencia = " + "'" + mesReferencia + "'";
+                string query = "select sum(quantidade) as total from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds, "quantidades");
                 Debug.WriteLine("");
                 dt = ds.Tables[0];
-                //Debug.WriteLine(dt.Rows[0].Field<decimal>("total").GetType());
+                Debug.WriteLine(dt.Rows[0].Field<decimal>("total").GetType());
                 int quantidadeTotal = Convert.ToInt32(dt.Rows[0].Field<decimal>("total"));
                 return quantidadeTotal;
             }
@@ -80,39 +80,6 @@ namespace RelatorioFinanceiroV5.Classes
 
         }
 
-        //Quantidade Total por editora
-        public static int QuantidadeTotalPorEditora(MySqlConnection myConn, string mesReferencia)
-        {
-            //Dividir a quantidade da editora sobre a quantidade total e multiplica por 100
-            DataTable dt = new DataTable();
-
-            DataSet ds = new DataSet();
-            try
-            {
-                myConn.Open();
-            }
-            catch (SystemException ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            if (myConn.State == System.Data.ConnectionState.Open)
-            {
-                string query = "select sum(floor(quantidade)) total from quantidades a inner join grupos b on a.id_grupo = b.id where b.ativo = 1 and mes_referencia = " + "'" + mesReferencia + "'";
-                MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
-                myAdapter.Fill(ds, "quantidades");
-                Debug.WriteLine("");
-                dt = ds.Tables[0];
-                int quantidadeTotal = Convert.ToInt32(dt.Rows[0].Field<decimal>("total"));
-                return quantidadeTotal;
-            }
-            else
-            {
-                Debug.Write("Erro no acesso ao banco");
-                myConn.Close();
-                return 0;
-            }
-
-        }
 
         public static int GetMaisAcessados(MySqlConnection myConn, int idGrupo, string mesReferencia)
         {
@@ -130,13 +97,22 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select floor(quantidade) as quantidade from referenciaxmaisacessados where id_grupo = " + idGrupo + " and mes_referencia = " + "'" + mesReferencia + "'";
+                //string query = "select floor(quantidade) as quantidade from referenciaxmaisacessados where id_grupo = " + idGrupo + " and mes_referencia = " + "'" + mesReferencia + "'";
+                string query = "select sum(quantidade) from refxmais_acessados_por_editora a inner join editoras b on a.id_editora=b.id inner join grupos c on b.id_grupo=c.id where b.ativo = 1 and c.ativo=1 and a.mes_referencia=" + "'" + mesReferencia + "'" + " and c.id = " + idGrupo;
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
-                int quantidadeTotal = Convert.ToInt32(dt.Rows[0].ItemArray[0]);
-                myConn.Close();
-                return quantidadeTotal;
+                if (dt.Rows[0].ItemArray[0] != DBNull.Value)
+                {
+                    int quantidadeTotal = Convert.ToInt32(dt.Rows[0].ItemArray[0]);
+                    myConn.Close();
+                    return quantidadeTotal;
+                }
+                else
+                {
+                    return 0;
+                }
+                
             }
             else
             {
@@ -146,6 +122,8 @@ namespace RelatorioFinanceiroV5.Classes
             }
 
         }
+
+        
 
         //Mais acessados por editora
         public static int GetMaisAcessados(MySqlConnection myConn, string mesReferencia, int idEditora)
@@ -164,12 +142,19 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select floor(quantidade) as quantidade from refxmais_acessados_por_editora where id_editora = " + idEditora + " and mes_referencia = " + "'" + mesReferencia + "'";
+                string query = "select floor(quantidade) as quantidade from refxmais_acessados_por_editora a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and id_editora = " + idEditora + " and mes_referencia = " + "'" + mesReferencia + "'";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
-                int quantidadeTotal = Convert.ToInt32(dt.Rows[0].ItemArray[0]);
-                return quantidadeTotal;
+                if (dt.Rows.Count > 0)
+                {
+                    int quantidadeTotal = Convert.ToInt32(dt.Rows[0].ItemArray[0]);
+                    return quantidadeTotal;
+                }
+                else {
+                    return 0;
+                }
+                
             }
             else
             {
@@ -195,11 +180,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                //select count(acessos) as 'acessos' from titulos where id = 213 and acessos <> 0 and id_mes_referencia = 1
-
-                //string totalQuery = "select sum(quantidade) total from referenciaxmaisacessados";
-
-                string totalQuery = "select sum(quantidade) total from referenciaxmaisacessados where mes_referencia = " + "'" + mesReferencia + "'";
+                string totalQuery = "select sum(quantidade) from refxmais_acessados_por_editora a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(totalQuery, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -217,41 +198,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
         }
 
-        public static int TotalReferenciaMaisAcessadosPorEditora(MySqlConnection myConn, string mesReferencia)
-        {
-            DataSet ds = new DataSet();
-            DataTable dt = new DataTable();
-
-            try
-            {
-                myConn.Open();
-            }
-            catch (SystemException ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            if (myConn.State == System.Data.ConnectionState.Open)
-            {
-                //select count(acessos) as 'acessos' from titulos where id = 213 and acessos <> 0 and id_mes_referencia = 1
-
-                //string totalQuery = "select sum(quantidade) total from referenciaxmaisacessados";
-
-                string totalQuery = "select sum(quantidade) total from refxmais_acessados_por_editora";
-                MySqlDataAdapter myAdapter = new MySqlDataAdapter(totalQuery, myConn);
-                myAdapter.Fill(ds);
-                dt = ds.Tables[0];
-                myConn.Close();
-                int TotalConteudosReferenciaMaisAcessados = Convert.ToInt32(dt.Rows[0].ItemArray[0]);
-                return TotalConteudosReferenciaMaisAcessados;
-
-            }
-            else
-            {
-                Debug.Write("Erro no acesso ao banco");
-                myConn.Close();
-                return 0;
-            }
-        }
+        
 
         public static decimal GetReceita(MySqlConnection myConn, string mes_referencia)
         {
@@ -338,7 +285,7 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
 
-                query = "select a.id, b.nome, b.id id_grupo, sum(a.quantidade)quantidade, a.mes_referencia from quantidades a inner join grupos b on a.id_grupo = b.id where b.ativo=1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " group by b.nome order by b.id";
+                query = "select a.id, b.nome, c.id id_grupo, sum(a.quantidade)quantidade, a.mes_referencia from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " group by c.nome order by c.id";
 
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
@@ -382,8 +329,8 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
 
-                query = "select a.id, a.editora, a.id_editora, b.id, a.quantidade, a.mes_referencia from quantidades a inner join grupos b on a.id_grupo = b.id where b.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " order by editora";
-
+                //query = "select a.id, a.editora, a.id_editora, b.id, a.quantidade, a.mes_referencia from quantidades a inner join grupos b on a.id_grupo = b.id where b.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " order by editora";
+                query = "select a.id, b.nome, b.id id_editora, a.quantidade, a.mes_referencia from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo=1 and c.ativo=1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " order by a.id_grupo";
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);

@@ -16,33 +16,30 @@
                     <div class="col-md-3 text-center">
                         <asp:Label ID="lblMesReferencia" runat="server" Text="Mês Referência" Font-Bold="true"></asp:Label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="150"></asp:DropDownList>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <asp:Button ID="btnOK" runat="server" Width="100" Text="OK" OnClick="btnOK_OnClick" CssClass="btn btn-primary"/>
                     </div>
+                    <div class="col-md-2">
+                   
+                    <asp:Label ID="Label1" runat="server" Text="Exporta Excel" Font-Bold="true" CssClass="pull-right"></asp:Label>
+                </div>
+                <div class="col-md-2">
+                    <asp:Button ID="btnExporta" runat="server" CssClass="btn btn-sm btn-primary pull-left" Text="Exportar" OnClick="btnExporta_Click" />
+                </div>
                 </div>
             </div>
             <div class="panel-body" runat="server" id="pnlbody">
                 <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" OnRowDataBound="GridViewQuantidades_RowDataBound" AllowSorting="true" OnRowCommand="GridViewQuantidades_RowCommand">
                     <Columns>
-                        <asp:BoundField DataField="id" HeaderText="ID" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                            <HeaderStyle ForeColor="White" BackColor="#006372" VerticalAlign="Middle" HorizontalAlign="Center" />
-                            <ItemStyle HorizontalAlign="Left" />
-                        </asp:BoundField>
-
-                        <asp:BoundField DataField="editora" HeaderText="Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="nome" HeaderText="Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
-                        <asp:BoundField DataField="id_editora" HeaderText="Id Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
-                            <ItemStyle HorizontalAlign="Left" />
-                        </asp:BoundField>
-
-                        <asp:BoundField DataField="id" HeaderText="Id Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="mes_referencia" HeaderText="Mês Referência" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
@@ -52,7 +49,31 @@
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
-                        <asp:BoundField DataField="mes_referencia" HeaderText="Mês Referência" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                         <asp:TemplateField HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                       </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="Quant. Ref x Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                       </asp:TemplateField>
+
+                         <asp:TemplateField HeaderText="Percentual Ref x Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                       </asp:TemplateField>
+
+                         <asp:TemplateField HeaderText="Valor p/ Conteúdo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                       </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="Valor p/ Mais Aeessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                       </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="Valor Total Repasse" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                       </asp:TemplateField>
+
+                        <asp:BoundField DataField="id_editora" HeaderText="Id Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
@@ -208,7 +229,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:Button ID="btnClose" runat="server" data-dismiss="modal" CssClass="btn btn-default" Text="Close" />
-                            <asp:Button ID="btnPDF" runat="server" Text="PDF" CssClass="btn btn-primary" OnClick="btnPDF_Click" />
+                            <asp:Button ID="btnPDF" runat="server" Text="PDF" CssClass="btn btn-primary" OnClick="btnPDF_OnClick" />
 
                         </div>
                     </div>

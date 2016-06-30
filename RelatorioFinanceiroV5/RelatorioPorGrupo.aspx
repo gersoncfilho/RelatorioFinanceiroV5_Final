@@ -18,14 +18,19 @@
                 <div class="col-md-3 text-center">
                     <asp:Label ID="lblMesReferencia" runat="server" Text="Mês Referência" Font-Bold="true"></asp:Label>
                 </div>
-                <div class="col-md-3">
-                    <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="150"></asp:DropDownList>
+                <div class="col-md-2">
+                    <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="100"></asp:DropDownList>
+                   
                 </div>
-                <div class="col-md-3">
-                    <asp:Button ID="btnOK" runat="server" Width="100" Text="OK" CssClass="btn btn-primary" OnClick="btnOK_OnClick" />
+                <div class="col-md-2">
+                     <asp:Button ID="btnOK" runat="server" Width="100" Text="OK" CssClass="btn btn-sm btn-primary" OnClick="btnOK_OnClick" />
                 </div>
-                <div class="col-md-3">
-                    <asp:Button ID="btnGerarPDFs" runat="server" Width="100" Text="OK" CssClass="btn btn-primary" OnClick="btnGerarPDFs_OnClick" />
+                <div class="col-md-2">
+                    <%--<asp:Button ID="btnGerarPDFs" runat="server" Width="100" Text="OK" CssClass="btn btn-primary" OnClick="btnGerarPDFs_OnClick" />--%>
+                    <asp:Label ID="Label1" runat="server" Text="Exporta Excel" Font-Bold="true" CssClass="pull-right"></asp:Label>
+                </div>
+                <div class="col-md-2">
+                    <asp:Button ID="btnExporta" runat="server" CssClass="btn btn-sm btn-primary pull-left" Text="Exportar" OnClick="btnExporta_Click" />
                 </div>
             </div>
             <div class="panel-body" runat="server" id="pnlBodyOld">
