@@ -76,6 +76,7 @@ namespace RelatorioFinanceiroV5
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+                
                 _idGrupo = Convert.ToInt32(e.Row.Cells[9].Text);
                 decimal receita = Service.GetReceita(myConn, _mesReferencia);
                 decimal receita20 = Math.Round((decimal)receita * (decimal)0.2, round);
@@ -89,6 +90,7 @@ namespace RelatorioFinanceiroV5
                 decimal valorPorAcesso = (percentualReferenciaMaisAcessado * receita10) / 100;
                 decimal valorTotal = valorPorQuantidade + valorPorAcesso;
 
+                
                 e.Row.Cells[3].Text = percentual.ToString();
                 e.Row.Cells[4].Text = maisAcessados.ToString();
                 e.Row.Cells[5].Text = percentualReferenciaMaisAcessado.ToString();
@@ -109,6 +111,7 @@ namespace RelatorioFinanceiroV5
 
             if (e.Row.RowType == DataControlRowType.Footer)
             {
+                e.Row.Cells[0].Text = GridViewQuantidades.Rows.Count.ToString();
                 e.Row.Cells[2].Text = _quantTotal.ToString();
                 e.Row.Cells[3].Text = Math.Round(_totalPercentual, 2).ToString();
                 e.Row.Cells[4].Text = _totalRefxMaisAcessados.ToString();

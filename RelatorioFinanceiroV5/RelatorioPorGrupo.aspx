@@ -129,7 +129,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>Quantidade de Conteúdos</i>
+                                                 <i style="font-size:1.5rem;">Quantidade de Conteúdos</i>
                                             </td>
                                             <td class="text-center">
                                                 <strong>
@@ -138,7 +138,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>% da editora do total</i>
+                                                 <i style="font-size:1.5rem;">% da editora do total</i>
                                             </td>
                                             <td class="text-center">
                                                 <strong>
@@ -152,7 +152,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>Conteúdo de ref. e mais acessados</i>
+                                                 <i style="font-size:1.5rem;">Conteúdo de ref. e mais acessados</i>
                                             </td>
                                             <td class="text-center">
                                                 <strong>
@@ -161,7 +161,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>% da editora dos 10% mais acessados e referência</i>
+                                                 <i style="font-size:1.5rem;">% da editora dos 10% mais acessados e referência</i>
                                             </td>
                                             <td class="text-center">
                                                 <strong>
@@ -170,7 +170,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>Receita líquida total da Nuvem de Livros</i>
+                                                 <i style="font-size:1.5rem;">Receita líquida total da Nuvem de Livros</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -179,7 +179,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i>
+                                                 <i style="font-size:1.5rem;">Receita a ser dividida entre as editoras pelo conteúdo (20%)</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -188,7 +188,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i>
+                                                 <i style="font-size:1.5rem;">Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -197,7 +197,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>Receita total a ser dividida entre as editoras</i>
+                                                 <i style="font-size:1.5rem;">Receita total a ser dividida entre as editoras</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -206,7 +206,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>Valor a ser repassado para a editora pela quantidade de conteúdos</i>
+                                                 <i style="font-size:1.5rem;">Valor a ser repassado para a editora pela quantidade de conteúdos</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -215,7 +215,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i>
+                                                 <i style="font-size:1.5rem;">Valor a ser repassado para a editora pelas obras de referência e mais acessados</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -224,7 +224,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i>Valor total ser repassado para a editora</i>
+                                                 <i style="font-size:1.5rem;">Valor total ser repassado para a editora</i>
                                             </td>
                                             <td>
                                                 <strong>
