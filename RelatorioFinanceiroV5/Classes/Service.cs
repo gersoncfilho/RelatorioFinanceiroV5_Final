@@ -400,6 +400,37 @@ namespace RelatorioFinanceiroV5.Classes
             }
         }
 
+        public static DataTable GetValoresBordero(MySqlConnection myConn, string mesReferencia)
+        {
+            DataSet ds = new DataSet();
+            DataTable dt = new DataTable();
+
+            try
+            {
+                myConn.Open();
+            }
+            catch (SystemException ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            if (myConn.State == System.Data.ConnectionState.Open)
+            {
+                string query = "select * from grupos a  inner join editoras b on a.id = b.id_grupo inner join quantidades c on b.id = c.id_editora where a.ativo = 1 and b.ativo = 1 and c.mes_referencia = " + "'" + mesReferencia + "'" + " group by b.nome order by a.nome";
+                MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
+                myAdapter.Fill(ds);
+                dt = ds.Tables[0];
+                myConn.Close();
+                return dt;
+
+            }
+            else
+            {
+                Debug.Write("Erro no acesso ao banco");
+                myConn.Close();
+                return null;
+            }
+        }
+
     }
 
    

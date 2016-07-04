@@ -76,6 +76,24 @@ namespace RelatorioFinanceiroV5 {
         protected global::System.Web.UI.WebControls.LinkButton linkRelEditora;
         
         /// <summary>
+        /// liBordero control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liBordero;
+        
+        /// <summary>
+        /// linkBordero control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton linkBordero;
+        
+        /// <summary>
         /// ContentPlaceHolder1 control.
         /// </summary>
         /// <remarks>
