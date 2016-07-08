@@ -18,7 +18,27 @@
             </div>
         </div>
         <div class="panel-body" runat="server" id="pnlBordero">
-            <asp:GridView ID="grdBordero" AutoGenerateColumns="true" runat="server" OnRowDataBound="grdBordero_RowDataBound"></asp:GridView>
+            <asp:GridView ID="grdBordero" AutoGenerateColumns="false" runat="server" OnRowDataBound="grdBordero_RowDataBound" ShowFooter="true" CssClass="table table-bordered table-responsive">
+                <Columns>
+                    <asp:BoundField DataField="nome" HeaderText="Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                    </asp:BoundField>
+                    <asp:BoundField DataField="quantidade" HeaderText="Quantidade" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                    </asp:BoundField>
+                    <asp:BoundField HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                    </asp:BoundField>
+                    <asp:BoundField HeaderText="Valor" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                    </asp:BoundField>
+                   
+                </Columns>
+            </asp:GridView>
         </div>
     </div>
 </asp:Content>

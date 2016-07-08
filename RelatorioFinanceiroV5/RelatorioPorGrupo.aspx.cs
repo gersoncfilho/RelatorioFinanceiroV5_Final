@@ -230,9 +230,15 @@ namespace RelatorioFinanceiroV5
 
             string myFileName = Service.RemoveAccents(myFile);
 
-            PDFHelper.Export(sb.ToString(), "RelFin_" + grupo.Mes_Referencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
+            Thread t = new Thread(() => NewMethod(grupo,sb,myFileName));
+            t.IsBackground = true;
+            t.Start();
+            
+        }
 
-
+        private static void NewMethod(Grupo grupo, StringBuilder sb, string myFileName)
+        {
+            PDFHelper.Export(sb.ToString(), grupo.IdGrupo + "_RelFin_" + grupo.Mes_Referencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
         }
 
         private void MakePDF()
@@ -345,17 +351,8 @@ namespace RelatorioFinanceiroV5
                 newGrupo.Valor_Mais_Acessados = _repasseMaisAcessados;
                 newGrupo.Valor_Repasse = _valorTotalRepasse;
                 newGrupo.ReceitaASerDividida = _receitaASerDividida;
-
-                //Debug.WriteLine(newGrupo.NomeGrupo);
-
-                grupos.Add(newGrupo);
-
-
+                MakePDF(newGrupo);
             }
-            Debug.WriteLine("Fim da geração de lista de grupos");
-            Debug.WriteLine("Grupo tem " + grupos.Count + " grupos");
-            ListGrupos(grupos);
-
         }
 
 
@@ -365,9 +362,13 @@ namespace RelatorioFinanceiroV5
             foreach (Grupo grupo in grupos)
             {
                 Debug.WriteLine(grupo.NomeGrupo);
-                MakePDF(grupo);
+                Thread t = new Thread(new ThreadStart(MakePDFNew));
+                t.IsBackground = true;
+                t.Start();
+                //MakePDF(grupo);
             }
         }
+
 
         #region Methods
         private decimal getPercentualPorQuantidade(MySqlConnection myConn, string mes_referencia, int quantidade)
@@ -383,7 +384,8 @@ namespace RelatorioFinanceiroV5
 
         protected void btnExporta_Click(object sender, EventArgs e)
         {
-            GridViewExport.Export("Fev_16.xls", this.GridViewQuantidades);
+            //GridViewExport.Export("Fev_16.xls", this.GridViewQuantidades);
+            MakePDFNew();
         }
 
 

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
@@ -28,7 +29,7 @@ namespace RelatorioFinanceiroV5.Classes
         /// Link para o CSS.
         public static void Export(string html, string fileName, string linkCss)
         {
-            ////reset response
+            ////reset response           
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Response.ContentType = "application/pdf";
 
@@ -77,6 +78,7 @@ namespace RelatorioFinanceiroV5.Classes
                     document.Dispose();
 
                     HttpContext.Current.Response.BinaryWrite(memStream.ToArray());
+                    
                 }
                 catch (NullReferenceException ex)
                 {
@@ -87,7 +89,12 @@ namespace RelatorioFinanceiroV5.Classes
 
             }
 
+            //HttpContext.Current.Response.Flush();
+            //HttpContext.Current.Response.SuppressContent = true;
+            //HttpContext.Current.ApplicationInstance.CompleteRequest();
+
             HttpContext.Current.Response.End();
+            //HttpContext.Current.Response.Redirect("relatorioporgrupo.aspx", false);
         }
 
         ///

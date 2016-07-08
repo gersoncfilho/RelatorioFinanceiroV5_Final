@@ -15,7 +15,7 @@ namespace RelatorioFinanceiroV5.Classes
         //Popula  DropDownList Mes de Referencia
         public static List<String> getMesReferencia(MySqlConnection myConn)
         {
-            
+
             DataTable dt = new DataTable();
 
             DataSet ds = new DataSet();
@@ -69,6 +69,7 @@ namespace RelatorioFinanceiroV5.Classes
                 dt = ds.Tables[0];
                 Debug.WriteLine(dt.Rows[0].Field<decimal>("total").GetType());
                 int quantidadeTotal = Convert.ToInt32(dt.Rows[0].Field<decimal>("total"));
+                myConn.Close();
                 return quantidadeTotal;
             }
             else
@@ -112,7 +113,7 @@ namespace RelatorioFinanceiroV5.Classes
                 {
                     return 0;
                 }
-                
+
             }
             else
             {
@@ -123,7 +124,7 @@ namespace RelatorioFinanceiroV5.Classes
 
         }
 
-        
+
 
         //Mais acessados por editora
         public static int GetMaisAcessados(MySqlConnection myConn, string mesReferencia, int idEditora)
@@ -151,10 +152,11 @@ namespace RelatorioFinanceiroV5.Classes
                     int quantidadeTotal = Convert.ToInt32(dt.Rows[0].ItemArray[0]);
                     return quantidadeTotal;
                 }
-                else {
+                else
+                {
                     return 0;
                 }
-                
+
             }
             else
             {
@@ -198,7 +200,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
         }
 
-        
+
 
         public static decimal GetReceita(MySqlConnection myConn, string mes_referencia)
         {
@@ -285,7 +287,7 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
 
-                query = "select a.id, b.nome, c.id id_grupo, sum(a.quantidade)quantidade, a.mes_referencia from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " group by c.nome order by c.id";
+                query = "select a.id, c.nome, c.id id_grupo, sum(a.quantidade)quantidade, a.mes_referencia from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " group by c.nome order by c.id";
 
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
@@ -387,7 +389,7 @@ namespace RelatorioFinanceiroV5.Classes
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
-               
+
                 myConn.Close();
                 return dt;
 
@@ -415,7 +417,26 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select * from grupos a  inner join editoras b on a.id = b.id_grupo inner join quantidades c on b.id = c.id_editora where a.ativo = 1 and b.ativo = 1 and c.mes_referencia = " + "'" + mesReferencia + "'" + " group by b.nome order by a.nome";
+                //string query = "select * from grupos a  inner join editoras b on a.id = b.id_grupo inner join quantidades c on b.id = c.id_editora INNER JOIN receita d ON c.mes_referencia = d.mes_referencia where a.ativo = 1 and b.ativo = 1 and c.mes_referencia = " + "'" + mesReferencia + "'" + " group by b.nome order by a.nome";
+                string query = @"SELECT 
+                                    a.id,
+                                    b.nome,
+                                    a.quantidade,
+                                    a.mes_referencia,
+                                    d.receita,
+                                    d.receita_a_ser_dividida
+                                FROM
+                                    quantidades a
+                                        INNER JOIN
+                                    editoras b ON a.id_editora = b.id
+                                        INNER JOIN
+                                    grupos c ON b.id_grupo = c.id
+		                                INNER JOIN
+	                                receita d on a.mes_referencia = d.mes_referencia
+                                WHERE
+                                    b.ativo = 1 AND c.ativo = 1
+                                        AND a.mes_referencia = 'Fev_16'
+                                ORDER BY a.id_grupo";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -433,5 +454,5 @@ namespace RelatorioFinanceiroV5.Classes
 
     }
 
-   
+
 }
