@@ -29,12 +29,12 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select mes from mes_referencia";
+                string query = "select nome_mes from mes_referencia";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 Debug.WriteLine("");
                 dt = ds.Tables[0];
-                List<String> mesReferencia = dt.Rows.OfType<DataRow>().Select(dr => dr.Field<string>("mes")).ToList();
+                List<String> mesReferencia = dt.Rows.OfType<DataRow>().Select(dr => dr.Field<string>("nome_mes")).ToList();
                 return mesReferencia;
             }
             else
@@ -46,7 +46,7 @@ namespace RelatorioFinanceiroV5.Classes
 
         }
 
-        public static int QuantidadeTotal(MySqlConnection myConn, string mesReferencia)
+        public static int QuantidadeTotal(MySqlConnection myConn, int idMesReferencia)
         {
             //Dividir a quantidade da editora sobre a quantidade total e multiplica por 100
             DataTable dt = new DataTable();
@@ -62,7 +62,14 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select sum(quantidade) as total from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'";
+                string query = @"SELECT SUM(quantidade) AS total 
+                                    FROM quantidades a 
+                                INNER JOIN editoras b 
+                                    ON a.id_editora = b.id_editora 
+                                inner join grupos c 
+                                    on b.id_grupo = c.id_grupo 
+                                INNER JOIN mes_referencia d ON a.id_mes = d.id_mes                           
+                                where b.ativo = 1 and c.ativo = 1 and a.id_mes = " + idMesReferencia;
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds, "quantidades");
                 Debug.WriteLine("");
@@ -82,7 +89,7 @@ namespace RelatorioFinanceiroV5.Classes
         }
 
 
-        public static int GetMaisAcessados(MySqlConnection myConn, int idGrupo, string mesReferencia)
+        public static int GetMaisAcessados(MySqlConnection myConn, int idGrupo, int idMesReferencia)
         {
             //Dividir a quantidade da editora sobre a quantidade total e multiplica por 100
             DataTable dt = new DataTable();
@@ -99,7 +106,7 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
                 //string query = "select floor(quantidade) as quantidade from referenciaxmaisacessados where id_grupo = " + idGrupo + " and mes_referencia = " + "'" + mesReferencia + "'";
-                string query = "select sum(quantidade) from refxmais_acessados_por_editora a inner join editoras b on a.id_editora=b.id inner join grupos c on b.id_grupo=c.id where b.ativo = 1 and c.ativo=1 and a.mes_referencia=" + "'" + mesReferencia + "'" + " and c.id = " + idGrupo;
+                string query = "select sum(quantidade) from refxmais_acessados_por_editora a inner join editoras b on a.id_editora=b.id inner join grupos c on b.id_grupo=c.id where b.ativo = 1 and c.ativo=1 and a.mes_referencia=" + "'" + idMesReferencia + "'" + " and c.id = " + idGrupo;
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -167,7 +174,7 @@ namespace RelatorioFinanceiroV5.Classes
 
         }
 
-        public static int TotalReferenciaMaisAcessados(MySqlConnection myConn, string mesReferencia)
+        public static int TotalReferenciaMaisAcessados(MySqlConnection myConn, int idMesReferencia)
         {
             DataSet ds = new DataSet();
             DataTable dt = new DataTable();
@@ -182,7 +189,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string totalQuery = "select sum(quantidade) from refxmais_acessados_por_editora a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'";
+                string totalQuery = "select sum(quantidade) from refxmais_acessados_por_editora a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + idMesReferencia + "'";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(totalQuery, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -202,7 +209,7 @@ namespace RelatorioFinanceiroV5.Classes
 
 
 
-        public static decimal GetReceita(MySqlConnection myConn, string mes_referencia)
+        public static decimal GetReceita(MySqlConnection myConn, int idMesReferencia)
         {
             DataSet ds = new DataSet();
             DataTable dt = new DataTable();
@@ -217,7 +224,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select receita from receita where mes_referencia = " + "'" + mes_referencia + "'";
+                string query = "select receita from receita where mes_referencia = " + "'" + idMesReferencia + "'";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -235,7 +242,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
         }
 
-        public static decimal GetReceitaADividir(MySqlConnection myConn, string mes_referencia)
+        public static decimal GetReceitaADividir(MySqlConnection myConn, int idMesReferencia)
         {
             DataSet ds = new DataSet();
             DataTable dt = new DataTable();
@@ -250,7 +257,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select receita_a_ser_dividida as receita from receita where mes_referencia = " + "'" + mes_referencia + "'";
+                string query = "select receita_a_ser_dividida as receita from receita where mes_referencia = " + "'" + idMesReferencia + "'";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -270,7 +277,7 @@ namespace RelatorioFinanceiroV5.Classes
 
 
         //Popula o GridView do RelatorioPorGrupo.aspx
-        public static DataTable getQuantidadeConteudoPorGrupo(string mesReferencia, MySqlConnection myConn)
+        public static DataTable getQuantidadeConteudoPorGrupo(int idMesReferencia, MySqlConnection myConn)
         {
 
             DataTable dt = new DataTable();
@@ -287,8 +294,8 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
 
-                query = "select a.id, c.nome, c.id id_grupo, sum(a.quantidade)quantidade, a.mes_referencia from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " group by c.nome order by c.id";
-
+                //query = "SELECT  a.id_quantidades, c.nome_grupo, c.id_grupo as id_grupo, SUM(a.quantidade) quantidade, a.id_mes  FROM quantidades a INNER JOIN editoras b ON a.id_editora = b.id_editora INNER JOIN  grupos c ON b.id_grupo = c.id_grupo WHERE b.ativo = 1 AND c.ativo = 1 AND a.id_mes = " + idMesReferencia + " GROUP BY c.nome_grupo ORDER BY c.id_grupo";
+                query = "select c.nome_grupo, d.nome_mes, sum(quantidade), a.id_editora, a.id_grupo, a.id_mes, c.ativo from quantidades a inner join editoras b on a.id_editora=b.id_editora inner join grupos c on a.id_grupo=c.id_grupo inner join mes_referencia d on a.id_mes=d.id_mes where b.ativo=1 and c.ativo=1 and a.id_mes=3 group by a.id_grupo order by a.id_grupo ";
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
@@ -385,7 +392,13 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select receita, mes_referencia from receita";
+                string query = @"select 
+	                                b.nome_mes, a.receita, 
+	                                a.receita_a_ser_dividida 
+                                from 
+	                                receita a 
+		                                inner join 
+	                                mes_referencia b on a.id_mes = b.id_mes";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -402,7 +415,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
         }
 
-        public static DataTable GetValoresBordero(MySqlConnection myConn, string mesReferencia)
+        public static DataTable GetValoresBordero(MySqlConnection myConn, int idMesReferencia)
         {
             DataSet ds = new DataSet();
             DataTable dt = new DataTable();

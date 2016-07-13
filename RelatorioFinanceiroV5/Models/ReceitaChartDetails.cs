@@ -9,5 +9,6 @@ namespace RelatorioFinanceiroV5.Models
     {
         public string Mes { get; set; }
         public decimal ReceitaMensal { get; set; }
+        public decimal ReceitaADividir { get; set; }
     }
 }

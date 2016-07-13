@@ -27,8 +27,10 @@ namespace RelatorioFinanceiroV5
             foreach (DataRow dtRow in dt.Rows)
             {
                 ReceitaChartDetails details = new ReceitaChartDetails();
-                details.ReceitaMensal = Convert.ToDecimal(dtRow[0]);
-                details.Mes = dtRow[1].ToString();
+                details.Mes = dtRow[0].ToString();
+                details.ReceitaMensal = Convert.ToDecimal(dtRow[1]);
+                details.ReceitaADividir = Convert.ToDecimal(dtRow[2]);
+                
                 dataList.Add(details);
             }
             return dataList;

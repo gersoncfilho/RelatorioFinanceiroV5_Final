@@ -9,7 +9,7 @@ namespace RelatorioFinanceiroV5.Models
     {
         public int IdGrupo { get; set; }
         public string NomeGrupo { get; set; }
-        public string Mes_Referencia { get; set; }
+        public int IdMesReferencia { get; set; }
         public int Quantidade { get; set; }
         public decimal Percentual_Quantidade { get; set; }
         public int Quant_Ref_Mais_Acessados { get; set; }

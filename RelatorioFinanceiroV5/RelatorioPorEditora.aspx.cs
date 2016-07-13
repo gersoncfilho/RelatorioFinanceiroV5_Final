@@ -31,7 +31,7 @@ namespace RelatorioFinanceiroV5
         protected void Page_Load(object sender, EventArgs e)
         {
             var myConn = Connection.conn();
-            _quantidadeTotal = Service.QuantidadeTotal(myConn, "Fev_16");
+            _quantidadeTotal = Service.QuantidadeTotal(myConn, 2);
             Debug.WriteLine("Quantidade total: " + _quantidadeTotal);
 
             if (!this.IsPostBack)
@@ -71,19 +71,19 @@ namespace RelatorioFinanceiroV5
 
         protected void GridViewQuantidades_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            string _mesReferencia = e.Row.Cells[1].Text;
+            int _idMesReferencia = Convert.ToInt32(e.Row.Cells[1].Text);
             var myConn = Connection.conn();
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 _idEditora = Convert.ToInt32(e.Row.Cells[9].Text);
-                decimal receita = Service.GetReceita(myConn, _mesReferencia);
+                decimal receita = Service.GetReceita(myConn, _idMesReferencia);
                 decimal receita20 = Math.Round((decimal)receita * (decimal)0.2, round);
                 decimal receita10 = Math.Round((decimal)receita * (decimal)0.1, round);
                 int quantidade = Convert.ToInt32(e.Row.Cells[2].Text);
                 decimal percentual = Math.Round(quantidade / (decimal)_quantidadeTotal * 100, round);
-                int maisAcessados = Service.GetMaisAcessados(myConn, _mesReferencia, _idEditora);
-                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, _mesReferencia);
+                int maisAcessados = Service.GetMaisAcessados(myConn, _idMesReferencia, _idEditora);
+                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, _idMesReferencia);
                 decimal percentualReferenciaMaisAcessado = Math.Round(Convert.ToDecimal(maisAcessados / (decimal)totalRefxMaisAcessados * 100), round);
                 decimal valorPorQuantidade = (percentual * receita20) / 100;
                 decimal valorPorAcesso = (percentualReferenciaMaisAcessado * receita10) / 100;
@@ -133,18 +133,18 @@ namespace RelatorioFinanceiroV5
                 GridViewRow row = GridViewQuantidades.Rows[index];
 
                 int idGrupo = (int)Convert.ToInt32(row.Cells[9].Text);
-                string mesReferencia = row.Cells[1].Text;
+                int idMesReferencia = Convert.ToInt32(row.Cells[1].Text);
 
                 //calcula o percentual da quantidade sobre o total de conteudos
 
-                int quantidadeTotal = Service.QuantidadeTotal(myConn, mesReferencia);
+                int quantidadeTotal = Service.QuantidadeTotal(myConn, idMesReferencia);
                 //decimal percentual = Math.Round(Convert.ToDecimal(row.Cells[2].Text) / (decimal)quantidadeTotal * 100, 6);
                 decimal percentual = Math.Round(Convert.ToDecimal(row.Cells[2].Text) / (decimal)quantidadeTotal * 100, 6);
 
                 lblPercentualEditoraTotal.Text = Math.Round(percentual, 2).ToString() + "%";
 
-                int maisAcessados = Service.GetMaisAcessados(myConn, idGrupo, mesReferencia);
-                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, mesReferencia);
+                int maisAcessados = Service.GetMaisAcessados(myConn, idGrupo, idMesReferencia);
+                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, idMesReferencia);
                 lblTotalRefMaisAcessados.Text = maisAcessados.ToString();
 
                 decimal percentualReferenciaMaisAcessado = Math.Round(Convert.ToDecimal(maisAcessados / (decimal)totalRefxMaisAcessados * 100), 5);
@@ -153,7 +153,7 @@ namespace RelatorioFinanceiroV5
 
 
 
-                decimal receita = Service.GetReceita(myConn, mesReferencia);
+                decimal receita = Service.GetReceita(myConn, idMesReferencia);
                 lblReceita.Text = receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
 
 

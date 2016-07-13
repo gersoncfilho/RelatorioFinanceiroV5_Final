@@ -38,53 +38,54 @@ namespace RelatorioFinanceiroV5
         {
 
             var myConn = Connection.conn();
-            _quantidadeTotal = Service.QuantidadeTotal(myConn, "Fev_16");
+            _quantidadeTotal = Service.QuantidadeTotal(myConn, 2);
             Debug.WriteLine("Quantidade total: " + _quantidadeTotal);
 
             if (!this.IsPostBack)
             {
                 ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
-                BindGrid("Jan_16", myConn);
+                BindGrid(2, myConn);
                 pnlBodyOld.Visible = true;
                 myConn.Close();
             }
         }
 
-        private void BindGrid(string mesReferencia, MySqlConnection conn)
+        private void BindGrid(int idMesReferencia, MySqlConnection conn)
         {
 
             System.Data.DataTable dt = new System.Data.DataTable();
             using (conn)
             {
-                dt = Service.getQuantidadeConteudoPorGrupo(mesReferencia, conn);
+                dt = Service.getQuantidadeConteudoPorGrupo(idMesReferencia, conn);
 
 
                 using (dt)
                 {
                     GridViewQuantidades.DataSource = dt;
                     GridViewQuantidades.DataBind();
-                    GridViewQuantidades.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
+                    GridViewQuantidades.FooterRow.Cells[1].HorizontalAlign = HorizontalAlign.Right;
                 }
             }
         }
 
         protected void GridViewQuantidadesOld_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            string _mesReferencia = e.Row.Cells[1].Text;
+            Debug.WriteLine(e.Row.Cells[5].Text);
+            int _idMesReferencia = Convert.ToInt32(e.Row.Cells[5].Text);
             var myConn = Connection.conn();
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 
                 _idGrupo = Convert.ToInt32(e.Row.Cells[9].Text);
-                decimal receita = Service.GetReceita(myConn, _mesReferencia);
+                decimal receita = Service.GetReceita(myConn, _idMesReferencia);
                 decimal receita20 = Math.Round((decimal)receita * (decimal)0.2, round);
                 decimal receita10 = Math.Round((decimal)receita * (decimal)0.1, round);
                 int quantidade = Convert.ToInt32(e.Row.Cells[2].Text);
                 decimal percentual = Math.Round(quantidade / (decimal)_quantidadeTotal * 100, round);
-                int maisAcessados = Service.GetMaisAcessados(myConn, _idGrupo, _mesReferencia);
-                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, _mesReferencia);
+                int maisAcessados = Service.GetMaisAcessados(myConn, _idGrupo, _idMesReferencia);
+                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, _idMesReferencia);
                 decimal percentualReferenciaMaisAcessado = Math.Round(Convert.ToDecimal(maisAcessados / (decimal)totalRefxMaisAcessados * 100), round);
                 decimal valorPorQuantidade = (percentual * receita20) / 100;
                 decimal valorPorAcesso = (percentualReferenciaMaisAcessado * receita10) / 100;
@@ -131,18 +132,18 @@ namespace RelatorioFinanceiroV5
                 GridViewRow row = GridViewQuantidades.Rows[index];
 
                 int idGrupo = (int)Convert.ToInt32(row.Cells[9].Text);
-                string mesReferencia = row.Cells[1].Text;
+                int idMesReferencia = Convert.ToInt32(row.Cells[1].Text);
 
                 //calcula o percentual da quantidade sobre o total de conteudos
 
-                int quantidadeTotal = Service.QuantidadeTotal(myConn, mesReferencia);
+                int quantidadeTotal = Service.QuantidadeTotal(myConn, idMesReferencia);
                 //decimal percentual = Math.Round(Convert.ToDecimal(row.Cells[2].Text) / (decimal)quantidadeTotal * 100, 6);
                 decimal percentual = Math.Round(Convert.ToDecimal(row.Cells[2].Text) / (decimal)_quantidadeTotal * 100, round);
 
                 lblPercentualEditoraTotal.Text = Math.Round(percentual, 2).ToString() + "%";
 
-                int maisAcessados = Service.GetMaisAcessados(myConn, idGrupo, mesReferencia);
-                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, mesReferencia);
+                int maisAcessados = Service.GetMaisAcessados(myConn, idGrupo, idMesReferencia);
+                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, idMesReferencia);
                 lblTotalRefMaisAcessados.Text = maisAcessados.ToString();
 
                 decimal percentualReferenciaMaisAcessado = Math.Round(Convert.ToDecimal(maisAcessados / (decimal)totalRefxMaisAcessados * 100), 5);
@@ -151,7 +152,7 @@ namespace RelatorioFinanceiroV5
 
 
 
-                decimal receita = Service.GetReceita(myConn, mesReferencia);
+                decimal receita = Service.GetReceita(myConn, idMesReferencia);
                 lblReceita.Text = receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
 
 
@@ -199,7 +200,7 @@ namespace RelatorioFinanceiroV5
             sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
             sb.Append(grupo.NomeGrupo);
             sb.Append("</strong></th><th width='100'><strong>");
-            sb.Append(grupo.Mes_Referencia);
+            //sb.Append(grupo.Mes_Referencia);
             sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
             sb.Append(grupo.Quantidade);
             sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
@@ -238,7 +239,7 @@ namespace RelatorioFinanceiroV5
 
         private static void NewMethod(Grupo grupo, StringBuilder sb, string myFileName)
         {
-            PDFHelper.Export(sb.ToString(), grupo.IdGrupo + "_RelFin_" + grupo.Mes_Referencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
+            //PDFHelper.Export(sb.ToString(), grupo.IdGrupo + "_RelFin_" + grupo.Mes_Referencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
         }
 
         private void MakePDF()
@@ -286,8 +287,8 @@ namespace RelatorioFinanceiroV5
             var myConn = Connection.conn();
             var _mes_referencia = ddlMesReferencia.SelectedValue;
             Debug.WriteLine(_mes_referencia);
-            BindGrid(_mes_referencia, myConn);
-            _totalPercentual = Service.QuantidadeTotal(myConn, _mes_referencia);
+            //BindGrid(_mes_referencia, myConn);
+            _totalPercentual = Service.QuantidadeTotal(myConn, 2);
         }
 
         protected void btnGerarPDFs_OnClick(object sender, EventArgs e)
@@ -302,7 +303,7 @@ namespace RelatorioFinanceiroV5
             List<Grupo> grupos = new List<Grupo>();
             var myConn = Connection.conn();
             string _grupo = "";
-            string _mes = "";
+            int _mes = 0;
             int _quantidade = 0;
             decimal _percentualEditora = 0.0m;
             int _totalMaisAcessados = 0;
@@ -322,7 +323,7 @@ namespace RelatorioFinanceiroV5
             foreach (GridViewRow row in grd.Rows)
             {
                 _grupo = row.Cells[0].Text;
-                _mes = row.Cells[1].Text;
+                _mes = Convert.ToInt32(row.Cells[1].Text);
                 _quantidade = Convert.ToInt32(row.Cells[2].Text);
                 _percentualEditora = Convert.ToDecimal(row.Cells[3].Text);
                 _totalMaisAcessados = Convert.ToInt32(row.Cells[4].Text);
@@ -339,7 +340,7 @@ namespace RelatorioFinanceiroV5
                 newGrupo = new Grupo();
                 newGrupo.NomeGrupo = _grupo;
                 newGrupo.IdGrupo = _idGrupo;
-                newGrupo.Mes_Referencia = _mes;
+                //newGrupo.Mes_Referencia = _mes;
                 newGrupo.Quantidade = _quantidade;
                 newGrupo.Percentual_Quantidade = _percentualEditora;
                 newGrupo.Quant_Ref_Mais_Acessados = _totalMaisAcessados;
@@ -371,9 +372,9 @@ namespace RelatorioFinanceiroV5
 
 
         #region Methods
-        private decimal getPercentualPorQuantidade(MySqlConnection myConn, string mes_referencia, int quantidade)
+        private decimal getPercentualPorQuantidade(MySqlConnection myConn, int idMesReferencia, int quantidade)
         {
-            int quantidadeTotal = Service.QuantidadeTotal(myConn, mes_referencia);
+            int quantidadeTotal = Service.QuantidadeTotal(myConn, idMesReferencia);
             decimal percentual = Math.Round(quantidade / (decimal)quantidadeTotal * 100, 6);
             return percentual;
 

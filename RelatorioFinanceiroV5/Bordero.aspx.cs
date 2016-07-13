@@ -19,12 +19,12 @@ namespace RelatorioFinanceiroV5
         decimal _percentual = 0.0m;
         decimal _percentualTotal = 0.0m;
         private const int round = 6;
-        private string _mesReferencia = "Jan_16";
+        private int idMesReferencia = 2;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             var myConn = Connection.conn();
-            _quantTotal = Service.QuantidadeTotal(myConn, _mesReferencia);
+            _quantTotal = Service.QuantidadeTotal(myConn, idMesReferencia);
 
             if (!this.IsPostBack)
             {
@@ -32,15 +32,15 @@ namespace RelatorioFinanceiroV5
                 ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
                 myConn.Close();
-                BindGrid(_mesReferencia, myConn);
+                BindGrid(idMesReferencia, myConn);
                 
             }
         }
 
-        private void BindGrid(string mesReferencia, MySqlConnection myConn)
+        private void BindGrid(int idMesReferencia, MySqlConnection myConn)
         {
             DataTable dt = new DataTable();
-            dt = Service.GetValoresBordero(myConn, mesReferencia);
+            dt = Service.GetValoresBordero(myConn, idMesReferencia);
             grdBordero.DataSource = dt;
             grdBordero.DataBind();
             myConn.Close();
@@ -58,7 +58,7 @@ namespace RelatorioFinanceiroV5
             //grdBordero.DataBind();
             //myConn.Close();
             //pnlBordero.Visible = true;
-            BindGrid(ddlMesReferencia.SelectedItem.ToString(), myConn);
+            BindGrid(Convert.ToInt32(ddlMesReferencia.SelectedValue), myConn);
 
         }
 

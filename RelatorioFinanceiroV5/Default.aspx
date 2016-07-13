@@ -115,6 +115,10 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         $(function () {
+
+            google.charts.load('current', { packages: ['bar'] });
+            google.charts.setOnLoadCallback(drawchart);
+
             $.ajax({
                 type: 'POST',
                 dataType: 'JSON',
@@ -130,28 +134,44 @@
             });
         })
         //Variavel global para reter a informacao
-        google.charts.load('visualization', '1', { packages: ['corechart'] });
-
-        google.charts.setOnLoadCallback(drawchart);
+        
 
         function drawchart(dataValues) {
             // Callback que cria e popula o data table, instancia o grafico, passa as informacoes e desenha
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Mês');
             data.addColumn('number', 'Receita Mensal');
+            data.addColumn('number', 'Receita a Dividir');
+
+            //console.log(data);
 
             for (var i = 0; i < dataValues.length; i++) {
-                data.addRow([dataValues[i].Mes, dataValues[i].ReceitaMensal]);
+                console.log("datavalues length: " + dataValues.length);
+                data.addRow([dataValues[i].Mes, dataValues[i].ReceitaMensal, dataValues[i].ReceitaADividir]);
             }
 
+            console.log(dataValues);
+
             var options = {
-                'title': 'Receita Mensal',
-                'width': 600,
-                'height': 400,
-                'is3D': true
+                width: 900,
+                chart: {
+                    title: 'Receitas',
+                    subtitle: 'Receita x Receita a ser dividida'
+                },
+                series: {
+                    0: { axis: 'Receita' },
+                    1: { axis: 'Divisao'}
+                },
+                axes: {
+                    y: {
+                        receita: { label: 'R$' },
+                        divisao: {side: 'right', label:'Receita a ser dividida'}
+                        
+                    }
+                }
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('receitaMesMes'));
+            var chart = new google.charts.Bar(document.getElementById('receitaMesMes'));
             chart.draw(data, options);
         }
     </script>
