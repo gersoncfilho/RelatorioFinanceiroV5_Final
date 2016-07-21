@@ -39,55 +39,44 @@ namespace RelatorioFinanceiroV5.Classes
             //Gera o arquivo PDF
             using (var document = new Document(PageSize.A4, 10, 10, 10, 10))
             {
-                try
-                {
-                    html = FormatImageLinks(html);
+                html = FormatImageLinks(html);
 
-                    //define o  output do  HTML
-                    var memStream = new MemoryStream();
-                    TextReader xmlString = new StringReader(html);
+                //define o  output do  HTML
+                var memStream = new MemoryStream();
+                TextReader xmlString = new StringReader(html);
 
-                    PdfWriter writer = PdfWriter.GetInstance(document, memStream);
-                    writer.CloseStream = false;
-                    document.Open();
-                    document.NewPage();
+                PdfWriter writer = PdfWriter.GetInstance(document, memStream);
 
-                    //Registra todas as fontes no computador cliente.
-                    FontFactory.RegisterDirectories();
+                document.Open();
 
-                    // Set factories
-                    var htmlContext = new HtmlPipelineContext(null);
-                    htmlContext.SetTagFactory(Tags.GetHtmlTagProcessorFactory());
+                //Registra todas as fontes no computador cliente.
+                FontFactory.RegisterDirectories();
 
-                    // Set css
-                    ICSSResolver cssResolver = XMLWorkerHelper.GetInstance().GetDefaultCssResolver(false);
-                    cssResolver.AddCssFile(HttpContext.Current.Server.MapPath(linkCss), true);
+                // Set factories
+                var htmlContext = new HtmlPipelineContext(null);
+                htmlContext.SetTagFactory(Tags.GetHtmlTagProcessorFactory());
 
-                    // Exporta
+                // Set css
+                ICSSResolver cssResolver = XMLWorkerHelper.GetInstance().GetDefaultCssResolver(false);
+                cssResolver.AddCssFile(HttpContext.Current.Server.MapPath(linkCss), true);
 
-                    IPipeline pipeline = new CssResolverPipeline(cssResolver,
+                // Exporta
+                IPipeline pipeline = new CssResolverPipeline(cssResolver,
                                                              new HtmlPipeline(htmlContext,
                                                                               new PdfWriterPipeline(document, writer)));
-                    var worker = new XMLWorker(pipeline, true);
-                    var xmlParse = new XMLParser(true, worker);
-                    xmlParse.Parse(xmlString);
-                    xmlParse.Flush();
+                var worker = new XMLWorker(pipeline, true);
+                var xmlParse = new XMLParser(true, worker);
+                xmlParse.Parse(xmlString);
+                xmlParse.Flush();
 
-                    document.Close();
-                    document.Dispose();
+                document.Close();
+                document.Dispose();
 
-                    HttpContext.Current.Response.BinaryWrite(memStream.ToArray());
-                }
-                catch (NullReferenceException ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                }
-
-
-
+                HttpContext.Current.Response.BinaryWrite(memStream.ToArray());
             }
 
             HttpContext.Current.Response.End();
+            HttpContext.Current.Response.Flush();
         }
 
         ///

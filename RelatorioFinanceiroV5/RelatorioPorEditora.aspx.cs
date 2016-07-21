@@ -109,8 +109,9 @@ namespace RelatorioFinanceiroV5
 
             if (e.Row.RowType == DataControlRowType.Footer)
             {
-                e.Row.Cells[2].Text = _quantTotal.ToString();
-                e.Row.Cells[3].Text = Math.Round(_totalPercentual, 2).ToString();
+                e.Row.Cells[1].Text = _quantTotal.ToString();
+                e.Row.Cells[2].Text = Math.Round(_totalPercentual, 2).ToString();
+                e.Row.Cells[3].Text = "soma percentual";
                 e.Row.Cells[4].Text = _totalRefxMaisAcessados.ToString();
                 e.Row.Cells[5].Text = Math.Round(_percentualReferenciaMaisAcessado, 2).ToString();
                 e.Row.Cells[6].Text = _valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
