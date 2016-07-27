@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using RelatorioFinanceiroV5.Classes;
 using RelatorioFinanceiroV5.Models;
 using System;
@@ -132,56 +132,24 @@ namespace RelatorioFinanceiroV5
                 var myConn = Connection.conn();
                 int index = Convert.ToInt32(e.CommandArgument);
                 GridViewRow row = GridViewQuantidades.Rows[index];
-
-                int idGrupo = (int)Convert.ToInt32(row.Cells[9].Text);
-                string mesReferencia = row.Cells[1].Text;
-
-                //calcula o percentual da quantidade sobre o total de conteudos
-
-                int quantidadeTotal = Service.QuantidadeTotal(myConn, mesReferencia);
-                //decimal percentual = Math.Round(Convert.ToDecimal(row.Cells[2].Text) / (decimal)quantidadeTotal * 100, 6);
-                decimal percentual = Math.Round(Convert.ToDecimal(row.Cells[2].Text) / (decimal)quantidadeTotal * 100, 6);
-
-                lblPercentualEditoraTotal.Text = Math.Round(percentual, 2).ToString() + "%";
-
-                int maisAcessados = Service.GetMaisAcessados(myConn, idGrupo, mesReferencia);
-                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, mesReferencia);
-                lblTotalRefMaisAcessados.Text = maisAcessados.ToString();
-
-                decimal percentualReferenciaMaisAcessado = Math.Round(Convert.ToDecimal(maisAcessados / (decimal)totalRefxMaisAcessados * 100), 5);
-
-                lblPercentual10MaisAcessados.Text = Math.Round(percentualReferenciaMaisAcessado, 2).ToString() + "%";
-
-
-
-                decimal receita = Service.GetReceita(myConn, mesReferencia);
-                lblReceita.Text = receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-
-
-                decimal receita20 = Math.Round((decimal)receita * (decimal)0.2, 6);
-                decimal receita10 = Math.Round((decimal)receita * (decimal)0.1, 6);
-
-
-                lblReceita_20.Text = receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-                lblReceita_10.Text = receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-
-                decimal receitaTotal = receita10 + receita20;
-                lblReceitaTotalASerDividida.Text = receitaTotal.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-
-                //ok ate aqui
-
-                double valorASerRepassadoPelaQuantidade = Math.Round((Convert.ToDouble(percentual) * Convert.ToDouble(receita20)) / 100, 5);
-                lblValorRepasseQuantidade.Text = valorASerRepassadoPelaQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-
-                double valorASerRepassadoPelaReferMaisAcessados = Math.Round((Convert.ToDouble(percentualReferenciaMaisAcessado) * Convert.ToDouble(receita10)) / 100, 5);
-                lblValorRepasseRefMaisAcessados.Text = valorASerRepassadoPelaReferMaisAcessados.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-
-                double valorTotalRepasse = valorASerRepassadoPelaQuantidade + valorASerRepassadoPelaReferMaisAcessados;
-                lblValorTotalRepasse.Text = valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                decimal _receita = Service.GetReceita(myConn, row.Cells[1].Text);
+                decimal _receita20 = Math.Round((decimal)_receita * (decimal)0.2, 6);
+                decimal _receita10 = Math.Round((decimal)_receita * (decimal)0.1, 6);
+                decimal _valorTotal = _receita10 + _receita20;
 
                 lblGrupo.Text = row.Cells[0].Text;
                 lblMes.Text = row.Cells[1].Text;
                 lblQuantidadeConteudos.Text = row.Cells[2].Text;
+                lblPercentualEditoraTotal.Text = row.Cells[3].Text;
+                lblTotalRefMaisAcessados.Text = row.Cells[4].Text;
+                lblPercentual10MaisAcessados.Text = row.Cells[5].Text;
+                lblReceita.Text = _receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                lblReceitaTotalASerDividida.Text = _valorTotal.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                lblReceita_20.Text = _receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                lblReceita_10.Text = _receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                lblValorRepasseQuantidade.Text = row.Cells[6].Text;
+                lblValorRepasseRefMaisAcessados.Text = row.Cells[7].Text;
+                lblValorTotalRepasse.Text = row.Cells[8].Text;
 
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "openModal();", true);
             }

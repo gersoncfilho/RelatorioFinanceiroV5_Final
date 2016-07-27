@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using RelatorioFinanceiroV5.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,7 +16,7 @@ namespace RelatorioFinanceiroV5.Classes
         //Popula  DropDownList Mes de Referencia
         public static List<String> getMesReferencia(MySqlConnection myConn)
         {
-            
+
             DataTable dt = new DataTable();
 
             DataSet ds = new DataSet();
@@ -112,7 +113,7 @@ namespace RelatorioFinanceiroV5.Classes
                 {
                     return 0;
                 }
-                
+
             }
             else
             {
@@ -123,7 +124,7 @@ namespace RelatorioFinanceiroV5.Classes
 
         }
 
-        
+
 
         //Mais acessados por editora
         public static int GetMaisAcessados(MySqlConnection myConn, string mesReferencia, int idEditora)
@@ -151,10 +152,11 @@ namespace RelatorioFinanceiroV5.Classes
                     int quantidadeTotal = Convert.ToInt32(dt.Rows[0].ItemArray[0]);
                     return quantidadeTotal;
                 }
-                else {
+                else
+                {
                     return 0;
                 }
-                
+
             }
             else
             {
@@ -198,7 +200,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
         }
 
-        
+
 
         public static decimal GetReceita(MySqlConnection myConn, string mes_referencia)
         {
@@ -285,7 +287,21 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
 
-                query = "select a.id, b.nome, c.id id_grupo, sum(a.quantidade)quantidade, a.mes_referencia from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " group by c.nome order by c.id";
+                query = @"SELECT 
+                            a.id,
+                            c.id id_grupo,
+                            c.nome,
+                            SUM(a.quantidade) quantidade,
+                            a.mes_referencia
+                        FROM
+                            quantidades a
+                                INNER JOIN
+                            editoras b ON a.id_editora = b.id
+                                INNER JOIN
+                            grupos c ON b.id_grupo = c.id
+                        WHERE
+                            b.ativo = 1 AND c.ativo = 1
+                                AND a.mes_referencia = " + "'" + mesReferencia + "'" +" GROUP BY c.nome ORDER BY c.id";
 
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
@@ -387,7 +403,7 @@ namespace RelatorioFinanceiroV5.Classes
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
-               
+
                 myConn.Close();
                 return dt;
 
@@ -431,7 +447,48 @@ namespace RelatorioFinanceiroV5.Classes
             }
         }
 
+        public static void MakePDF(Editora editora)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
+            sb.Append(editora.NomeEditora);
+            sb.Append("</strong></th><th width='100'><strong>");
+            sb.Append(editora.Mes_Referencia);
+            sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
+            sb.Append(editora.Quantidade);
+            sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
+            sb.Append(Math.Round(editora.Percentual_Quantidade, 2).ToString());
+            sb.Append("</strong></td></tr><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Conteúdo de ref. e mais acessados</i></td><td class='text-center'><strong>");
+            sb.Append(editora.Quant_Ref_Mais_Acessados.ToString());
+            sb.Append("</strong></td></tr><tr><td><i>% da editora dos 10% mais acessados e referência</i></td><td class='text-center'><strong>");
+            sb.Append(Math.Round(editora.Percentual_Ref_Mais_Acessados, 2).ToString());
+            sb.Append("</strong></td></tr><tr><td><i>Receita líquida total da Nuvem de Livros</i></td><td class='text-center'><strong>");
+            sb.Append(editora.Receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"))); ;
+            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i></td><td class='text-center'><strong>");
+            sb.Append(editora.Receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i></td><td class='text-center'><strong>");
+            sb.Append(editora.Receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Receita total a ser dividida entre as editoras</i></td><td class='text-center'><strong>");
+            sb.Append(editora.ReceitaASerDividida.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pela quantidade de conteúdos</i></td><td class='text-center'><strong>");
+            sb.Append(editora.Valor_Conteudo.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i></td><td class='text-center'><strong>");
+            sb.Append(editora.Valor_Mais_Acessados.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr><tr><td><i>Valor total ser repassado para a editora</i></td><td class='text-center'><strong>");
+            sb.Append(editora.Valor_Repasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            sb.Append("</strong></td></tr></tbody></table>");
+
+
+
+            string myFile = HttpUtility.HtmlDecode(editora.NomeEditora);
+
+            string myFileName = Service.RemoveAccents(myFile);
+
+            PDFHelper.Export(sb.ToString(), "RelFin_" + editora.Mes_Referencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
+
+        }
+
     }
 
-   
+
 }
