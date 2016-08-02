@@ -15,10 +15,45 @@
                 <div class="col-md-2">
                     <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="150" OnTextChanged="ddlMesReferencia_TextChanged" AutoPostBack="true"></asp:DropDownList>
                 </div>
+                <div class="col-md-2">
+                    <asp:Button ID="btnExporta" runat="server" CssClass="btn btn-sm btn-primary pull-left" Text="Exportar" OnClick="btnExporta_Click" />
+                </div>
             </div>
         </div>
         <div class="panel-body" runat="server" id="pnlBordero">
-            <asp:GridView ID="grdBordero" AutoGenerateColumns="true" runat="server" OnRowDataBound="grdBordero_RowDataBound"></asp:GridView>
+            <asp:GridView ID="grdBordero" AutoGenerateColumns="false" runat="server" OnRowDataBound="grdBordero_RowDataBound">
+                 <Columns>
+                        <asp:BoundField DataField="Grupo" HeaderText="Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                        </asp:BoundField>
+                     <asp:BoundField DataField="Editora" HeaderText="Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                        </asp:BoundField>
+                     <asp:BoundField DataField="Quantidade" HeaderText="Quantidade" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                     </asp:BoundField>
+                     <asp:BoundField DataField="Percentual" HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                     </asp:BoundField>
+                     <asp:BoundField DataField="Acumulado" HeaderText="Acumulado" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                     </asp:BoundField>
+                     <asp:BoundField DataField="Valor" HeaderText="Valor" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                     </asp:BoundField>
+                     <asp:BoundField DataField="Total" HeaderText="Total" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                     </asp:BoundField>
+
+                </Columns>
+            </asp:GridView>
         </div>
     </div>
 </asp:Content>

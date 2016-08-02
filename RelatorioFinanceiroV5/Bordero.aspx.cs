@@ -50,5 +50,10 @@ namespace RelatorioFinanceiroV5
                 
             }
         }
+
+        protected void btnExporta_Click(object sender, EventArgs e)
+        {
+            GridViewExport.Export("bordero.xls", grdBordero);
+        }
     }
 }
