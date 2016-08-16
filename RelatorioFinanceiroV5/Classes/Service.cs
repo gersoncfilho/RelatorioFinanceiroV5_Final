@@ -99,7 +99,7 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
                 //string query = "select floor(quantidade) as quantidade from referenciaxmaisacessados where id_grupo = " + idGrupo + " and mes_referencia = " + "'" + mesReferencia + "'";
-                string query = "select sum(quantidade) from refxmais_acessados_por_editora a inner join editoras b on a.id_editora=b.id inner join grupos c on b.id_grupo=c.id where b.ativo = 1 and c.ativo=1 and a.mes_referencia=" + "'" + mesReferencia + "'" + " and c.id = " + idGrupo;
+                string query = "select sum(quantidade) from mais_acessados_por_editora a inner join editoras b on a.id_editora=b.id inner join grupos c on b.id_grupo=c.id where b.ativo = 1 and c.ativo=1 and a.mes_referencia=" + "'" + mesReferencia + "'" + " and c.id = " + idGrupo;
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -143,7 +143,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select floor(quantidade) as quantidade from refxmais_acessados_por_editora a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and id_editora = " + idEditora + " and mes_referencia = " + "'" + mesReferencia + "'";
+                string query = "select floor(quantidade) as quantidade from mais_acessados_por_editora a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and id_editora = " + idEditora + " and mes_referencia = " + "'" + mesReferencia + "'";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -182,7 +182,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string totalQuery = "select sum(quantidade) from refxmais_acessados_por_editora a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'";
+                string totalQuery = "select sum(quantidade) from mais_acessados_por_editora a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo = 1 and c.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(totalQuery, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];

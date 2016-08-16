@@ -113,6 +113,7 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Images\cabecalho.png" />
     <Content Include="Images\logo_gol.png" />
+    <Content Include="NovoRelatorio.aspx" />
     <Content Include="packages.config" />
     <Content Include="RelatorioPorEditora.aspx" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
@@ -179,6 +180,13 @@
     <Compile Include="Models\Editora.cs" />
     <Compile Include="Models\Grupo.cs" />
     <Compile Include="Models\ReceitaChartDetails.cs" />
+    <Compile Include="NovoRelatorio.aspx.cs">
+      <DependentUpon>NovoRelatorio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NovoRelatorio.aspx.designer.cs">
+      <DependentUpon>NovoRelatorio.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelatorioPorEditora.aspx.cs">
       <DependentUpon>RelatorioPorEditora.aspx</DependentUpon>

@@ -15,7 +15,9 @@
     </asp:ContentPlaceHolder>
 </head>
 <body>
+    
     <form id="form1" runat="server">
+        <asp:ScriptManager runat="server" />
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -48,6 +50,7 @@
                         <li runat="server" id="liGrupo"><asp:LinkButton ID="linkRelGrupo" runat="server" PostBackUrl="~/RelatorioPorGrupo.aspx" OnClick="linkRelGrupo_Click">Relatório por Grupo</asp:LinkButton></li>
                         <li runat="server" id="liEditora"><asp:LinkButton ID="linkRelEditora" runat="server" PostBackUrl="~/RelatorioPorEditora.aspx">Relatório por Editora</asp:LinkButton></li>
                         <li runat="server" id="liBordero"><asp:LinkButton ID="linkBordero" runat="server" PostBackUrl="~/Bordero.aspx">Borderô</asp:LinkButton></li>
+                        <li runat="server" id="liCriaRelatorio"><asp:LinkButton ID="linkCria" runat="server" PostBackUrl="~/NovoRelatorio.aspx" >Criar Novo Relatório</asp:LinkButton></li>
                         <%--<li><a href="#">Analytics</a></li>
                         <li><a href="#">Export</a></li>--%>
                     </ul>
