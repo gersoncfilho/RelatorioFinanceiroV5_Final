@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="panel-body" runat="server" id="pnlBordero">
-            <asp:GridView ID="grdBordero" AutoGenerateColumns="false" runat="server" OnRowDataBound="grdBordero_RowDataBound">
+            <asp:GridView CssClass="table" ID="grdBordero" AutoGenerateColumns="false" runat="server" OnRowDataBound="grdBordero_RowDataBound">
                  <Columns>
                         <asp:BoundField DataField="Grupo" HeaderText="Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
@@ -39,18 +39,11 @@
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                      </asp:BoundField>
-                     <asp:BoundField DataField="Acumulado" HeaderText="Acumulado" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
-                            <ItemStyle HorizontalAlign="Left" />
-                     </asp:BoundField>
                      <asp:BoundField DataField="Valor" HeaderText="Valor" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                      </asp:BoundField>
-                     <asp:BoundField DataField="Total" HeaderText="Total" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
-                            <ItemStyle HorizontalAlign="Left" />
-                     </asp:BoundField>
+                     
 
                 </Columns>
             </asp:GridView>

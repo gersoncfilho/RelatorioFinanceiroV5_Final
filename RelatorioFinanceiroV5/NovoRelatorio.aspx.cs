@@ -114,6 +114,36 @@ namespace RelatorioFinanceiroV5
             }
         }
 
+        private bool VerificaRefxMais(string _mes_referencia)
+        {
+            var myConn = Connection.conn();
+            try
+            {
+                myConn.Open();
+                var query = string.Format("select count(comparado_com_referencia) from mais_acessados_por_editora where comparado_com_referencia = 1 and mes_referencia = '{0}'", _mes_referencia);
+                MySqlCommand cmd = new MySqlCommand(query, myConn);
+
+                int result = Convert.ToInt32(cmd.ExecuteScalar());
+                myConn.Close();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine("MySql Error: " + ex.Message);
+                myConn.Close();
+                return false;
+            }
+        }
+
 
         #endregion
 
@@ -124,7 +154,7 @@ namespace RelatorioFinanceiroV5
             PanelAcoes.Visible = false;
             PanelInfo.Visible = false;
             string _mesSelecionado = ddlMes.SelectedValue.ToString();
-            if (RelatorioExistente(_mesSelecionado))
+            if (VerificaTabelas(_mesSelecionado,"bordero"))
             {
                 PanelInfo.Visible = true;
                 Debug.WriteLine(_mesSelecionado + " já foi gerado");
@@ -171,6 +201,32 @@ namespace RelatorioFinanceiroV5
                 {
                     PanelAjusteQuantidades.Visible = true;
                 }
+
+                if (VerificaRefxMais(ddlMes.SelectedValue.ToString()))
+                {
+                    PanelRefxMais.Visible = true;
+                    PanelRefxMais.CssClass = "alert alert-success";
+                    btnRefxMais.CssClass = "btn btn-success btn-xs";
+                    iconRefxMais.Visible = true;
+                    btnRefxMais.Enabled = false;
+                }
+                else
+                {
+                    PanelRefxMais.Visible = true;
+                }
+                if (VerificaTabelas(ddlMes.SelectedValue.ToString(), "bordero"))
+                {
+                    PanelRefxMais.Visible = true;
+                    PanelRefxMais.CssClass = "alert alert-success";
+                    btnRefxMais.CssClass = "btn btn-success btn-xs";
+                    iconRefxMais.Visible = true;
+                    btnRefxMais.Enabled = false;
+                }
+                else
+                {
+                    PanelRefxMais.Visible = true;
+                }
+
             }
         }
 
@@ -285,7 +341,95 @@ namespace RelatorioFinanceiroV5
                 btnAjustaQuantidades.CssClass = "btn btn-success btn-xs";
                 btnAjustaQuantidades.Enabled = false;
             }
-            
+
+        }
+
+        protected void btnRefxMais_Click(object sender, EventArgs e)
+        {
+            var myConn = Connection.conn();
+            bool success = true;
+            try
+            {
+                myConn.Open();
+                string procedureName = "04_executaRefMaisAcessados";
+
+                MySqlCommand cmd = new MySqlCommand(procedureName, myConn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@_mesReferencia", ddlMes.SelectedValue.ToString());
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine("Falha no banco:" + ex.Message);
+                success = false;
+            }
+            finally
+            {
+                myConn.Close();
+
+            }
+            myConn.Close();
+
+            if (success == false)
+            {
+                PanelRefxMais.CssClass = "alert alert-danger";
+                btnRefxMais.CssClass = "btn btn-danger btn-xs";
+                btnRefxMais.Enabled = false;
+                lblRefxMais.Text = "Erro de acesso ao banco MySQL!";
+
+            }
+            else
+            {
+                PanelRefxMais.CssClass = "alert alert-success";
+                iconRefxMais.Visible = true;
+                btnRefxMais.CssClass = "btn btn-success btn-xs";
+                btnRefxMais.Enabled = false;
+            }
+        }
+
+       
+
+        protected void btnGeraBordero_Click(object sender, EventArgs e)
+        {
+            var myConn = Connection.conn();
+            bool success = true;
+            try
+            {
+                myConn.Open();
+                string procedureName = "05_geraBordero";
+
+                MySqlCommand cmd = new MySqlCommand(procedureName, myConn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@_mesReferencia", ddlMes.SelectedValue.ToString());
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine("Falha no banco:" + ex.Message);
+                success = false;
+            }
+            finally
+            {
+                myConn.Close();
+
+            }
+            myConn.Close();
+
+            if (success == false)
+            {
+                PanelGeraBordero.CssClass = "alert alert-danger";
+                btnGeraBordero.CssClass = "btn btn-danger btn-xs";
+                btnGeraBordero.Enabled = false;
+                lblGeraBordero.Text = "Erro de acesso ao banco MySQL!";
+
+            }
+            else
+            {
+                PanelGeraBordero.CssClass = "alert alert-success";
+                iconGeraBordero.Visible = true;
+                btnGeraBordero.CssClass = "btn btn-success btn-xs";
+                btnGeraBordero.Enabled = false;
+            }
         }
 
         #endregion

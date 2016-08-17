@@ -67,6 +67,24 @@
                         </ContentTemplate>
                     </asp:UpdatePanel>
 
+                    <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                        <ContentTemplate>
+                            <asp:Panel ID="PanelRefxMais" runat="server" role="alert" CssClass="alert alert-info">
+                                <span style="margin-right: 15px;">
+                                    <asp:Button Width="120px" ID="btnRefxMais" runat="server" Text="Comparar" CssClass="btn btn-info btn-xs" OnClick="btnRefxMais_Click" /></span><asp:Label ID="lblRefxMais" runat="server" Text="Executa comparação das Referencias com Mais Acessados"></asp:Label><span class="glyphicon glyphicon-ok" aria-hidden="true" runat="server" visible="false" id="iconRefxMais"></span>
+                            </asp:Panel>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+
+                    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                        <ContentTemplate>
+                            <asp:Panel ID="PanelGeraBordero" runat="server" role="alert" CssClass="alert alert-info">
+                                <span style="margin-right: 15px;">
+                                    <asp:Button Width="120px" ID="btnGeraBordero" runat="server" Text="Comparar" CssClass="btn btn-info btn-xs" OnClick="btnGeraBordero_Click" /></span><asp:Label ID="lblGeraBordero" runat="server" Text="Gera Bordero"></asp:Label><span class="glyphicon glyphicon-ok" aria-hidden="true" runat="server" visible="false" id="iconGeraBordero"></span>
+                            </asp:Panel>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+
                 </asp:Panel>
 
 

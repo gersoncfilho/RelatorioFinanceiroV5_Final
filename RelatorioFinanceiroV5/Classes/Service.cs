@@ -431,19 +431,13 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                using (myConn)
-                {
-                    using (var cmd = new MySqlCommand("createBordero",myConn))
-                    {
-                        using (var da = new MySqlDataAdapter(cmd))
-                        {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.Add(new MySqlParameter("_mesReferencia", mesReferencia));
-                            cmd.ExecuteNonQuery();
-                            da.Fill(dt);
-                        }
-                    }
-                }
+                var query = string.Format("SELECT  a.editora AS Editora, a.grupo AS Grupo, SUM(a.quantidade) AS Quantidade, SUM(a.percentual) AS Percentual, SUM(a.valor_acumulado) AS Acumulado, SUM(a.valor_total_repasse) AS Valor , SUM(valor_total) AS Total  FROM bordero a INNER JOIN editoras b ON a.ideditora = b.id INNER JOIN grupos c ON a.idgrupo = c.id WHERE b.ativo = 1 AND c.ativo = 1 AND a.mes_referencia = '{0}' GROUP BY a.grupo , a.editora WITH ROLLUP;", mesReferencia);
+
+                MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
+                myAdapter.Fill(ds);
+                dt = ds.Tables[0];
+
+                myConn.Close();
                 return dt;
 
             }
