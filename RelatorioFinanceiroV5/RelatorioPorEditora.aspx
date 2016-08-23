@@ -32,48 +32,48 @@
                 </div>
             </div>
             <div class="panel-body" runat="server" id="pnlbody">
-                <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" OnRowDataBound="GridViewQuantidades_RowDataBound" AllowSorting="true" OnRowCommand="GridViewQuantidades_RowCommand">
+                <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" AllowSorting="true" OnRowCommand="GridViewQuantidades_RowCommand">
                     <Columns>
-                        <asp:BoundField DataField="nome" HeaderText="Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="editora" HeaderText="Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
-                        <asp:BoundField DataField="mes_referencia" HeaderText="Mês Referência" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="mes_referencia" HeaderText="Mês Ref." HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
-                        <asp:BoundField DataField="quantidade" HeaderText="Quantidade" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="quantidade" HeaderText="Quant." HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
-                         <asp:TemplateField HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                         <asp:BoundField DataField="percentual" HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                        <asp:TemplateField HeaderText="Quant. Ref x Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="quantidaderefxmaisacessados" HeaderText="Quant. Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                         <asp:TemplateField HeaderText="Percentual Ref x Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                         <asp:BoundField DataField="percentualmaisacessados" HeaderText="Percentual Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                         <asp:TemplateField HeaderText="Valor p/ Conteúdo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                         <asp:BoundField DataField="valorconteudo" HeaderText="Valor Conteúdo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                        <asp:TemplateField HeaderText="Valor p/ Mais Aeessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="valormaisacessados" HeaderText="Valor Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                        <asp:TemplateField HeaderText="Valor Total Repasse" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="valor_total_repasse" HeaderText="Valor Total Repasse" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                        <asp:BoundField DataField="id_editora" HeaderText="Id Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="idEditora" HeaderText="Id Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>

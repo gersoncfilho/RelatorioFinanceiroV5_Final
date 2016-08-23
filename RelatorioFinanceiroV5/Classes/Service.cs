@@ -287,21 +287,21 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
 
-                query = @"SELECT 
-                            a.id,
-                            c.id id_grupo,
-                            c.nome,
-                            SUM(a.quantidade) quantidade,
-                            a.mes_referencia
+                query = string.Format(@"SELECT 
+                            idGrupo,
+                            mes_referencia,
+                            grupo,
+                            SUM(quantidade) quantidade,
+                            SUM(percentual) percentual,
+                            SUM(quantidaderefxmaisacessados) quantidademaisacessados,
+                            SUM(percentualmaisacessados) percentualmaisacessados,
+                            SUM(valorconteudo) valorconteudo,
+                            SUM(valormaisacessados) valormaisacessados,
+                            SUM(valor_total_repasse) valortotalrepasse,
+                            idGrupo,
+                            pdfOk                         
                         FROM
-                            quantidades a
-                                INNER JOIN
-                            editoras b ON a.id_editora = b.id
-                                INNER JOIN
-                            grupos c ON b.id_grupo = c.id
-                        WHERE
-                            b.ativo = 1 AND c.ativo = 1
-                                AND a.mes_referencia = " + "'" + mesReferencia + "'" +" GROUP BY c.nome ORDER BY c.id";
+                            bordero WHERE mes_referencia = '{0}' GROUP BY grupo ORDER BY idGrupo", mesReferencia);
 
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
@@ -345,9 +345,9 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
 
-                //query = "select a.id, a.editora, a.id_editora, b.id, a.quantidade, a.mes_referencia from quantidades a inner join grupos b on a.id_grupo = b.id where b.ativo = 1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " order by editora";
-                query = "select a.id, b.nome, b.id id_editora, a.quantidade, a.mes_referencia from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo=1 and c.ativo=1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " order by a.id_grupo";
 
+                //query = "select a.id, b.nome, b.id id_editora, a.quantidade, a.mes_referencia from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo=1 and c.ativo=1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " order by a.id_grupo";
+                query = string.Format("select idEditora, editora, mes_referencia, quantidade, percentual, quantidaderefxmaisacessados, percentualmaisacessados, valorconteudo, valormaisacessados, valor_total_repasse from bordero where mes_referencia='{0}' order by idEditora", mesReferencia); 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 Debug.WriteLine("");
@@ -431,7 +431,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                var query = string.Format("SELECT  a.editora AS Editora, a.grupo AS Grupo, SUM(a.quantidade) AS Quantidade, SUM(a.percentual) AS Percentual, SUM(a.valor_acumulado) AS Acumulado, SUM(a.valor_total_repasse) AS Valor , SUM(valor_total) AS Total  FROM bordero a INNER JOIN editoras b ON a.ideditora = b.id INNER JOIN grupos c ON a.idgrupo = c.id WHERE b.ativo = 1 AND c.ativo = 1 AND a.mes_referencia = '{0}' GROUP BY a.grupo , a.editora WITH ROLLUP;", mesReferencia);
+                var query = string.Format("SELECT  a.editora AS Editora, a.grupo AS Grupo, SUM(a.quantidade) AS Quantidade, SUM(a.percentual) AS Percentual, SUM(a.quantidaderefxmaisacessados) AS RefXMaisAcessados, SUM(a.percentualmaisacessados) AS PercentualMaisAcessados , SUM(a.valorconteudo) AS ValorConteudo, SUM(a.valormaisacessados)AS ValorMaisAcessados, SUM(a.valor_total_repasse) AS ValorTotal  FROM bordero a INNER JOIN editoras b ON a.ideditora = b.id INNER JOIN grupos c ON a.idgrupo = c.id WHERE b.ativo = 1 AND c.ativo = 1 AND a.mes_referencia = '{0}' GROUP BY a.grupo , a.editora WITH ROLLUP;", mesReferencia);
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
@@ -448,6 +448,39 @@ namespace RelatorioFinanceiroV5.Classes
                 return null;
             }
         }
+
+        public static bool VerificaPDFImpresso(int idGrupo, string mesReferencia)
+        {
+            var myConn = Connection.conn();
+            try
+            {
+                myConn.Open();
+                var query = string.Format("select pdfOk from bordero where mes_referencia = '{0}' and idGrupo = '{1}'", mesReferencia, idGrupo);
+                MySqlCommand cmd = new MySqlCommand(query, myConn);
+
+                int result = Convert.ToInt32(cmd.ExecuteScalar());
+                myConn.Close();
+
+                if (result == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine("MySql Error: " + ex.Message);
+                myConn.Close();
+                return false;
+            }
+
+        }
+
+       
 
         public static void MakePDF(Editora editora)
         {

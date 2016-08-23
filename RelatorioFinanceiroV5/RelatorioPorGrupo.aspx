@@ -34,14 +34,10 @@
                 </div>
             </div>
             <div class="panel-body" runat="server" id="pnlBodyOld">
-                <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" OnRowCommand="GridViewQuantidades_RowCommand" OnRowDataBound="GridViewQuantidadesOld_RowDataBound" Font-Size="Smaller">
+                <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" OnRowCommand="GridViewQuantidades_RowCommand" Font-Size="Smaller" OnRowDataBound="GridViewQuantidades_RowDataBound">
                     <Columns>
-                        <%--<asp:BoundField DataField="id" HeaderText="ID" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                            <HeaderStyle ForeColor="White" BackColor="#006372" VerticalAlign="Middle" HorizontalAlign="Center" />
-                            <ItemStyle HorizontalAlign="Left" />
-                        </asp:BoundField>--%>
 
-                        <asp:BoundField DataField="nome" HeaderText="Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="grupo" HeaderText="Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
@@ -56,31 +52,36 @@
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
-                         <asp:TemplateField HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                         <asp:BoundField DataField="percentual" HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                        <asp:TemplateField HeaderText="Quant. Ref x Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="quantidademaisacessados" HeaderText="Quant. Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                         <asp:TemplateField HeaderText="Percentual Ref x Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                         <asp:BoundField DataField="percentualmaisacessados" HeaderText="Perc. Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                         <asp:TemplateField HeaderText="Valor p/ Conteúdo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                         <asp:BoundField DataField="valorconteudo" HeaderText="Valor Conteúdo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                        <asp:TemplateField HeaderText="Valor p/ Mais Aeessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="valormaisacessados" HeaderText="Valor Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                        <asp:TemplateField HeaderText="Valor Total Repasse" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="valortotalrepasse" HeaderText="Valor Total Repasse" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:TemplateField>
+                       </asp:BoundField>
 
-                        <asp:BoundField DataField="id_grupo" HeaderText="Id Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                        <asp:BoundField DataField="idGrupo" HeaderText="Id Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Left" />
+                        </asp:BoundField>
+
+                        <asp:BoundField DataField="pdfOk" HeaderText="OK" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
@@ -91,6 +92,7 @@
                                 <asp:Button ID="btnVisualizar" runat="server" Text="Visualizar" CommandName="Visualizar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" CssClass="btn btn-primary btn-sm" />
                             </ItemTemplate>
                         </asp:TemplateField>
+
                     </Columns>
                 </asp:GridView>
             </div>

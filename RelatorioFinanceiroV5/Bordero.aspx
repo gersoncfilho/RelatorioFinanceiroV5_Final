@@ -21,8 +21,8 @@
             </div>
         </div>
         <div class="panel-body" runat="server" id="pnlBordero">
-            <asp:GridView CssClass="table" ID="grdBordero" AutoGenerateColumns="false" runat="server" OnRowDataBound="grdBordero_RowDataBound">
-                 <Columns>
+            <asp:GridView CssClass="table" ID="grdBordero" AutoGenerateColumns="true" runat="server" OnRowDataBound="grdBordero_RowDataBound">
+                 <%--<Columns>
                         <asp:BoundField DataField="Grupo" HeaderText="Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
@@ -45,7 +45,7 @@
                      </asp:BoundField>
                      
 
-                </Columns>
+                </Columns>--%>
             </asp:GridView>
         </div>
     </div>

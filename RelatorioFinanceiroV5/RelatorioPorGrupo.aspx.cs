@@ -15,23 +15,24 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.Office.Interop.Excel;
+using System.Drawing;
 
 namespace RelatorioFinanceiroV5
 {
     public partial class RelatorioPorGrupo : System.Web.UI.Page
     {
+        
+
         private decimal _totalPercentual = 0m;
         private int _quantidadeTotal = 0;
-        int _quantTotal = 0;
-        private int _totalRefxMaisAcessados = 0;
-        private int _idGrupo = 0;
+        private decimal _percentualTotal = 0m;
+        private int _quantidadeMaisTotal = 0;
         private decimal _percentualReferenciaMaisAcessado = 0m;
         private decimal _valorPorQuantidade = 0m;
         private decimal _valorPorAcesso = 0m;
-        private decimal _valorTotal = 0m;
+        private decimal _valorTotalRepasse = 0m;
         private const int round = 6;
         private List<Grupo> grupos = new List<Grupo>();
-        private int i = 0;
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -58,69 +59,11 @@ namespace RelatorioFinanceiroV5
             using (conn)
             {
                 dt = Service.getQuantidadeConteudoPorGrupo(mesReferencia, conn);
-
-
-                using (dt)
-                {
-                    GridViewQuantidades.DataSource = dt;
-                    GridViewQuantidades.DataBind();
-                    GridViewQuantidades.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
-                }
+                GridViewQuantidades.DataSource = dt;
+                GridViewQuantidades.DataBind();
             }
         }
 
-        protected void GridViewQuantidadesOld_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            string _mesReferencia = e.Row.Cells[1].Text;
-            var myConn = Connection.conn();
-
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                
-                _idGrupo = Convert.ToInt32(e.Row.Cells[9].Text);
-                decimal receita = Service.GetReceita(myConn, _mesReferencia);
-                decimal receita20 = Math.Round((decimal)receita * (decimal)0.2, round);
-                decimal receita10 = Math.Round((decimal)receita * (decimal)0.1, round);
-                int quantidade = Convert.ToInt32(e.Row.Cells[2].Text);
-                decimal percentual = Math.Round(quantidade / (decimal)_quantidadeTotal * 100, round);
-                int maisAcessados = Service.GetMaisAcessados(myConn, _idGrupo, _mesReferencia);
-                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, _mesReferencia);
-                decimal percentualReferenciaMaisAcessado = Math.Round(Convert.ToDecimal(maisAcessados / (decimal)totalRefxMaisAcessados * 100), round);
-                decimal valorPorQuantidade = (percentual * receita20) / 100;
-                decimal valorPorAcesso = (percentualReferenciaMaisAcessado * receita10) / 100;
-                decimal valorTotal = valorPorQuantidade + valorPorAcesso;
-
-                
-                e.Row.Cells[3].Text = percentual.ToString();
-                e.Row.Cells[4].Text = maisAcessados.ToString();
-                e.Row.Cells[5].Text = percentualReferenciaMaisAcessado.ToString();
-                e.Row.Cells[6].Text = valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-                e.Row.Cells[7].Text = valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-                e.Row.Cells[8].Text = valorTotal.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-
-                _totalPercentual = _totalPercentual + percentual;
-                _quantTotal = _quantTotal + quantidade;
-                _totalRefxMaisAcessados = _totalRefxMaisAcessados + maisAcessados;
-                _percentualReferenciaMaisAcessado = _percentualReferenciaMaisAcessado + percentualReferenciaMaisAcessado;
-                _valorPorAcesso = _valorPorAcesso + valorPorAcesso;
-                _valorPorQuantidade = _valorPorQuantidade + valorPorQuantidade;
-                _valorTotal = _valorTotal + valorTotal;
-
-                Debug.WriteLine(e.Row.Cells[0].Text);
-            }
-
-            if (e.Row.RowType == DataControlRowType.Footer)
-            {
-                e.Row.Cells[0].Text = GridViewQuantidades.Rows.Count.ToString();
-                e.Row.Cells[2].Text = _quantTotal.ToString();
-                e.Row.Cells[3].Text = Math.Round(_totalPercentual, 2).ToString();
-                e.Row.Cells[4].Text = _totalRefxMaisAcessados.ToString();
-                e.Row.Cells[5].Text = Math.Round(_percentualReferenciaMaisAcessado, 2).ToString();
-                e.Row.Cells[6].Text = _valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-                e.Row.Cells[7].Text = _valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-                e.Row.Cells[8].Text = _valorTotal.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-            }
-        }
 
         protected void GridViewQuantidades_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -130,28 +73,14 @@ namespace RelatorioFinanceiroV5
                 int index = Convert.ToInt32(e.CommandArgument);
                 GridViewRow row = GridViewQuantidades.Rows[index];
 
-                int idGrupo = (int)Convert.ToInt32(row.Cells[9].Text);
-                string mesReferencia = row.Cells[1].Text;
+                lblGrupo.Text = row.Cells[0].Text;
+                lblMes.Text = row.Cells[1].Text;
+                lblQuantidadeConteudos.Text = row.Cells[2].Text;
+                lblPercentualEditoraTotal.Text = row.Cells[3].Text;
+                lblTotalRefMaisAcessados.Text = row.Cells[4].Text;
+                lblPercentual10MaisAcessados.Text = row.Cells[5].Text;
 
-                //calcula o percentual da quantidade sobre o total de conteudos
-
-                int quantidadeTotal = Service.QuantidadeTotal(myConn, mesReferencia);
-                //decimal percentual = Math.Round(Convert.ToDecimal(row.Cells[2].Text) / (decimal)quantidadeTotal * 100, 6);
-                decimal percentual = Math.Round(Convert.ToDecimal(row.Cells[2].Text) / (decimal)_quantidadeTotal * 100, round);
-
-                lblPercentualEditoraTotal.Text = Math.Round(percentual, 2).ToString() + "%";
-
-                int maisAcessados = Service.GetMaisAcessados(myConn, idGrupo, mesReferencia);
-                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, mesReferencia);
-                lblTotalRefMaisAcessados.Text = maisAcessados.ToString();
-
-                decimal percentualReferenciaMaisAcessado = Math.Round(Convert.ToDecimal(maisAcessados / (decimal)totalRefxMaisAcessados * 100), 5);
-
-                lblPercentual10MaisAcessados.Text = Math.Round(percentualReferenciaMaisAcessado, 2).ToString() + "%";
-
-
-
-                decimal receita = Service.GetReceita(myConn, mesReferencia);
+                decimal receita = Service.GetReceita(myConn, row.Cells[1].Text);
                 lblReceita.Text = receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
 
 
@@ -165,20 +94,11 @@ namespace RelatorioFinanceiroV5
                 decimal receitaTotal = receita10 + receita20;
                 lblReceitaTotalASerDividida.Text = receitaTotal.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
 
-                //ok ate aqui
+                lblValorRepasseQuantidade.Text = row.Cells[6].Text;
 
-                double valorASerRepassadoPelaQuantidade = Math.Round((Convert.ToDouble(percentual) * Convert.ToDouble(receita20)) / 100, 5);
-                lblValorRepasseQuantidade.Text = valorASerRepassadoPelaQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                lblValorRepasseRefMaisAcessados.Text = row.Cells[7].Text;
 
-                double valorASerRepassadoPelaReferMaisAcessados = Math.Round((Convert.ToDouble(percentualReferenciaMaisAcessado) * Convert.ToDouble(receita10)) / 100, 5);
-                lblValorRepasseRefMaisAcessados.Text = valorASerRepassadoPelaReferMaisAcessados.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-
-                double valorTotalRepasse = valorASerRepassadoPelaQuantidade + valorASerRepassadoPelaReferMaisAcessados;
-                lblValorTotalRepasse.Text = valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-
-                lblGrupo.Text = row.Cells[0].Text;
-                lblMes.Text = row.Cells[1].Text;
-                lblQuantidadeConteudos.Text = row.Cells[2].Text;
+                lblValorTotalRepasse.Text = row.Cells[8].Text;
 
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "openModal();", true);
             }
@@ -190,53 +110,11 @@ namespace RelatorioFinanceiroV5
             //MakePDFNew();
 
         }
-
-
-        private void MakePDF(Grupo grupo)
-        {
-
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
-            sb.Append(grupo.NomeGrupo);
-            sb.Append("</strong></th><th width='100'><strong>");
-            sb.Append(grupo.Mes_Referencia);
-            sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
-            sb.Append(grupo.Quantidade);
-            sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
-            sb.Append(Math.Round(grupo.Percentual_Quantidade, 2).ToString());
-            sb.Append("</strong></td></tr><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Conteúdo de ref. e mais acessados</i></td><td class='text-center'><strong>");
-            sb.Append(grupo.Quant_Ref_Mais_Acessados.ToString());
-            sb.Append("</strong></td></tr><tr><td><i>% da editora dos 10% mais acessados e referência</i></td><td class='text-center'><strong>");
-            sb.Append(Math.Round(grupo.Percentual_Ref_Mais_Acessados, 2).ToString());
-            sb.Append("</strong></td></tr><tr><td><i>Receita líquida total da Nuvem de Livros</i></td><td class='text-center'><strong>");
-            sb.Append(grupo.Receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"))); ;
-            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i></td><td class='text-center'><strong>");
-            sb.Append(grupo.Receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i></td><td class='text-center'><strong>");
-            sb.Append(grupo.Receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Receita total a ser dividida entre as editoras</i></td><td class='text-center'><strong>");
-            sb.Append(grupo.ReceitaASerDividida.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pela quantidade de conteúdos</i></td><td class='text-center'><strong>");
-            sb.Append(grupo.Valor_Conteudo.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i></td><td class='text-center'><strong>");
-            sb.Append(grupo.Valor_Mais_Acessados.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Valor total ser repassado para a editora</i></td><td class='text-center'><strong>");
-            sb.Append(grupo.Valor_Repasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr></tbody></table>");
-
-
-
-            string myFile = HttpUtility.HtmlDecode(grupo.NomeGrupo);
-
-            string myFileName = Service.RemoveAccents(myFile);
-
-            PDFHelper.Export(sb.ToString(), "RelFin_" + grupo.Mes_Referencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
-
-
-        }
+     
 
         private void MakePDF()
-        {
+        { 
+
             StringBuilder sb = new StringBuilder();
             sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
             sb.Append(lblGrupo.Text);
@@ -273,6 +151,10 @@ namespace RelatorioFinanceiroV5
             string myFileName = Service.RemoveAccents(myFile);
 
             PDFHelper.Export(sb.ToString(), "RelFin_" + lblMes.Text + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
+
+            
+
+            
         }
 
         protected void btnOK_OnClick(object sender, EventArgs e)
@@ -352,22 +234,12 @@ namespace RelatorioFinanceiroV5
 
 
             }
-            Debug.WriteLine("Fim da geração de lista de grupos");
-            Debug.WriteLine("Grupo tem " + grupos.Count + " grupos");
-            ListGrupos(grupos);
+
 
         }
 
 
 
-        private void ListGrupos(List<Grupo> grupos)
-        {
-            foreach (Grupo grupo in grupos)
-            {
-                Debug.WriteLine(grupo.NomeGrupo);
-                MakePDF(grupo);
-            }
-        }
 
         #region Methods
         private decimal getPercentualPorQuantidade(MySqlConnection myConn, string mes_referencia, int quantidade)
@@ -386,6 +258,45 @@ namespace RelatorioFinanceiroV5
             GridViewExport.Export("Fev_16.xls", this.GridViewQuantidades);
         }
 
+        protected void GridViewQuantidades_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (!e.Row.RowIndex.Equals(-1))
+            {
+                int pdfOk = Convert.ToInt32(e.Row.Cells[10].Text);
+                int idGrupo = Convert.ToInt32(e.Row.Cells[9].Text);
+                string mesReferencia = e.Row.Cells[1].Text;
+                int quantidade = Convert.ToInt32(e.Row.Cells[2].Text);
+                decimal percentual = Convert.ToDecimal(e.Row.Cells[3].Text);
+                int quantidadeMais = Convert.ToInt32(e.Row.Cells[4].Text);
+                decimal percentualMais = Convert.ToDecimal(e.Row.Cells[5].Text);
+                decimal valorConteudo = Convert.ToDecimal(e.Row.Cells[6].Text);
+                decimal valorMaisAcessados = Convert.ToDecimal(e.Row.Cells[7].Text);
+                decimal valorTotalRepasse = Convert.ToDecimal(e.Row.Cells[8].Text);
+
+                _quantidadeTotal = _quantidadeTotal + quantidade;
+                _percentualTotal = _percentualTotal + percentual;
+                _quantidadeMaisTotal = _quantidadeMaisTotal + quantidadeMais;
+                _valorPorQuantidade = _valorPorQuantidade + valorConteudo;
+                _valorPorAcesso = _valorPorAcesso + valorMaisAcessados;
+                _valorTotalRepasse = _valorTotalRepasse + valorTotalRepasse;
+                _percentualReferenciaMaisAcessado = _percentualReferenciaMaisAcessado + percentualMais;
+
+             
+            }
+                     
+
+            if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                e.Row.Cells[2].Text = _quantidadeTotal.ToString();
+                e.Row.Cells[3].Text = Math.Round(_percentualTotal, 2).ToString();
+                e.Row.Cells[4].Text = _quantidadeMaisTotal.ToString();
+                e.Row.Cells[5].Text = Math.Round(_percentualReferenciaMaisAcessado, 2).ToString();
+                e.Row.Cells[6].Text = _valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
+                e.Row.Cells[7].Text = _valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
+                e.Row.Cells[8].Text = _valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
+            }
+
+        }
 
     }
 }

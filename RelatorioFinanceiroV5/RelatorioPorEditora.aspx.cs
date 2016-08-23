@@ -58,67 +58,18 @@ namespace RelatorioFinanceiroV5
                     GridViewQuantidades.DataSource = dt;
                     GridViewQuantidades.DataBind();
 
-                    GridViewQuantidades.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
+                    //GridViewQuantidades.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
 
-                    Int32 total = dt.AsEnumerable().Sum(row => row.Field<Int32>("quantidade"));
-                    GridViewQuantidades.FooterRow.Cells[2].Text = "Total";
-                    GridViewQuantidades.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
-                    GridViewQuantidades.FooterRow.Cells[3].Text = total.ToString();
+                    //Int32 total = dt.AsEnumerable().Sum(row => row.Field<Int32>("quantidade"));
+                    //GridViewQuantidades.FooterRow.Cells[2].Text = "Total";
+                    //GridViewQuantidades.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
+                    //GridViewQuantidades.FooterRow.Cells[3].Text = total.ToString();
 
                 }
             }
         }
 
-        protected void GridViewQuantidades_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            string _mesReferencia = e.Row.Cells[1].Text;
-            var myConn = Connection.conn();
-
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                _idEditora = Convert.ToInt32(e.Row.Cells[9].Text);
-                decimal receita = Service.GetReceita(myConn, _mesReferencia);
-                decimal receita20 = Math.Round((decimal)receita * (decimal)0.2, round);
-                decimal receita10 = Math.Round((decimal)receita * (decimal)0.1, round);
-                int quantidade = Convert.ToInt32(e.Row.Cells[2].Text);
-                decimal percentual = Math.Round(quantidade / (decimal)_quantidadeTotal * 100, round);
-                int maisAcessados = Service.GetMaisAcessados(myConn, _mesReferencia, _idEditora);
-                int totalRefxMaisAcessados = Service.TotalReferenciaMaisAcessados(myConn, _mesReferencia);
-                decimal percentualReferenciaMaisAcessado = Math.Round(Convert.ToDecimal(maisAcessados / (decimal)totalRefxMaisAcessados * 100), round);
-                decimal valorPorQuantidade = (percentual * receita20) / 100;
-                decimal valorPorAcesso = (percentualReferenciaMaisAcessado * receita10) / 100;
-                decimal valorTotal = valorPorQuantidade + valorPorAcesso;
-
-                e.Row.Cells[3].Text = percentual.ToString();
-                e.Row.Cells[4].Text = maisAcessados.ToString();
-                e.Row.Cells[5].Text = percentualReferenciaMaisAcessado.ToString();
-                e.Row.Cells[6].Text = valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-                e.Row.Cells[7].Text = valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-                e.Row.Cells[8].Text = valorTotal.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-
-                _totalPercentual = _totalPercentual + percentual;
-                _quantTotal = _quantTotal + quantidade;
-                _totalRefxMaisAcessados = _totalRefxMaisAcessados + maisAcessados;
-                _percentualReferenciaMaisAcessado = _percentualReferenciaMaisAcessado + percentualReferenciaMaisAcessado;
-                _valorPorAcesso = _valorPorAcesso + valorPorAcesso;
-                _valorPorQuantidade = _valorPorQuantidade + valorPorQuantidade;
-                _valorTotal = _valorTotal + valorTotal;
-
-                Debug.WriteLine(e.Row.Cells[0].Text);
-            }
-
-            if (e.Row.RowType == DataControlRowType.Footer)
-            {
-                e.Row.Cells[1].Text = _quantTotal.ToString();
-                e.Row.Cells[2].Text = Math.Round(_totalPercentual, 2).ToString();
-                e.Row.Cells[3].Text = "soma percentual";
-                e.Row.Cells[4].Text = _totalRefxMaisAcessados.ToString();
-                e.Row.Cells[5].Text = Math.Round(_percentualReferenciaMaisAcessado, 2).ToString();
-                e.Row.Cells[6].Text = _valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-                e.Row.Cells[7].Text = _valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-                e.Row.Cells[8].Text = _valorTotal.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-            }
-        }
+       
 
         protected void btnPDF_Click(object sender, EventArgs e)
         {
