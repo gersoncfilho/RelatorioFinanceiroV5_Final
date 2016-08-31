@@ -25,13 +25,7 @@
                 <div class="col-md-2">
                      <asp:Button ID="btnOK" runat="server" Width="100" Text="OK" CssClass="btn btn-sm btn-primary" OnClick="btnOK_OnClick" />
                 </div>
-                <div class="col-md-2">
-                    <%--<asp:Button ID="btnGerarPDFs" runat="server" Width="100" Text="OK" CssClass="btn btn-primary" OnClick="btnGerarPDFs_OnClick" />--%>
-                    <asp:Label ID="Label1" runat="server" Text="Exporta Excel" Font-Bold="true" CssClass="pull-right"></asp:Label>
-                </div>
-                <div class="col-md-2">
-                    <asp:Button ID="btnExporta" runat="server" CssClass="btn btn-sm btn-primary pull-left" Text="Exportar" OnClick="btnExporta_Click" />
-                </div>
+                
             </div>
             <div class="panel-body" runat="server" id="pnlBodyOld">
                 <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" OnRowCommand="GridViewQuantidades_RowCommand" Font-Size="Smaller" OnRowDataBound="GridViewQuantidades_RowDataBound">

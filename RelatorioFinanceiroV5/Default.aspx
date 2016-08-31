@@ -17,6 +17,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Receita Mês a Mês
+                          
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -115,6 +116,10 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         $(function () {
+            $('#teste').click(function () {
+                alert();
+            });
+
             $.ajax({
                 type: 'POST',
                 dataType: 'JSON',
@@ -154,13 +159,13 @@
             var chart = new google.visualization.ColumnChart(document.getElementById('receitaMesMes'));
             chart.draw(data, options);
         }
+
+
+        function notify() {
+            alert("click");
+        }
+
     </script>
 
-    <script type="text/javascript">
-        
-
-        
-
-    </script>
 
 </asp:Content>
