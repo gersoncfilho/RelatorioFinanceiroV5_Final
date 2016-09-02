@@ -107,7 +107,6 @@ namespace RelatorioFinanceiroV5
         protected void btnPDF_Click(object sender, EventArgs e)
         {
             MakePDF();
-            //MakePDFNew();
 
         }
      
@@ -144,17 +143,12 @@ namespace RelatorioFinanceiroV5
             sb.Append(lblValorTotalRepasse.Text);
             sb.Append("</strong></td></tr></tbody></table>");
 
-
-
             string myFile = HttpUtility.HtmlDecode(lblGrupo.Text);
 
             string myFileName = Service.RemoveAccents(myFile);
 
             PDFHelper.Export(sb.ToString(), "RelFin_" + lblMes.Text + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
-
-            
-
-            
+         
         }
 
         protected void btnOK_OnClick(object sender, EventArgs e)

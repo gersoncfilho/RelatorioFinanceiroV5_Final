@@ -18,15 +18,12 @@ namespace RelatorioFinanceiroV5
     {
         private decimal _totalPercentual = 0m;
         private int _quantidadeTotal = 0;
-        int _quantTotal = 0;
-        private int _totalRefxMaisAcessados = 0;
-        private int _idEditora = 0;
+        private decimal _percentualTotal = 0m;
+        private int _quantidadeMaisTotal = 0;
         private decimal _percentualReferenciaMaisAcessado = 0m;
         private decimal _valorPorQuantidade = 0m;
         private decimal _valorPorAcesso = 0m;
-        private decimal _valorTotal = 0m;
-        private const int round = 6;
-        private List<Grupo> grupos = new List<Grupo>();
+        private decimal _valorTotalRepasse = 0m;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -54,17 +51,8 @@ namespace RelatorioFinanceiroV5
 
                 using (dt)
                 {
-
                     GridViewQuantidades.DataSource = dt;
                     GridViewQuantidades.DataBind();
-
-                    //GridViewQuantidades.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
-
-                    //Int32 total = dt.AsEnumerable().Sum(row => row.Field<Int32>("quantidade"));
-                    //GridViewQuantidades.FooterRow.Cells[2].Text = "Total";
-                    //GridViewQuantidades.FooterRow.Cells[2].HorizontalAlign = HorizontalAlign.Right;
-                    //GridViewQuantidades.FooterRow.Cells[3].Text = total.ToString();
-
                 }
             }
         }
@@ -165,6 +153,43 @@ namespace RelatorioFinanceiroV5
         protected void btnExporta_Click(object sender, EventArgs e)
         {
             GridViewExport.Export("editora_fev_16.xls", GridViewQuantidades);
+        }
+
+        protected void GridViewQuantidades_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (!e.Row.RowIndex.Equals(-1))
+            {           
+                string mesReferencia = e.Row.Cells[0].Text;
+                int quantidade = Convert.ToInt32(e.Row.Cells[2].Text);
+                decimal percentual = Convert.ToDecimal(e.Row.Cells[3].Text);
+                int quantidadeMais = Convert.ToInt32(e.Row.Cells[4].Text);
+                decimal percentualMais = Convert.ToDecimal(e.Row.Cells[5].Text);
+                decimal valorConteudo = Convert.ToDecimal(e.Row.Cells[6].Text);
+                decimal valorMaisAcessados = Convert.ToDecimal(e.Row.Cells[7].Text);
+                decimal valorTotalRepasse = Convert.ToDecimal(e.Row.Cells[8].Text);
+
+                _quantidadeTotal = _quantidadeTotal + quantidade;
+                _percentualTotal = _percentualTotal + percentual;
+                _quantidadeMaisTotal = _quantidadeMaisTotal + quantidadeMais;
+                _valorPorQuantidade = _valorPorQuantidade + valorConteudo;
+                _valorPorAcesso = _valorPorAcesso + valorMaisAcessados;
+                _valorTotalRepasse = _valorTotalRepasse + valorTotalRepasse;
+                _percentualReferenciaMaisAcessado = _percentualReferenciaMaisAcessado + percentualMais;
+
+
+            }
+
+
+            if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                e.Row.Cells[2].Text = _quantidadeTotal.ToString();
+                e.Row.Cells[3].Text = Math.Round(_percentualTotal, 2).ToString();
+                e.Row.Cells[4].Text = _quantidadeMaisTotal.ToString();
+                e.Row.Cells[5].Text = Math.Round(_percentualReferenciaMaisAcessado, 2).ToString();
+                e.Row.Cells[6].Text = _valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
+                e.Row.Cells[7].Text = _valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
+                e.Row.Cells[8].Text = _valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
+            }
         }
     }
 }

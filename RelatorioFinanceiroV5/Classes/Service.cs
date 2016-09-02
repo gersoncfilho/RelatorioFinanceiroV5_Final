@@ -346,8 +346,7 @@ namespace RelatorioFinanceiroV5.Classes
             {
 
 
-                //query = "select a.id, b.nome, b.id id_editora, a.quantidade, a.mes_referencia from quantidades a inner join editoras b on a.id_editora = b.id inner join grupos c on b.id_grupo = c.id where b.ativo=1 and c.ativo=1 and a.mes_referencia = " + "'" + mesReferencia + "'" + " order by a.id_grupo";
-                query = string.Format("select idEditora, editora, mes_referencia, quantidade, percentual, quantidaderefxmaisacessados, percentualmaisacessados, valorconteudo, valormaisacessados, valor_total_repasse from bordero where mes_referencia='{0}' order by idEditora", mesReferencia); 
+                query = string.Format("SELECT mes_referencia, editora, quantidade, percentual,  quantidaderefxmaisacessados,  percentualmaisacessados, valorconteudo, valormaisacessados, valor_total_repasse, idEditora, idGrupo FROM bordero WHERE mes_referencia = '{0}' GROUP BY editora ORDER BY idGrupo", mesReferencia);
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 Debug.WriteLine("");

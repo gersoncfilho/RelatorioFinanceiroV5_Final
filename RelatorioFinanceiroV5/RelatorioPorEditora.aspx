@@ -32,8 +32,10 @@
                 </div>
             </div>
             <div class="panel-body" runat="server" id="pnlbody">
-                <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" AllowSorting="true" OnRowCommand="GridViewQuantidades_RowCommand">
+                <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" AllowSorting="true" OnRowCommand="GridViewQuantidades_RowCommand" OnRowDataBound="GridViewQuantidades_RowDataBound">
                     <Columns>
+                         
+
                         <asp:BoundField DataField="editora" HeaderText="Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
@@ -77,6 +79,7 @@
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
+                       
                         <asp:TemplateField ItemStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemTemplate>

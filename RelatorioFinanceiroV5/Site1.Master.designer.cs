@@ -40,6 +40,24 @@ namespace RelatorioFinanceiroV5 {
         protected global::System.Web.UI.WebControls.Label lblData;
         
         /// <summary>
+        /// liCriaRelatorio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liCriaRelatorio;
+        
+        /// <summary>
+        /// linkCria control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton linkCria;
+        
+        /// <summary>
         /// liGrupo control.
         /// </summary>
         /// <remarks>
@@ -92,24 +110,6 @@ namespace RelatorioFinanceiroV5 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton linkBordero;
-        
-        /// <summary>
-        /// liCriaRelatorio control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liCriaRelatorio;
-        
-        /// <summary>
-        /// linkCria control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton linkCria;
         
         /// <summary>
         /// ContentPlaceHolder1 control.
