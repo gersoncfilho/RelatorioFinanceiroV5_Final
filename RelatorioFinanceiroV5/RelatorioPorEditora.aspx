@@ -22,6 +22,15 @@
                     <div class="col-md-2">
                         <asp:Button ID="btnOK" runat="server" Width="100" Text="OK" OnClick="btnOK_OnClick" CssClass="btn btn-primary"/>
                     </div>
+
+                    <div class="col-md-2 text-center">
+                    <asp:Label ID="lblClassificacao" runat="server" Text="Classificação" Font-Bold="true"></asp:Label>
+                </div>
+
+                <div class="col-md-3">
+                    <asp:DropDownList ID="ddlClassificacao" runat="server" CssClass="form-control" Width="120"></asp:DropDownList>                
+                </div>
+
                     <div class="col-md-2">
                    
                     <asp:Label ID="Label1" runat="server" Text="Exporta Excel" Font-Bold="true" CssClass="pull-right"></asp:Label>

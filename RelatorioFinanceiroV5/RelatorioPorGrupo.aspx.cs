@@ -19,10 +19,13 @@ using System.Drawing;
 
 namespace RelatorioFinanceiroV5
 {
+
+
     public partial class RelatorioPorGrupo : System.Web.UI.Page
     {
-        
 
+        private string local = "pt-BR";
+        
         private decimal _totalPercentual = 0m;
         private int _quantidadeTotal = 0;
         private decimal _percentualTotal = 0m;
@@ -32,6 +35,7 @@ namespace RelatorioFinanceiroV5
         private decimal _valorPorAcesso = 0m;
         private decimal _valorTotalRepasse = 0m;
         private const int round = 6;
+        //private int _classificacao;
         private List<Grupo> grupos = new List<Grupo>();
 
 
@@ -40,25 +44,29 @@ namespace RelatorioFinanceiroV5
 
             var myConn = Connection.conn();
             _quantidadeTotal = Service.QuantidadeTotal(myConn, "Fev_16");
+            string[] classificacao = { "Nacional", "Internacional" };
             Debug.WriteLine("Quantidade total: " + _quantidadeTotal);
 
             if (!this.IsPostBack)
             {
+                ddlClassificacao.DataSource = classificacao;
+                ddlClassificacao.DataBind();
+
                 ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
-                BindGrid("Jan_16", myConn);
+                BindGrid("Jan_16", 0, myConn);
                 pnlBodyOld.Visible = true;
                 myConn.Close();
             }
         }
 
-        private void BindGrid(string mesReferencia, MySqlConnection conn)
+        private void BindGrid(string mesReferencia, int classificacao, MySqlConnection conn)
         {
 
             System.Data.DataTable dt = new System.Data.DataTable();
             using (conn)
             {
-                dt = Service.getQuantidadeConteudoPorGrupo(mesReferencia, conn);
+                dt = Service.getQuantidadeConteudoPorGrupo(mesReferencia, classificacao, conn);
                 GridViewQuantidades.DataSource = dt;
                 GridViewQuantidades.DataBind();
             }
@@ -73,6 +81,7 @@ namespace RelatorioFinanceiroV5
                 int index = Convert.ToInt32(e.CommandArgument);
                 GridViewRow row = GridViewQuantidades.Rows[index];
 
+
                 lblGrupo.Text = row.Cells[0].Text;
                 lblMes.Text = row.Cells[1].Text;
                 lblQuantidadeConteudos.Text = row.Cells[2].Text;
@@ -80,25 +89,34 @@ namespace RelatorioFinanceiroV5
                 lblTotalRefMaisAcessados.Text = row.Cells[4].Text;
                 lblPercentual10MaisAcessados.Text = row.Cells[5].Text;
 
-                decimal receita = Service.GetReceita(myConn, row.Cells[1].Text);
-                lblReceita.Text = receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                decimal receita = Service.GetReceita(myConn, row.Cells[1].Text, Convert.ToInt16(Session["_classificacao"]));
+                if(Convert.ToInt16(Session["_classificacao"]) > 0)
+                {
+                    local = "en-US";
+                }
+
+                lblReceita.Text = receita.ToString("C2", CultureInfo.CreateSpecificCulture(local));
 
 
                 decimal receita20 = Math.Round((decimal)receita * (decimal)0.2, 6);
                 decimal receita10 = Math.Round((decimal)receita * (decimal)0.1, 6);
 
 
-                lblReceita_20.Text = receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-                lblReceita_10.Text = receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                lblReceita_20.Text = receita20.ToString("C2", CultureInfo.CreateSpecificCulture(local));
+                lblReceita_10.Text = receita10.ToString("C2", CultureInfo.CreateSpecificCulture(local));
 
                 decimal receitaTotal = receita10 + receita20;
-                lblReceitaTotalASerDividida.Text = receitaTotal.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                lblReceitaTotalASerDividida.Text = receitaTotal.ToString("C2", CultureInfo.CreateSpecificCulture(local));
 
-                lblValorRepasseQuantidade.Text = row.Cells[6].Text;
 
-                lblValorRepasseRefMaisAcessados.Text = row.Cells[7].Text;
+                decimal _repasseQuant = Convert.ToDecimal(row.Cells[7].Text);
+                lblValorRepasseQuantidade.Text = _repasseQuant.ToString("C2", CultureInfo.CreateSpecificCulture(local));
 
-                lblValorTotalRepasse.Text = row.Cells[8].Text;
+                decimal _valorRepMaisAce = Convert.ToDecimal(row.Cells[8].Text);
+                lblValorRepasseRefMaisAcessados.Text = _valorRepMaisAce.ToString("C2", CultureInfo.CreateSpecificCulture(local));
+
+                decimal _valorTotalRepasse = Convert.ToDecimal(row.Cells[9].Text);
+                lblValorTotalRepasse.Text = _valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture(local));
 
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "openModal();", true);
             }
@@ -109,10 +127,10 @@ namespace RelatorioFinanceiroV5
             MakePDF();
 
         }
-     
+
 
         private void MakePDF()
-        { 
+        {
 
             StringBuilder sb = new StringBuilder();
             sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
@@ -148,91 +166,21 @@ namespace RelatorioFinanceiroV5
             string myFileName = Service.RemoveAccents(myFile);
 
             PDFHelper.Export(sb.ToString(), "RelFin_" + lblMes.Text + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
-         
+
         }
 
         protected void btnOK_OnClick(object sender, EventArgs e)
         {
             var myConn = Connection.conn();
             var _mes_referencia = ddlMesReferencia.SelectedValue;
+            Session["_classificacao"] = ddlClassificacao.SelectedIndex;
+
+
+
             Debug.WriteLine(_mes_referencia);
-            BindGrid(_mes_referencia, myConn);
+            BindGrid(_mes_referencia, Convert.ToInt16(Session["_classificacao"]), myConn);
             _totalPercentual = Service.QuantidadeTotal(myConn, _mes_referencia);
         }
-
-        protected void btnGerarPDFs_OnClick(object sender, EventArgs e)
-        {
-            MakePDFNew();
-
-        }
-
-        private void MakePDFNew()
-        {
-            Grupo newGrupo;
-            List<Grupo> grupos = new List<Grupo>();
-            var myConn = Connection.conn();
-            string _grupo = "";
-            string _mes = "";
-            int _quantidade = 0;
-            decimal _percentualEditora = 0.0m;
-            int _totalMaisAcessados = 0;
-            decimal _percentualMaisAcessados = 0.0m;
-            decimal _receita = 0.0m;
-            decimal _receita10 = 0.0m;
-            decimal _receita20 = 0.0m;
-            decimal _receitaASerDividida = 0.0m;
-            decimal _repasseQuantidade = 0.0m;
-            decimal _repasseMaisAcessados = 0.0m;
-            decimal _valorTotalRepasse = 0.0m;
-            GridView grd = GridViewQuantidades;
-            int _idGrupo = 0;
-
-
-
-            foreach (GridViewRow row in grd.Rows)
-            {
-                _grupo = row.Cells[0].Text;
-                _mes = row.Cells[1].Text;
-                _quantidade = Convert.ToInt32(row.Cells[2].Text);
-                _percentualEditora = Convert.ToDecimal(row.Cells[3].Text);
-                _totalMaisAcessados = Convert.ToInt32(row.Cells[4].Text);
-                _percentualMaisAcessados = Convert.ToDecimal(row.Cells[5].Text);
-                _receita = Service.GetReceita(myConn, _mes);
-                _receita10 = Math.Round((decimal)_receita * (decimal)0.1, 6);
-                _receita20 = Math.Round((decimal)_receita * (decimal)0.2, 6);
-                _receitaASerDividida = Service.GetReceitaADividir(myConn, _mes);
-                _repasseQuantidade = (_percentualEditora * _receita20) / 100;
-                _repasseMaisAcessados = (_percentualMaisAcessados * _receita10) / 100;
-                _valorTotalRepasse = _repasseQuantidade + _repasseMaisAcessados;
-                _idGrupo = Convert.ToInt32(row.Cells[9].Text);
-
-                newGrupo = new Grupo();
-                newGrupo.NomeGrupo = _grupo;
-                newGrupo.IdGrupo = _idGrupo;
-                newGrupo.Mes_Referencia = _mes;
-                newGrupo.Quantidade = _quantidade;
-                newGrupo.Percentual_Quantidade = _percentualEditora;
-                newGrupo.Quant_Ref_Mais_Acessados = _totalMaisAcessados;
-                newGrupo.Percentual_Ref_Mais_Acessados = _percentualMaisAcessados;
-                newGrupo.Receita = _receita;
-                newGrupo.Receita10 = _receita10;
-                newGrupo.Receita20 = _receita20;
-                newGrupo.Valor_Conteudo = _repasseQuantidade;
-                newGrupo.Valor_Mais_Acessados = _repasseMaisAcessados;
-                newGrupo.Valor_Repasse = _valorTotalRepasse;
-                newGrupo.ReceitaASerDividida = _receitaASerDividida;
-
-                //Debug.WriteLine(newGrupo.NomeGrupo);
-
-                grupos.Add(newGrupo);
-
-
-            }
-
-
-        }
-
-
 
 
         #region Methods
@@ -254,6 +202,7 @@ namespace RelatorioFinanceiroV5
 
         protected void GridViewQuantidades_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            
             if (!e.Row.RowIndex.Equals(-1))
             {
                 int pdfOk = Convert.ToInt32(e.Row.Cells[10].Text);
@@ -266,6 +215,7 @@ namespace RelatorioFinanceiroV5
                 decimal valorConteudo = Convert.ToDecimal(e.Row.Cells[6].Text);
                 decimal valorMaisAcessados = Convert.ToDecimal(e.Row.Cells[7].Text);
                 decimal valorTotalRepasse = Convert.ToDecimal(e.Row.Cells[8].Text);
+                
 
                 _quantidadeTotal = _quantidadeTotal + quantidade;
                 _percentualTotal = _percentualTotal + percentual;
@@ -275,22 +225,24 @@ namespace RelatorioFinanceiroV5
                 _valorTotalRepasse = _valorTotalRepasse + valorTotalRepasse;
                 _percentualReferenciaMaisAcessado = _percentualReferenciaMaisAcessado + percentualMais;
 
-             
             }
-                     
+
 
             if (e.Row.RowType == DataControlRowType.Footer)
             {
+                if ( Convert.ToInt16(Session["_classificacao"]) == 1)
+                {
+                    local = "en-US";
+                }
                 e.Row.Cells[2].Text = _quantidadeTotal.ToString();
                 e.Row.Cells[3].Text = Math.Round(_percentualTotal, 2).ToString();
                 e.Row.Cells[4].Text = _quantidadeMaisTotal.ToString();
                 e.Row.Cells[5].Text = Math.Round(_percentualReferenciaMaisAcessado, 2).ToString();
-                e.Row.Cells[6].Text = _valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-                e.Row.Cells[7].Text = _valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-                e.Row.Cells[8].Text = _valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
+                e.Row.Cells[6].Text = _valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture(local));
+                e.Row.Cells[7].Text = _valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture(local));
+                e.Row.Cells[8].Text = _valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture(local));
+
             }
-
         }
-
     }
 }

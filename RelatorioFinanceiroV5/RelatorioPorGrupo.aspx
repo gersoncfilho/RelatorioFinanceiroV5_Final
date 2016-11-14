@@ -15,13 +15,21 @@
                 </div>
             </div>
             <div style="padding: 20px 0 40px 0;">
-                <div class="col-md-3 text-center">
+                <div class="col-md-2 text-center">
                     <asp:Label ID="lblMesReferencia" runat="server" Text="Mês Referência" Font-Bold="true"></asp:Label>
                 </div>
-                <div class="col-md-2">
-                    <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="100"></asp:DropDownList>
-                   
+                <div class="col-md-3">
+                    <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="100"></asp:DropDownList>                
                 </div>
+
+                <div class="col-md-2 text-center">
+                    <asp:Label ID="lblClassificacao" runat="server" Text="Classificação" Font-Bold="true"></asp:Label>
+                </div>
+
+                <div class="col-md-3">
+                    <asp:DropDownList ID="ddlClassificacao" runat="server" CssClass="form-control" Width="120"></asp:DropDownList>                
+                </div>
+
                 <div class="col-md-2">
                      <asp:Button ID="btnOK" runat="server" Width="100" Text="OK" CssClass="btn btn-sm btn-primary" OnClick="btnOK_OnClick" />
                 </div>

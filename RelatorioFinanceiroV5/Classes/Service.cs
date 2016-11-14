@@ -202,10 +202,12 @@ namespace RelatorioFinanceiroV5.Classes
 
 
 
-        public static decimal GetReceita(MySqlConnection myConn, string mes_referencia)
+        public static decimal GetReceita(MySqlConnection myConn, string mes_referencia, int classificacao)
         {
             DataSet ds = new DataSet();
             DataTable dt = new DataTable();
+            string query;
+            
 
             try
             {
@@ -217,7 +219,8 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select receita from receita where mes_referencia = " + "'" + mes_referencia + "'";
+
+                query = string.Format("select receita from receita where mes_referencia = '{0}' and internacional = '{1}'", mes_referencia, classificacao);
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];
@@ -270,7 +273,7 @@ namespace RelatorioFinanceiroV5.Classes
 
 
         //Popula o GridView do RelatorioPorGrupo.aspx
-        public static DataTable getQuantidadeConteudoPorGrupo(string mesReferencia, MySqlConnection myConn)
+        public static DataTable getQuantidadeConteudoPorGrupo(string mesReferencia, int classificacao, MySqlConnection myConn)
         {
 
             DataTable dt = new DataTable();
@@ -299,9 +302,10 @@ namespace RelatorioFinanceiroV5.Classes
                             SUM(valormaisacessados) valormaisacessados,
                             SUM(valor_total_repasse) valortotalrepasse,
                             idGrupo,
-                            pdfOk                         
+                            pdfOk,
+                            internacional                         
                         FROM
-                            bordero WHERE mes_referencia = '{0}' GROUP BY grupo ORDER BY idGrupo", mesReferencia);
+                            bordero WHERE mes_referencia = '{0}' AND internacional = '{1}' GROUP BY grupo ORDER BY idGrupo", mesReferencia, classificacao);
 
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
@@ -346,7 +350,7 @@ namespace RelatorioFinanceiroV5.Classes
             {
 
 
-                query = string.Format("SELECT mes_referencia, editora, quantidade, percentual,  quantidaderefxmaisacessados,  percentualmaisacessados, valorconteudo, valormaisacessados, valor_total_repasse, idEditora, idGrupo FROM bordero WHERE mes_referencia = '{0}' GROUP BY editora ORDER BY idGrupo", mesReferencia);
+                query = string.Format("SELECT mes_referencia, editora, quantidade, percentual,  quantidaderefxmaisacessados,  percentualmaisacessados, valorconteudo, valormaisacessados, valor_total_repasse, idEditora, idGrupo FROM bordero WHERE mes_referencia = '{0}' ORDER BY idGrupo", mesReferencia);
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 Debug.WriteLine("");

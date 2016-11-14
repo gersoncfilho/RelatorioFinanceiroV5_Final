@@ -19,6 +19,8 @@ namespace RelatorioFinanceiroV5
             if (!this.IsPostBack)
             {
                 string[] _mes_referencia = { "Jan_16", "Fev_16", "Mar_16", "Abr_16", "Mai_16", "Jun_16", "Jul_16", "Ago_16", "Set_16", "Out_16", "Nov_16", "Dez_16" };
+                string[] _classificacao = { "Nacional", "Internacional" };
+
                 ddlMes.DataSource = _mes_referencia;
                 ddlMes.DataBind();
             }
@@ -57,10 +59,79 @@ namespace RelatorioFinanceiroV5
         private bool VerificaTabelas(string _mes_referencia, string _nomeTabela)
         {
             var myConn = Connection.conn();
+            string query = null;
             try
             {
                 myConn.Open();
-                var query = string.Format("select count(mes_referencia) from {1} where mes_referencia = '{0}'", _mes_referencia, _nomeTabela);
+
+                query = string.Format("select count(mes_referencia) from {1} where mes_referencia = '{0}'", _mes_referencia, _nomeTabela);
+
+                MySqlCommand cmd = new MySqlCommand(query, myConn);
+
+                int result = Convert.ToInt32(cmd.ExecuteScalar());
+                myConn.Close();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine("MySql Error: " + ex.Message);
+                myConn.Close();
+                return false;
+            }
+        }
+
+        private bool VerificaBordero(string _mes_referencia)
+        {
+            var myConn = Connection.conn();
+            string query = null;
+            try
+            {
+                myConn.Open();
+
+                query = string.Format("select count(mes_referencia) from bordero where mes_referencia = '{0}' and internacional = 0", _mes_referencia);
+
+                MySqlCommand cmd = new MySqlCommand(query, myConn);
+
+                int result = Convert.ToInt32(cmd.ExecuteScalar());
+                myConn.Close();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine("MySql Error: " + ex.Message);
+                myConn.Close();
+                return false;
+            }
+        }
+
+        private bool VerificaBorderoInt(string _mes_referencia)
+        {
+            var myConn = Connection.conn();
+            string query = null;
+            try
+            {
+                myConn.Open();
+
+                query = string.Format("select count(mes_referencia) from bordero where mes_referencia = '{0}' and internacional = 1", _mes_referencia);
+
                 MySqlCommand cmd = new MySqlCommand(query, myConn);
 
                 int result = Convert.ToInt32(cmd.ExecuteScalar());
@@ -154,13 +225,15 @@ namespace RelatorioFinanceiroV5
             PanelAcoes.Visible = false;
             PanelInfo.Visible = false;
             string _mesSelecionado = ddlMes.SelectedValue.ToString();
-            if (VerificaTabelas(_mesSelecionado,"bordero"))
+
+            //Verifica se o relatorio do mes selecionado ja foi gerado checando se a tabela bordero possui dados do mes selecionado, tanto pra nacional quanto para internacional
+
+            if (VerificaBordero(_mesSelecionado) && VerificaBorderoInt(_mesSelecionado))
             {
                 PanelInfo.Visible = true;
-                Debug.WriteLine(_mesSelecionado + " já foi gerado");
             }
-            else
-            {
+            else {
+
                 Debug.WriteLine("Relatório inexistente");
                 PanelAcoes.Visible = true;
                 if (VerificaTabelas(_mesSelecionado, "quantidades"))
@@ -214,20 +287,37 @@ namespace RelatorioFinanceiroV5
                 {
                     PanelRefxMais.Visible = true;
                 }
-                if (VerificaTabelas(ddlMes.SelectedValue.ToString(), "bordero"))
+
+                if (VerificaBordero(ddlMes.SelectedValue.ToString()))
                 {
-                    PanelRefxMais.Visible = true;
-                    PanelRefxMais.CssClass = "alert alert-success";
-                    btnRefxMais.CssClass = "btn btn-success btn-xs";
-                    iconRefxMais.Visible = true;
-                    btnRefxMais.Enabled = false;
+                    PanelGeraBordero.Visible = true;
+                    PanelGeraBordero.CssClass = "alert alert-success";
+                    btnGeraBordero.CssClass = "btn btn-success btn-xs";
+                    iconGeraBordero.Visible = true;
+                    btnGeraBordero.Enabled = false;
                 }
                 else
                 {
-                    PanelRefxMais.Visible = true;
+                    PanelGeraBordero.Visible = true;
+                }
+
+                if (VerificaBorderoInt(ddlMes.SelectedValue.ToString()))
+                {
+                    PanelGeraBorderoInternacional.Visible = true;
+                    PanelGeraBorderoInternacional.CssClass = "alert alert-success";
+                    btnGeraBorderoInt.CssClass = "btn btn-success btn-xs";
+                    iconGeraBorderoInt.Visible = true;
+                    btnGeraBorderoInt.Enabled = false;
+                }
+                else
+                {
+                    PanelGeraBorderoInternacional.Visible = true;
                 }
 
             }
+
+
+            
         }
 
 
@@ -387,7 +477,7 @@ namespace RelatorioFinanceiroV5
             }
         }
 
-       
+
 
         protected void btnGeraBordero_Click(object sender, EventArgs e)
         {
@@ -429,6 +519,49 @@ namespace RelatorioFinanceiroV5
                 iconGeraBordero.Visible = true;
                 btnGeraBordero.CssClass = "btn btn-success btn-xs";
                 btnGeraBordero.Enabled = false;
+            }
+        }
+
+        protected void btnGeraBorderoInt_Click(object sender, EventArgs e)
+        {
+            var myConn = Connection.conn();
+            bool success = true;
+            try
+            {
+                myConn.Open();
+                string procedureName = "06_geraBorderoInt";
+
+                MySqlCommand cmd = new MySqlCommand(procedureName, myConn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@_mesReferencia", ddlMes.SelectedValue.ToString());
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine("Falha no banco:" + ex.Message);
+                success = false;
+            }
+            finally
+            {
+                myConn.Close();
+
+            }
+            myConn.Close();
+
+            if (success == false)
+            {
+                PanelGeraBorderoInternacional.CssClass = "alert alert-danger";
+                btnGeraBorderoInt.CssClass = "btn btn-danger btn-xs";
+                btnGeraBorderoInt.Enabled = false;
+                lblGeraBorderoInt.Text = "Erro de acesso ao banco MySQL!";
+
+            }
+            else
+            {
+                PanelGeraBorderoInternacional.CssClass = "alert alert-success";
+                iconGeraBorderoInt.Visible = true;
+                btnGeraBorderoInt.CssClass = "btn btn-success btn-xs";
+                btnGeraBorderoInt.Enabled = false;
             }
         }
 

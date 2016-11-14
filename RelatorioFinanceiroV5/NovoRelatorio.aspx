@@ -20,7 +20,7 @@
                         <asp:Panel ID="PanelDDLMes" CssClass="col-lg-3 col-md-3" runat="server">
                             <asp:DropDownList ID="ddlMes" CssClass="form-control" runat="server"></asp:DropDownList>
                         </asp:Panel>
-                        <asp:Panel ID="PanelOKButton" CssClass="col-lg-6 col-md-6" runat="server">
+                        <asp:Panel ID="PanelOKButton" CssClass="col-lg-3 col-md-3" runat="server">
                             <asp:Button ID="btnOK" CssClass="btn btn-primary" runat="server" Text="OK" Width="120px" OnClick="btnOK_Click" />
                         </asp:Panel>
                     </asp:Panel>
@@ -80,7 +80,16 @@
                         <ContentTemplate>
                             <asp:Panel ID="PanelGeraBordero" runat="server" role="alert" CssClass="alert alert-info">
                                 <span style="margin-right: 15px;">
-                                    <asp:Button Width="120px" ID="btnGeraBordero" runat="server" Text="Comparar" CssClass="btn btn-info btn-xs" OnClick="btnGeraBordero_Click" /></span><asp:Label ID="lblGeraBordero" runat="server" Text="Gera Bordero"></asp:Label><span class="glyphicon glyphicon-ok" aria-hidden="true" runat="server" visible="false" id="iconGeraBordero"></span>
+                                    <asp:Button Width="120px" ID="btnGeraBordero" runat="server" Text="Gerar" CssClass="btn btn-info btn-xs" OnClick="btnGeraBordero_Click" /></span><asp:Label ID="lblGeraBordero" runat="server" Text="Gera Bordero"></asp:Label><span class="glyphicon glyphicon-ok" aria-hidden="true" runat="server" visible="false" id="iconGeraBordero"></span>
+                            </asp:Panel>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+
+                    <asp:UpdatePanel ID="UpdatePanel6" runat="server">
+                        <ContentTemplate>
+                            <asp:Panel ID="PanelGeraBorderoInternacional" runat="server" role="alert" CssClass="alert alert-info">
+                                <span style="margin-right: 15px;">
+                                    <asp:Button Width="120px" ID="btnGeraBorderoInt" runat="server" Text="Gerar" CssClass="btn btn-info btn-xs" OnClick="btnGeraBorderoInt_Click" /></span><asp:Label ID="lblGeraBorderoInt" runat="server" Text="Gera Bordero Internacional"></asp:Label><span class="glyphicon glyphicon-ok" aria-hidden="true" runat="server" visible="false" id="iconGeraBorderoInt"></span>
                             </asp:Panel>
                         </ContentTemplate>
                     </asp:UpdatePanel>
