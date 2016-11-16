@@ -39,50 +39,61 @@
                 <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" OnRowCommand="GridViewQuantidades_RowCommand" Font-Size="Smaller" OnRowDataBound="GridViewQuantidades_RowDataBound">
                     <Columns>
 
+                        <%--cell 0 = nome do grupo--%>
                         <asp:BoundField DataField="grupo" HeaderText="Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
+                        <%--cell 1 = mes de referencia--%>
                         <asp:BoundField DataField="mes_referencia" HeaderText="Mês Referência" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
+                        <%--cell 2 = quantidade de conteudos--%>
                         <asp:BoundField DataField="quantidade" HeaderText="Quantidade" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
+                        <%--cell 3 = percentual de conteudos--%>
                          <asp:BoundField DataField="percentual" HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
                        </asp:BoundField>
 
+                        <%--cell 4 = quantidade de mais acessados--%>
                         <asp:BoundField DataField="quantidademaisacessados" HeaderText="Quant. Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
                        </asp:BoundField>
 
+                        <%--cell 5 = percentual de mais acessados--%>
                          <asp:BoundField DataField="percentualmaisacessados" HeaderText="Perc. Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
                        </asp:BoundField>
 
+                        <%--cell 6 = valor por conteudo--%>
                          <asp:BoundField DataField="valorconteudo" HeaderText="Valor Conteúdo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
                        </asp:BoundField>
 
+                        <%--cell 7 = valor por mais acessados--%>
                         <asp:BoundField DataField="valormaisacessados" HeaderText="Valor Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
                        </asp:BoundField>
 
+                        <%--cell 8 - valor total do repasse--%>
                         <asp:BoundField DataField="valortotalrepasse" HeaderText="Valor Total Repasse" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
                        </asp:BoundField>
 
+                        <%--cell 9 - id do grupo--%>
                         <asp:BoundField DataField="idGrupo" HeaderText="Id Grupo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
+                        <%--cell 10 = pdf gerado--%>
                         <asp:BoundField DataField="pdfOk" HeaderText="OK" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />

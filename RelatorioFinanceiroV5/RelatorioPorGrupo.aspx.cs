@@ -109,13 +109,13 @@ namespace RelatorioFinanceiroV5
                 lblReceitaTotalASerDividida.Text = receitaTotal.ToString("C2", CultureInfo.CreateSpecificCulture(local));
 
 
-                decimal _repasseQuant = Convert.ToDecimal(row.Cells[7].Text);
+                decimal _repasseQuant = Convert.ToDecimal(row.Cells[6].Text);
                 lblValorRepasseQuantidade.Text = _repasseQuant.ToString("C2", CultureInfo.CreateSpecificCulture(local));
 
-                decimal _valorRepMaisAce = Convert.ToDecimal(row.Cells[8].Text);
+                decimal _valorRepMaisAce = Convert.ToDecimal(row.Cells[7].Text);
                 lblValorRepasseRefMaisAcessados.Text = _valorRepMaisAce.ToString("C2", CultureInfo.CreateSpecificCulture(local));
 
-                decimal _valorTotalRepasse = Convert.ToDecimal(row.Cells[9].Text);
+                decimal _valorTotalRepasse = Convert.ToDecimal(row.Cells[8].Text);
                 lblValorTotalRepasse.Text = _valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture(local));
 
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "openModal();", true);
