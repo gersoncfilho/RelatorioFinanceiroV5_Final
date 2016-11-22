@@ -13,37 +13,37 @@
                     <h2><strong>Relatório Financeiro - Por editoras</strong></h2>
                 </div>
                 <div style="padding: 20px 0 40px 0;">
-                    <div class="col-md-3 text-center">
+                    <div class="col-md-2 text-center">
                         <asp:Label ID="lblMesReferencia" runat="server" Text="Mês Referência" Font-Bold="true"></asp:Label>
                     </div>
                     <div class="col-md-2">
                         <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="150"></asp:DropDownList>
                     </div>
-                    <div class="col-md-2">
-                        <asp:Button ID="btnOK" runat="server" Width="100" Text="OK" OnClick="btnOK_OnClick" CssClass="btn btn-primary"/>
+                    <div class="col-md-2 text-center">
+                        <asp:Label ID="lblClassificacao" runat="server" Text="Classificação" Font-Bold="true"></asp:Label>
                     </div>
 
-                    <div class="col-md-2 text-center">
-                    <asp:Label ID="lblClassificacao" runat="server" Text="Classificação" Font-Bold="true"></asp:Label>
-                </div>
+                    <div class="col-md-2">
+                        <asp:DropDownList ID="ddlClassificacao" runat="server" CssClass="form-control" Width="120"></asp:DropDownList>
+                    </div>
 
-                <div class="col-md-3">
-                    <asp:DropDownList ID="ddlClassificacao" runat="server" CssClass="form-control" Width="120"></asp:DropDownList>                
-                </div>
+                    <div class="col-md-1">
+                        <asp:Button ID="btnOK" runat="server" Width="100" Text="OK" OnClick="btnOK_OnClick" CssClass="btn btn-primary btn-sm" />
+                    </div>
 
                     <div class="col-md-2">
-                   
-                    <asp:Label ID="Label1" runat="server" Text="Exporta Excel" Font-Bold="true" CssClass="pull-right"></asp:Label>
-                </div>
-                <div class="col-md-2">
-                    <asp:Button ID="btnExporta" runat="server" CssClass="btn btn-sm btn-primary pull-left" Text="Exportar" OnClick="btnExporta_Click" />
-                </div>
+
+                        <asp:Label ID="Label1" runat="server" Text="Exporta Excel" Font-Bold="true" CssClass="pull-right"></asp:Label>
+                    </div>
+                    <div class="col-md-1">
+                        <asp:Button ID="btnExporta" runat="server" CssClass="btn btn-sm btn-primary pull-left" Text="Exportar" OnClick="btnExporta_Click" />
+                    </div>
                 </div>
             </div>
             <div class="panel-body" runat="server" id="pnlbody">
                 <asp:GridView AutoGenerateColumns="false" ID="GridViewQuantidades" ShowFooter="true" runat="server" CssClass="table table-bordered table-striped" AllowSorting="true" OnRowCommand="GridViewQuantidades_RowCommand" OnRowDataBound="GridViewQuantidades_RowDataBound">
                     <Columns>
-                         
+
 
                         <asp:BoundField DataField="editora" HeaderText="Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
@@ -60,35 +60,35 @@
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
 
-                         <asp:BoundField DataField="percentual" HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:BoundField>
+                        <asp:BoundField DataField="percentual" HeaderText="Percentual" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                        </asp:BoundField>
 
                         <asp:BoundField DataField="quantidaderefxmaisacessados" HeaderText="Quant. Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:BoundField>
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                        </asp:BoundField>
 
-                         <asp:BoundField DataField="percentualmaisacessados" HeaderText="Percentual Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:BoundField>
+                        <asp:BoundField DataField="percentualmaisacessados" HeaderText="Percentual Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                        </asp:BoundField>
 
-                         <asp:BoundField DataField="valorconteudo" HeaderText="Valor Conteúdo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:BoundField>
+                        <asp:BoundField DataField="valorconteudo" HeaderText="Valor Conteúdo" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                        </asp:BoundField>
 
                         <asp:BoundField DataField="valormaisacessados" HeaderText="Valor Mais Acessados" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:BoundField>
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                        </asp:BoundField>
 
                         <asp:BoundField DataField="valor_total_repasse" HeaderText="Valor Total Repasse" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
-                           <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
-                       </asp:BoundField>
+                            <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" Font-Size="Smaller" />
+                        </asp:BoundField>
 
                         <asp:BoundField DataField="idEditora" HeaderText="Id Editora" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                         </asp:BoundField>
-                       
+
                         <asp:TemplateField ItemStyle-HorizontalAlign="Center">
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemTemplate>
@@ -132,7 +132,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <i style="font-size:1.5rem;">Quantidade de Conteúdos</i>
+                                                <i style="font-size: 1.5rem;">Quantidade de Conteúdos</i>
                                             </td>
                                             <td class="text-center">
                                                 <strong>
@@ -141,7 +141,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">% da editora do total</i>
+                                                <i style="font-size: 1.5rem;">% da editora do total</i>
                                             </td>
                                             <td class="text-center">
                                                 <strong>
@@ -155,7 +155,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">Conteúdo de ref. e mais acessados</i>
+                                                <i style="font-size: 1.5rem;">Conteúdo de ref. e mais acessados</i>
                                             </td>
                                             <td class="text-center">
                                                 <strong>
@@ -164,7 +164,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">% da editora dos 10% mais acessados e referência</i>
+                                                <i style="font-size: 1.5rem;">% da editora dos 10% mais acessados e referência</i>
                                             </td>
                                             <td class="text-center">
                                                 <strong>
@@ -173,7 +173,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">Receita líquida total da Nuvem de Livros</i>
+                                                <i style="font-size: 1.5rem;">Receita líquida total da Nuvem de Livros</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -182,7 +182,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">Receita a ser dividida entre as editoras pelo conteúdo (20%)</i>
+                                                <i style="font-size: 1.5rem;">Receita a ser dividida entre as editoras pelo conteúdo (20%)</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -191,7 +191,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i>
+                                                <i style="font-size: 1.5rem;">Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -200,7 +200,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">Receita total a ser dividida entre as editoras</i>
+                                                <i style="font-size: 1.5rem;">Receita total a ser dividida entre as editoras</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -209,7 +209,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">Valor a ser repassado para a editora pela quantidade de conteúdos</i>
+                                                <i style="font-size: 1.5rem;">Valor a ser repassado para a editora pela quantidade de conteúdos</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -218,7 +218,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">Valor a ser repassado para a editora pelas obras de referência e mais acessados</i>
+                                                <i style="font-size: 1.5rem;">Valor a ser repassado para a editora pelas obras de referência e mais acessados</i>
                                             </td>
                                             <td>
                                                 <strong>
@@ -227,7 +227,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                 <i style="font-size:1.5rem;">Valor total ser repassado para a editora</i>
+                                                <i style="font-size: 1.5rem;">Valor total ser repassado para a editora</i>
                                             </td>
                                             <td>
                                                 <strong>

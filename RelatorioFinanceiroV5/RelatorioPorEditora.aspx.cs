@@ -16,7 +16,6 @@ namespace RelatorioFinanceiroV5
 {
     public partial class RelatorioPorEditora : System.Web.UI.Page
     {
-        private decimal _totalPercentual = 0m;
         private int _quantidadeTotal = 0;
         private decimal _percentualTotal = 0m;
         private int _quantidadeMaisTotal = 0;
@@ -24,30 +23,35 @@ namespace RelatorioFinanceiroV5
         private decimal _valorPorQuantidade = 0m;
         private decimal _valorPorAcesso = 0m;
         private decimal _valorTotalRepasse = 0m;
-        private int _classificacao;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             var myConn = Connection.conn();
             _quantidadeTotal = Service.QuantidadeTotal(myConn, "Fev_16");
+
+            string[] classificacao = { "Nacional", "Internacional" };
+
             Debug.WriteLine("Quantidade total: " + _quantidadeTotal);
 
             if (!this.IsPostBack)
             {
+                ddlClassificacao.DataSource = classificacao;
+                ddlClassificacao.DataBind();
+
                 ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
-                BindGrid("Jan_16", myConn);
+                BindGrid("Jan_16", 0,  myConn);
                 pnlbody.Visible = true;
             }
         }
 
-        private void BindGrid(string mesReferencia, MySqlConnection conn)
+        private void BindGrid(string mesReferencia, int classificacao, MySqlConnection conn)
         {
 
             DataTable dt = new DataTable();
             using (conn)
             {
-                dt = Service.getQuantidadeConteudoPorEditora(mesReferencia, conn);
+                dt = Service.getQuantidadeConteudoPorEditora(mesReferencia, classificacao,  conn);
 
 
                 using (dt)
@@ -72,7 +76,7 @@ namespace RelatorioFinanceiroV5
                 var myConn = Connection.conn();
                 int index = Convert.ToInt32(e.CommandArgument);
                 GridViewRow row = GridViewQuantidades.Rows[index];
-                decimal _receita = Service.GetReceita(myConn, row.Cells[1].Text, _classificacao);
+                decimal _receita = Service.GetReceita(myConn, row.Cells[1].Text, Convert.ToInt16(Session["_classificacao"]));
                 decimal _receita20 = Math.Round((decimal)_receita * (decimal)0.2, 6);
                 decimal _receita10 = Math.Round((decimal)_receita * (decimal)0.1, 6);
                 decimal _valorTotal = _receita10 + _receita20;
@@ -102,9 +106,12 @@ namespace RelatorioFinanceiroV5
         {
             var myConn = Connection.conn();
             var _mes_referencia = ddlMesReferencia.SelectedValue;
+
+            Session["_classificacao"] = ddlClassificacao.SelectedIndex;
+
             Debug.WriteLine(_mes_referencia);
-            _classificacao = ddlClassificacao.SelectedIndex;
-            BindGrid(_mes_referencia, myConn);
+
+            BindGrid(_mes_referencia, Convert.ToInt16(Session["_classificacao"]), myConn);
         }
 
         private void MakePDF()

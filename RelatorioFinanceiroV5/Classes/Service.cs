@@ -332,7 +332,7 @@ namespace RelatorioFinanceiroV5.Classes
         }
 
         //Popula grid do RelatorioPorEditora.aspx
-        public static DataTable getQuantidadeConteudoPorEditora(string mesReferencia, MySqlConnection myConn)
+        public static DataTable getQuantidadeConteudoPorEditora(string mesReferencia, int classificacao, MySqlConnection myConn)
         {
 
             DataTable dt = new DataTable();
@@ -350,7 +350,7 @@ namespace RelatorioFinanceiroV5.Classes
             {
 
 
-                query = string.Format("SELECT mes_referencia, editora, quantidade, percentual,  quantidaderefxmaisacessados,  percentualmaisacessados, valorconteudo, valormaisacessados, valor_total_repasse, idEditora, idGrupo FROM bordero WHERE mes_referencia = '{0}' ORDER BY idGrupo", mesReferencia);
+                query = string.Format("SELECT mes_referencia, editora, quantidade, percentual,  quantidaderefxmaisacessados,  percentualmaisacessados, valorconteudo, valormaisacessados, valor_total_repasse, idEditora, idGrupo FROM bordero WHERE mes_referencia = '{0}' AND internacional = '{1}' ORDER BY idGrupo", mesReferencia, classificacao);
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 Debug.WriteLine("");
