@@ -29,10 +29,11 @@ namespace RelatorioFinanceiroV5.Classes
         public static void Export(string html, string fileName, string linkCss)
         {
             ////reset response
+           
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Response.ContentType = "application/pdf";
 
-            ////define pdf filename
+            //define pdf filename
             HttpContext.Current.Response.AddHeader("content-disposition", "attachment; filename=" + fileName);
 
 

@@ -50,6 +50,7 @@
                         <li runat="server" id="liGrupo"><asp:LinkButton ID="linkRelGrupo" runat="server" PostBackUrl="~/RelatorioPorGrupo.aspx" OnClick="linkRelGrupo_Click">Relatório por Grupo</asp:LinkButton></li>
                         <li runat="server" id="liEditora"><asp:LinkButton ID="linkRelEditora" runat="server" PostBackUrl="~/RelatorioPorEditora.aspx">Relatório por Editora</asp:LinkButton></li>
                         <li runat="server" id="liBordero"><asp:LinkButton ID="linkBordero" runat="server" PostBackUrl="~/Bordero.aspx">Borderô</asp:LinkButton></li>
+                        <li runat="server" id="liAcesso"><asp:LinkButton ID="linkAcesso" runat="server" PostBackUrl="~/RelatorioAcesso.aspx">Relatório de Acesso</asp:LinkButton></li>
                         
                         <%--<li><a href="#">Analytics</a></li>
                         <li><a href="#">Export</a></li>--%>

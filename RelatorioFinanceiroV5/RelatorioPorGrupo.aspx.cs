@@ -38,6 +38,15 @@ namespace RelatorioFinanceiroV5
         //private int _classificacao;
         private List<Grupo> grupos = new List<Grupo>();
 
+        public delegate void Worker();
+        private static Thread worker;
+
+        public static void Init(Worker work)
+        {
+            worker = new Thread(new ThreadStart(work));
+            worker.Start();
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -124,7 +133,65 @@ namespace RelatorioFinanceiroV5
 
         protected void btnPDF_Click(object sender, EventArgs e)
         {
-            MakePDF();
+            
+                MakePDF();
+          
+            //MakePDF();
+            
+            //var myConn = Connection.conn();
+            //System.Data.DataTable dtGrupos = new System.Data.DataTable();
+            //dtGrupos = Service.getQuantidadeConteudoPorGrupo(Session["_mesReferencia"].ToString(), Convert.ToInt16(Session["_classificacao"]), myConn);
+
+            //Parallel.ForEach(dtGrupos.AsEnumerable(), row => {
+            //    Debug.WriteLine(row.ItemArray[2]);
+            //    PDFGrupo pdfGrupo = new PDFGrupo();
+            //    pdfGrupo.IdGrupo = Convert.ToInt32(row.ItemArray[0]);
+            //    pdfGrupo.MesReferencia = row.ItemArray[1].ToString();
+            //    pdfGrupo.Grupo = row.ItemArray[2].ToString();
+            //    pdfGrupo.Quantidade = Convert.ToInt32(row.ItemArray[3]);
+            //    pdfGrupo.Percentual = Convert.ToDecimal(row.ItemArray[4]);
+            //    pdfGrupo.QuantidadeMaisAcessados = Convert.ToInt32(row.ItemArray[5]);
+            //    pdfGrupo.PercentualMaisAcessados = Convert.ToDecimal(row.ItemArray[6]);
+            //    pdfGrupo.ValorConteudo = Convert.ToDecimal(row.ItemArray[7]);
+            //    pdfGrupo.ValorMaisAcessados = Convert.ToDecimal(row.ItemArray[8]);
+            //    pdfGrupo.ValorTotalRepasse = Convert.ToDecimal(row.ItemArray[9]);
+
+            //    StringBuilder sb = new StringBuilder();
+            //    sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
+            //    sb.Append(pdfGrupo.Grupo);
+            //    sb.Append("</strong></th><th width='100'><strong>");
+            //    sb.Append(pdfGrupo.MesReferencia);
+            //    sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
+            //    sb.Append(pdfGrupo.Quantidade);
+            //    sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
+            //    sb.Append(Math.Round(pdfGrupo.Percentual, 2).ToString());
+            //    sb.Append("</strong></td></tr><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Conteúdo de ref. e mais acessados</i></td><td class='text-center'><strong>");
+            //    sb.Append(pdfGrupo.QuantidadeMaisAcessados.ToString());
+            //    sb.Append("</strong></td></tr><tr><td><i>% da editora dos 10% mais acessados e referência</i></td><td class='text-center'><strong>");
+            //    sb.Append(Math.Round(pdfGrupo.PercentualMaisAcessados, 2).ToString());
+            //    sb.Append("</strong></td></tr><tr><td><i>Receita líquida total da Nuvem de Livros</i></td><td class='text-center'><strong>");
+            //    sb.Append(pdfGrupo.Receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"))); ;
+            //    sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i></td><td class='text-center'><strong>");
+            //    sb.Append(grupo.Receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            //    sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i></td><td class='text-center'><strong>");
+            //    sb.Append(editora.Receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            //    sb.Append("</strong></td></tr><tr><td><i>Receita total a ser dividida entre as editoras</i></td><td class='text-center'><strong>");
+            //    sb.Append(editora.ReceitaASerDividida.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            //    sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pela quantidade de conteúdos</i></td><td class='text-center'><strong>");
+            //    sb.Append(pdfGrupo.ValorConteudo.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            //    sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i></td><td class='text-center'><strong>");
+            //    sb.Append(pdfGrupo.ValorMaisAcessados.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            //    sb.Append("</strong></td></tr><tr><td><i>Valor total ser repassado para a editora</i></td><td class='text-center'><strong>");
+            //    sb.Append(pdfGrupo.ValorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+            //    sb.Append("</strong></td></tr></tbody></table>");
+
+            //    string myFile = HttpUtility.HtmlDecode(pdfGrupo.Grupo);
+
+            //    string myFileName = Service.RemoveAccents(myFile);
+
+            //    Service.MakePDF(pdfGrupo);
+
+            //});
 
         }
 
@@ -174,6 +241,7 @@ namespace RelatorioFinanceiroV5
             var myConn = Connection.conn();
             var _mes_referencia = ddlMesReferencia.SelectedValue;
             Session["_classificacao"] = ddlClassificacao.SelectedIndex;
+            Session["_mesReferencia"] = ddlMesReferencia.SelectedItem;
 
 
 

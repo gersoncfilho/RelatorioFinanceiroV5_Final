@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 
 namespace RelatorioFinanceiroV5.Classes
@@ -81,7 +82,6 @@ namespace RelatorioFinanceiroV5.Classes
 
         }
 
-
         public static int GetMaisAcessados(MySqlConnection myConn, int idGrupo, string mesReferencia)
         {
             //Dividir a quantidade da editora sobre a quantidade total e multiplica por 100
@@ -123,8 +123,6 @@ namespace RelatorioFinanceiroV5.Classes
             }
 
         }
-
-
 
         //Mais acessados por editora
         public static int GetMaisAcessados(MySqlConnection myConn, string mesReferencia, int idEditora)
@@ -200,8 +198,6 @@ namespace RelatorioFinanceiroV5.Classes
             }
         }
 
-
-
         public static decimal GetReceita(MySqlConnection myConn, string mes_referencia, int classificacao)
         {
             DataSet ds = new DataSet();
@@ -270,7 +266,6 @@ namespace RelatorioFinanceiroV5.Classes
                 return 0;
             }
         }
-
 
         //Popula o GridView do RelatorioPorGrupo.aspx
         public static DataTable getQuantidadeConteudoPorGrupo(string mesReferencia, int classificacao, MySqlConnection myConn)
@@ -373,7 +368,6 @@ namespace RelatorioFinanceiroV5.Classes
                 return null;
             }
         }
-
 
         public static string RemoveAccents(this string text)
         {
@@ -483,46 +477,124 @@ namespace RelatorioFinanceiroV5.Classes
 
         }
 
-       
+        //public static void MakePDF(PDFGrupo pdfGrupo)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
+        //    sb.Append(pdfGrupo.Grupo);
+        //    sb.Append("</strong></th><th width='100'><strong>");
+        //    sb.Append(pdfGrupo.MesReferencia);
+        //    sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
+        //    sb.Append(pdfGrupo.Quantidade);
+        //    sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
+        //    sb.Append(Math.Round(pdfGrupo.Percentual, 2).ToString());
+        //    sb.Append("</strong></td></tr><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Conteúdo de ref. e mais acessados</i></td><td class='text-center'><strong>");
+        //    sb.Append(pdfGrupo.QuantidadeMaisAcessados.ToString());
+        //    sb.Append("</strong></td></tr><tr><td><i>% da editora dos 10% mais acessados e referência</i></td><td class='text-center'><strong>");
+        //    sb.Append(Math.Round(pdfGrupo.PercentualMaisAcessados, 2).ToString());
+        //    sb.Append("</strong></td></tr><tr><td><i>Receita líquida total da Nuvem de Livros</i></td><td class='text-center'><strong>");
+        //    //sb.Append(grupo.Receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"))); ;
+        //    //sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i></td><td class='text-center'><strong>");
+        //    //sb.Append(grupo.Receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+        //    //sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i></td><td class='text-center'><strong>");
+        //    //sb.Append(editora.Receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+        //    //sb.Append("</strong></td></tr><tr><td><i>Receita total a ser dividida entre as editoras</i></td><td class='text-center'><strong>");
+        //    //sb.Append(editora.ReceitaASerDividida.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+        //    sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pela quantidade de conteúdos</i></td><td class='text-center'><strong>");
+        //    sb.Append(pdfGrupo.ValorConteudo.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+        //    sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i></td><td class='text-center'><strong>");
+        //    sb.Append(pdfGrupo.ValorMaisAcessados.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+        //    sb.Append("</strong></td></tr><tr><td><i>Valor total ser repassado para a editora</i></td><td class='text-center'><strong>");
+        //    sb.Append(pdfGrupo.ValorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
+        //    sb.Append("</strong></td></tr></tbody></table>");
 
-        public static void MakePDF(Editora editora)
+        //    string myFile = HttpUtility.HtmlDecode(pdfGrupo.Grupo);
+
+        //    string myFileName = Service.RemoveAccents(myFile);
+
+        //    PDFHelper.Export(sb.ToString(), "RelFin_" + pdfGrupo.MesReferencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
+
+        //}
+
+        public static DataTable GetGrupos(MySqlConnection myConn)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<table class='table table-bordered table-striped'><thead><tr><th colspan='2'><img src='http://localhost:50403/images/cabecalho.png'/></th></tr><tr><th colspan='2' style='color: #000000; background-color: #337ab7; font-size: 20px;' class='text-center'>Relatório Financeiro - Nuvem de Livros</th></tr><tr style='background-color: #b9defe'><th width='350'><strong>");
-            sb.Append(editora.NomeEditora);
-            sb.Append("</strong></th><th width='100'><strong>");
-            sb.Append(editora.Mes_Referencia);
-            sb.Append("</strong></th></tr></thead><tbody><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Quantidade de Conteúdos</i></td><td class='text-center'><strong>");
-            sb.Append(editora.Quantidade);
-            sb.Append("</strong></td></tr><tr><td><i>% da editora do total</i></td><td class='text-center'><strong>");
-            sb.Append(Math.Round(editora.Percentual_Quantidade, 2).ToString());
-            sb.Append("</strong></td></tr><tr><td colspan='2'><strong>Número de Ítens da Editora</strong></td></tr><tr><td><i>Conteúdo de ref. e mais acessados</i></td><td class='text-center'><strong>");
-            sb.Append(editora.Quant_Ref_Mais_Acessados.ToString());
-            sb.Append("</strong></td></tr><tr><td><i>% da editora dos 10% mais acessados e referência</i></td><td class='text-center'><strong>");
-            sb.Append(Math.Round(editora.Percentual_Ref_Mais_Acessados, 2).ToString());
-            sb.Append("</strong></td></tr><tr><td><i>Receita líquida total da Nuvem de Livros</i></td><td class='text-center'><strong>");
-            sb.Append(editora.Receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"))); ;
-            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelo conteúdo (20%)</i></td><td class='text-center'><strong>");
-            sb.Append(editora.Receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Receita a ser dividida entre as editoras pelas obras de referência e mais acessados (10%)</i></td><td class='text-center'><strong>");
-            sb.Append(editora.Receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Receita total a ser dividida entre as editoras</i></td><td class='text-center'><strong>");
-            sb.Append(editora.ReceitaASerDividida.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pela quantidade de conteúdos</i></td><td class='text-center'><strong>");
-            sb.Append(editora.Valor_Conteudo.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Valor a ser repassado para a editora pelas obras de referência e mais acessados</i></td><td class='text-center'><strong>");
-            sb.Append(editora.Valor_Mais_Acessados.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr><tr><td><i>Valor total ser repassado para a editora</i></td><td class='text-center'><strong>");
-            sb.Append(editora.Valor_Repasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")));
-            sb.Append("</strong></td></tr></tbody></table>");
+            DataTable dt = new DataTable();
+            try
+            {
+                myConn.Open();
+            }
+            catch (SystemException ex)
+            {
 
+                Debug.WriteLine(ex.Message);
+            }
+            if (myConn.State == System.Data.ConnectionState.Open)
+            {
+                var query = string.Format("SELECT * FROM grupos WHERE ativo = 1");
+                MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
+                myAdapter.Fill(dt);
+                myConn.Close();
+                return dt;
+            }
+            else
+            {
+                Debug.Write("Erro no acesso ao banco");
+                myConn.Close();
+                return null;
+            }
+        }
 
+        public static DataTable GetAcessos(MySqlConnection myConn, int idGrupo)
+        {
+            DataTable dt = new DataTable();
 
-            string myFile = HttpUtility.HtmlDecode(editora.NomeEditora);
+            try
+            {
+                myConn.Open();
+            }
+            catch (SystemException ex)
+            {
 
-            string myFileName = Service.RemoveAccents(myFile);
+                Debug.WriteLine(ex.Message);
+            }
+            if (myConn.State == System.Data.ConnectionState.Open)
+            {
+                var query = string.Format("SELECT * FROM acesso WHERE idGrupo = {0}", idGrupo);
+                MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
+                myAdapter.Fill(dt);
+                myConn.Close();
+                return dt;
+            }
+            else
+            {
+                Debug.Write("Erro no acesso ao banco");
+                myConn.Close();
+                return null;
+            }
 
-            PDFHelper.Export(sb.ToString(), "RelFin_" + editora.Mes_Referencia + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
+        }
+
+        public static string GetNomeGrupo(int idGrupo)
+        {
+            var myConn = Connection.conn();
+            try
+            {
+                myConn.Open();
+                var query = string.Format("select nome from grupos where id = {0}", idGrupo);
+                MySqlCommand cmd = new MySqlCommand(query, myConn);
+
+                string result = Convert.ToString(cmd.ExecuteScalar());
+                myConn.Close();
+
+                return result;
+
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine("MySql Error: " + ex.Message);
+                myConn.Close();
+                return null;
+            }
 
         }
 

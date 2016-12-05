@@ -10,132 +10,105 @@
 namespace RelatorioFinanceiroV5 {
     
     
-    public partial class Site1 {
+    public partial class RelatorioAcesso {
         
         /// <summary>
-        /// head control.
+        /// lblMes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+        protected global::System.Web.UI.WebControls.Label lblMes;
         
         /// <summary>
-        /// form1 control.
+        /// ddlMesReferencia control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.DropDownList ddlMesReferencia;
         
         /// <summary>
-        /// lblData control.
+        /// btnOK control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblData;
+        protected global::System.Web.UI.WebControls.Button btnOK;
         
         /// <summary>
-        /// liCriaRelatorio control.
+        /// pnlBodyOld control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liCriaRelatorio;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlBodyOld;
         
         /// <summary>
-        /// linkCria control.
+        /// GridViewQuantidades control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton linkCria;
+        protected global::System.Web.UI.WebControls.GridView GridViewQuantidades;
         
         /// <summary>
-        /// liGrupo control.
+        /// pnlPDF control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liGrupo;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlPDF;
         
         /// <summary>
-        /// linkRelGrupo control.
+        /// lblGrupo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton linkRelGrupo;
+        protected global::System.Web.UI.WebControls.Label lblGrupo;
         
         /// <summary>
-        /// liEditora control.
+        /// lblMesReferencia control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liEditora;
+        protected global::System.Web.UI.WebControls.Label lblMesReferencia;
         
         /// <summary>
-        /// linkRelEditora control.
+        /// GridViewAcessos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton linkRelEditora;
+        protected global::System.Web.UI.WebControls.GridView GridViewAcessos;
         
         /// <summary>
-        /// liBordero control.
+        /// btnClose control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liBordero;
+        protected global::System.Web.UI.WebControls.Button btnClose;
         
         /// <summary>
-        /// linkBordero control.
+        /// btnPDF control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton linkBordero;
-        
-        /// <summary>
-        /// liAcesso control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liAcesso;
-        
-        /// <summary>
-        /// linkAcesso control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton linkAcesso;
-        
-        /// <summary>
-        /// ContentPlaceHolder1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder1;
+        protected global::System.Web.UI.WebControls.Button btnPDF;
     }
 }
