@@ -41,12 +41,6 @@ namespace RelatorioFinanceiroV5
         public delegate void Worker();
         private static Thread worker;
 
-        public static void Init(Worker work)
-        {
-            worker = new Thread(new ThreadStart(work));
-            worker.Start();
-        }
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -133,8 +127,9 @@ namespace RelatorioFinanceiroV5
 
         protected void btnPDF_Click(object sender, EventArgs e)
         {
-            
-                MakePDF();
+
+            PDFGrupo pdfgrupo = new PDFGrupo();
+            PDFSharpHelper.CreatePDF(pdfgrupo);
           
             //MakePDF();
             
