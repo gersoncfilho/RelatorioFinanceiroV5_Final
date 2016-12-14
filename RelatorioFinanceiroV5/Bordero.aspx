@@ -13,8 +13,17 @@
                     <asp:Label CssClass="pull-right" ID="lblMesReferencia" runat="server" Text="Mês Referência" Font-Bold="true"></asp:Label>
                 </div>
                 <div class="col-md-2">
-                    <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="150" OnTextChanged="ddlMesReferencia_TextChanged" AutoPostBack="true"></asp:DropDownList>
+                    <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="150"></asp:DropDownList>
                 </div>
+
+                <div class="col-md-2">
+                    <asp:DropDownList ID="ddlClassificacao" runat="server" CssClass="form-control" Width="150"></asp:DropDownList>
+                </div>
+
+                <div class="col-md-2">
+                    <asp:Button ID="btnOK" runat="server" Text="OK" CssClass="btn btn-primary" OnClick="btnOK_Click" />
+                </div>
+
                 <div class="col-md-2">
                     <asp:Button ID="btnExporta" runat="server" CssClass="btn btn-sm btn-primary pull-left" Text="Exportar" OnClick="btnExporta_Click" />
                 </div>
@@ -43,8 +52,7 @@
                             <HeaderStyle ForeColor="White" BackColor="#006372" HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Left" />
                      </asp:BoundField>
-                     
-
+           
                 </Columns>
             </asp:GridView>
         </div>

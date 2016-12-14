@@ -22,25 +22,15 @@ namespace RelatorioFinanceiroV5
                 var myConn = Connection.conn();
                 ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
+                string[] classificacao = { "Nacional", "Internacional" };
+                ddlClassificacao.DataSource = classificacao;
+                ddlClassificacao.DataBind();
                 myConn.Close();
                 //BindGrid("Jan_16", myConn);
             }
         }
 
-        
-        protected void ddlMesReferencia_TextChanged(object sender, EventArgs e)
-        {
-            Debug.WriteLine(ddlMesReferencia.SelectedItem.ToString());
-            var myConn = Connection.conn();
-            DataTable dt = new DataTable();
-            dt = Service.GetValoresBordero(myConn, ddlMesReferencia.SelectedItem.ToString());
-            grdBordero.DataSource = dt;
-            grdBordero.DataBind();
-            myConn.Close();
-            pnlBordero.Visible = true;
-
-        }
-
+       
         protected void grdBordero_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -54,6 +44,18 @@ namespace RelatorioFinanceiroV5
         protected void btnExporta_Click(object sender, EventArgs e)
         {
             GridViewExport.Export("bordero.xls", grdBordero);
+        }
+
+        protected void btnOK_Click(object sender, EventArgs e)
+        {
+            Debug.WriteLine(ddlMesReferencia.SelectedItem.ToString());
+            var myConn = Connection.conn();
+            DataTable dt = new DataTable();
+            dt = Service.GetValoresBordero(myConn, ddlMesReferencia.SelectedItem.ToString(), ddlClassificacao.SelectedItem.ToString());
+            grdBordero.DataSource = dt;
+            grdBordero.DataBind();
+            myConn.Close();
+            pnlBordero.Visible = true;
         }
     }
 }

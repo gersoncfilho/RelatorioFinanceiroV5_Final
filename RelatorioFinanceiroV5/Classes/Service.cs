@@ -413,7 +413,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
         }
 
-        public static DataTable GetValoresBordero(MySqlConnection myConn, string mesReferencia)
+        public static DataTable GetValoresBordero(MySqlConnection myConn, string mesReferencia, string classificacao)
         {
             DataSet ds = new DataSet();
             DataTable dt = new DataTable();
@@ -428,7 +428,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                var query = string.Format("SELECT  a.editora AS Editora, a.grupo AS Grupo, SUM(a.quantidade) AS Quantidade, SUM(a.percentual) AS Percentual, SUM(a.quantidaderefxmaisacessados) AS RefXMaisAcessados, SUM(a.percentualmaisacessados) AS PercentualMaisAcessados , SUM(a.valorconteudo) AS ValorConteudo, SUM(a.valormaisacessados)AS ValorMaisAcessados, SUM(a.valor_total_repasse) AS ValorTotal  FROM bordero a INNER JOIN editoras b ON a.ideditora = b.id INNER JOIN grupos c ON a.idgrupo = c.id WHERE b.ativo = 1 AND c.ativo = 1 AND a.mes_referencia = '{0}' GROUP BY a.grupo , a.editora WITH ROLLUP;", mesReferencia);
+                var query = string.Format("SELECT a.editora AS Editora, a.grupo AS Grupo, SUM(a.quantidade) AS Quantidade, SUM(a.percentual) AS Percentual, SUM(a.quantidaderefxmaisacessados) AS RefXMaisAcessados, SUM(a.percentualmaisacessados) AS PercentualMaisAcessados , SUM(a.valorconteudo) AS ValorConteudo, SUM(a.valormaisacessados)AS ValorMaisAcessados, SUM(a.valor_total_repasse) AS ValorTotal  FROM bordero a INNER JOIN editoras b ON a.ideditora = b.id INNER JOIN grupos c ON a.idgrupo = c.id WHERE b.ativo = 1 AND c.ativo = 1 AND a.mes_referencia = '{0}' AND a.internacional = '{1}' GROUP BY a.grupo , a.editora WITH ROLLUP;", mesReferencia, classificacao);
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
