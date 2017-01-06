@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="RelatorioFinanceiroV5.Default" MasterPageFile="~/Site1.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="RelatorioFinanceiroV5.Default" MasterPageFile="./Site1.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     
@@ -16,7 +16,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Receita Mês a Mês
+                            Receita Mês a Mês - Em Reais
                           
                         </div>
                         <!-- /.panel-heading -->

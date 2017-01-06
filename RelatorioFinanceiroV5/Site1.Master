@@ -31,12 +31,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="pull-right"><p style="color: aliceblue; padding-top: 15px;"><asp:Label ID="lblData" runat="server"></asp:Label></p></div>
-                    <%--<ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>--%>
+                    
 
                 </div>
             </div>
@@ -51,6 +46,7 @@
                         <li runat="server" id="liEditora"><asp:LinkButton ID="linkRelEditora" runat="server" PostBackUrl="~/RelatorioPorEditora.aspx">Relatório por Editora</asp:LinkButton></li>
                         <li runat="server" id="liBordero"><asp:LinkButton ID="linkBordero" runat="server" PostBackUrl="~/Bordero.aspx">Borderô</asp:LinkButton></li>
                         <li runat="server" id="liAcesso"><asp:LinkButton ID="linkAcesso" runat="server" PostBackUrl="~/RelatorioAcesso.aspx">Relatório de Acesso</asp:LinkButton></li>
+                        <li runat="server" id="liGeraPDF"><asp:LinkButton ID="linkGeraPDF" runat="server" PostBackUrl="~/GeraPDF.aspx">Geração de PDFs</asp:LinkButton></li>
                         
                         <%--<li><a href="#">Analytics</a></li>
                         <li><a href="#">Export</a></li>--%>

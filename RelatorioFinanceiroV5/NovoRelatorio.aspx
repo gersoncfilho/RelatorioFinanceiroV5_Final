@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="NovoRelatorio.aspx.cs" Inherits="RelatorioFinanceiroV5.NovoRelatorio" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="./Site1.Master" AutoEventWireup="true" CodeBehind="NovoRelatorio.aspx.cs" Inherits="RelatorioFinanceiroV5.NovoRelatorio" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>

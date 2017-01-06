@@ -1,4 +1,4 @@
-﻿<%@ Language="C#" AutoEventWireup="true" CodeBehind="RelatorioPorGrupo.aspx.cs" Inherits="RelatorioFinanceiroV5.RelatorioPorGrupo" MasterPageFile="~/Site1.Master" %>
+﻿<%@ Language="C#" AutoEventWireup="true" CodeBehind="RelatorioPorGrupo.aspx.cs" Inherits="RelatorioFinanceiroV5.RelatorioPorGrupo" MasterPageFile="./Site1.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script src="Scripts/jquery-2.2.3.js"></script>

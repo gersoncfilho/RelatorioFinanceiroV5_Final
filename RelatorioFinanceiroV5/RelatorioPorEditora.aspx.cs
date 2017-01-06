@@ -23,13 +23,18 @@ namespace RelatorioFinanceiroV5
         private decimal _valorPorQuantidade = 0m;
         private decimal _valorPorAcesso = 0m;
         private decimal _valorTotalRepasse = 0m;
+        private decimal _receita;
+
+        private string _local = "pt-BR";
+
+        public int _moeda = 1; //1-Real, 2-US$, 3-Euro
 
         protected void Page_Load(object sender, EventArgs e)
         {
             var myConn = Connection.conn();
             _quantidadeTotal = Service.QuantidadeTotal(myConn, "Fev_16");
 
-            string[] classificacao = { "Nacional", "Internacional" };
+            string[] classificacao = { "Nuvem de Livros", "Nube de Libros" };
 
             Debug.WriteLine("Quantidade total: " + _quantidadeTotal);
 
@@ -76,10 +81,19 @@ namespace RelatorioFinanceiroV5
                 var myConn = Connection.conn();
                 int index = Convert.ToInt32(e.CommandArgument);
                 GridViewRow row = GridViewQuantidades.Rows[index];
-                decimal _receita = Service.GetReceita(myConn, row.Cells[1].Text, Convert.ToInt16(Session["_classificacao"]));
+                if (Convert.ToInt16(Session["_classificacao"]) == 1)
+                {
+                    _moeda = 2; //US$
+                }
+                _receita = Service.GetReceita(myConn, row.Cells[1].Text, _moeda);
                 decimal _receita20 = Math.Round((decimal)_receita * (decimal)0.2, 6);
                 decimal _receita10 = Math.Round((decimal)_receita * (decimal)0.1, 6);
                 decimal _valorTotal = _receita10 + _receita20;
+
+                if (Convert.ToInt16(Session["_classificacao"]) == 1)
+                {
+                    _local = "en-US";
+                }
 
                 lblGrupo.Text = row.Cells[0].Text;
                 lblMes.Text = row.Cells[1].Text;
@@ -87,10 +101,10 @@ namespace RelatorioFinanceiroV5
                 lblPercentualEditoraTotal.Text = row.Cells[3].Text;
                 lblTotalRefMaisAcessados.Text = row.Cells[4].Text;
                 lblPercentual10MaisAcessados.Text = row.Cells[5].Text;
-                lblReceita.Text = _receita.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-                lblReceitaTotalASerDividida.Text = _valorTotal.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-                lblReceita_20.Text = _receita20.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
-                lblReceita_10.Text = _receita10.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR"));
+                lblReceita.Text = _receita.ToString("C2", CultureInfo.CreateSpecificCulture(_local));
+                lblReceitaTotalASerDividida.Text = _valorTotal.ToString("C2", CultureInfo.CreateSpecificCulture(_local));
+                lblReceita_20.Text = _receita20.ToString("C2", CultureInfo.CreateSpecificCulture(_local));
+                lblReceita_10.Text = _receita10.ToString("C2", CultureInfo.CreateSpecificCulture(_local));
                 lblValorRepasseQuantidade.Text = row.Cells[6].Text;
                 lblValorRepasseRefMaisAcessados.Text = row.Cells[7].Text;
                 lblValorTotalRepasse.Text = row.Cells[8].Text;
@@ -191,13 +205,17 @@ namespace RelatorioFinanceiroV5
 
             if (e.Row.RowType == DataControlRowType.Footer)
             {
+                if (Convert.ToInt16(Session["_classificacao"]) == 1)
+                {
+                    _local = "en-US";
+                }
                 e.Row.Cells[2].Text = _quantidadeTotal.ToString();
                 e.Row.Cells[3].Text = Math.Round(_percentualTotal, 2).ToString();
                 e.Row.Cells[4].Text = _quantidadeMaisTotal.ToString();
                 e.Row.Cells[5].Text = Math.Round(_percentualReferenciaMaisAcessado, 2).ToString();
-                e.Row.Cells[6].Text = _valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-                e.Row.Cells[7].Text = _valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
-                e.Row.Cells[8].Text = _valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture("pt-BR")); ;
+                e.Row.Cells[6].Text = _valorPorQuantidade.ToString("C2", CultureInfo.CreateSpecificCulture(_local)); ;
+                e.Row.Cells[7].Text = _valorPorAcesso.ToString("C2", CultureInfo.CreateSpecificCulture(_local)); ;
+                e.Row.Cells[8].Text = _valorTotalRepasse.ToString("C2", CultureInfo.CreateSpecificCulture(_local)); ;
             }
         }
     }

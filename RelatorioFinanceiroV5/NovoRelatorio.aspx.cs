@@ -19,7 +19,7 @@ namespace RelatorioFinanceiroV5
             if (!this.IsPostBack)
             {
                 string[] _mes_referencia = { "Jan_16", "Fev_16", "Mar_16", "Abr_16", "Mai_16", "Jun_16", "Jul_16", "Ago_16", "Set_16", "Out_16", "Nov_16", "Dez_16" };
-                string[] _classificacao = { "Nacional", "Internacional" };
+                string[] _classificacao = { "Nuvel de Livros", "Nube de Libros" };
 
                 ddlMes.DataSource = _mes_referencia;
                 ddlMes.DataBind();
@@ -97,7 +97,7 @@ namespace RelatorioFinanceiroV5
             {
                 myConn.Open();
 
-                query = string.Format("select count(mes_referencia) from bordero where mes_referencia = '{0}' and internacional = 0", _mes_referencia);
+                query = string.Format("select count(mes_referencia) from bordero where mes_referencia = '{0}' and (id_classificacao = 1 OR id_classificacao = 3)", _mes_referencia);
 
                 MySqlCommand cmd = new MySqlCommand(query, myConn);
 
@@ -130,7 +130,7 @@ namespace RelatorioFinanceiroV5
             {
                 myConn.Open();
 
-                query = string.Format("select count(mes_referencia) from bordero where mes_referencia = '{0}' and internacional = 1", _mes_referencia);
+                query = string.Format("select count(mes_referencia) from bordero where mes_referencia = '{0}' and (id_classificacao = 2 or id_classificacao = 3)", _mes_referencia);
 
                 MySqlCommand cmd = new MySqlCommand(query, myConn);
 
@@ -232,7 +232,8 @@ namespace RelatorioFinanceiroV5
             {
                 PanelInfo.Visible = true;
             }
-            else {
+            else
+            {
 
                 Debug.WriteLine("Relatório inexistente");
                 PanelAcoes.Visible = true;
@@ -315,9 +316,6 @@ namespace RelatorioFinanceiroV5
                 }
 
             }
-
-
-            
         }
 
 
@@ -566,7 +564,5 @@ namespace RelatorioFinanceiroV5
         }
 
         #endregion
-
-
     }
 }

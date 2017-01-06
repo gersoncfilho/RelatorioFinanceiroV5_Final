@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RelatorioPorEditora.aspx.cs" Inherits="RelatorioFinanceiroV5.RelatorioPorEditora" MasterPageFile="~/Site1.Master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RelatorioPorEditora.aspx.cs" Inherits="RelatorioFinanceiroV5.RelatorioPorEditora" MasterPageFile="./Site1.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script src="Scripts/jquery-2.2.3.js"></script>

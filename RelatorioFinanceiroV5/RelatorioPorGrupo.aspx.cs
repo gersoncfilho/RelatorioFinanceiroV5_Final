@@ -25,7 +25,7 @@ namespace RelatorioFinanceiroV5
     {
 
         private string local = "pt-BR";
-        
+
         private decimal _totalPercentual = 0m;
         private int _quantidadeTotal = 0;
         private decimal _percentualTotal = 0m;
@@ -35,29 +35,29 @@ namespace RelatorioFinanceiroV5
         private decimal _valorPorAcesso = 0m;
         private decimal _valorTotalRepasse = 0m;
         private const int round = 6;
+        private const int _moeda = 2; //1-Real, 2-US$, 3-Euro
         //private int _classificacao;
         private List<Grupo> grupos = new List<Grupo>();
 
-        public delegate void Worker();
-        private static Thread worker;
-
-
         protected void Page_Load(object sender, EventArgs e)
         {
-
             var myConn = Connection.conn();
-            _quantidadeTotal = Service.QuantidadeTotal(myConn, "Fev_16");
-            string[] classificacao = { "Nacional", "Internacional" };
+            _quantidadeTotal = Service.QuantidadeTotal(myConn, "Abr_16");
+            string[] classificacao = { "Nuvem de Livros", "Nube de Libros" };
             Debug.WriteLine("Quantidade total: " + _quantidadeTotal);
 
             if (!this.IsPostBack)
             {
                 ddlClassificacao.DataSource = classificacao;
                 ddlClassificacao.DataBind();
+               
 
                 ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
-                BindGrid("Jan_16", 0, myConn);
+                ddlMesReferencia.SelectedIndex = 4;
+
+
+                BindGrid("Mai_16", 1, myConn);
                 pnlBodyOld.Visible = true;
                 myConn.Close();
             }
@@ -92,8 +92,8 @@ namespace RelatorioFinanceiroV5
                 lblTotalRefMaisAcessados.Text = row.Cells[4].Text;
                 lblPercentual10MaisAcessados.Text = row.Cells[5].Text;
 
-                decimal receita = Service.GetReceita(myConn, row.Cells[1].Text, Convert.ToInt16(Session["_classificacao"]));
-                if(Convert.ToInt16(Session["_classificacao"]) > 0)
+                decimal receita = Service.GetReceita(myConn, row.Cells[1].Text, _moeda);
+                if (Convert.ToInt16(Session["_classificacao"]) > 0)
                 {
                     local = "en-US";
                 }
@@ -127,12 +127,12 @@ namespace RelatorioFinanceiroV5
 
         protected void btnPDF_Click(object sender, EventArgs e)
         {
-
+            Debug.WriteLine(e);
             PDFGrupo pdfgrupo = new PDFGrupo();
-            PDFSharpHelper.CreatePDF(pdfgrupo);
-          
+            //PDFSharpHelper.CreatePDF(pdfgrupo);
+
             //MakePDF();
-            
+
             //var myConn = Connection.conn();
             //System.Data.DataTable dtGrupos = new System.Data.DataTable();
             //dtGrupos = Service.getQuantidadeConteudoPorGrupo(Session["_mesReferencia"].ToString(), Convert.ToInt16(Session["_classificacao"]), myConn);
@@ -235,7 +235,7 @@ namespace RelatorioFinanceiroV5
         {
             var myConn = Connection.conn();
             var _mes_referencia = ddlMesReferencia.SelectedValue;
-            Session["_classificacao"] = ddlClassificacao.SelectedIndex;
+            Session["_classificacao"] = ddlClassificacao.SelectedIndex + 1;
             Session["_mesReferencia"] = ddlMesReferencia.SelectedItem;
 
 
@@ -265,7 +265,7 @@ namespace RelatorioFinanceiroV5
 
         protected void GridViewQuantidades_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            
+
             if (!e.Row.RowIndex.Equals(-1))
             {
                 int pdfOk = Convert.ToInt32(e.Row.Cells[10].Text);
@@ -278,7 +278,7 @@ namespace RelatorioFinanceiroV5
                 decimal valorConteudo = Convert.ToDecimal(e.Row.Cells[6].Text);
                 decimal valorMaisAcessados = Convert.ToDecimal(e.Row.Cells[7].Text);
                 decimal valorTotalRepasse = Convert.ToDecimal(e.Row.Cells[8].Text);
-                
+
 
                 _quantidadeTotal = _quantidadeTotal + quantidade;
                 _percentualTotal = _percentualTotal + percentual;
@@ -293,7 +293,7 @@ namespace RelatorioFinanceiroV5
 
             if (e.Row.RowType == DataControlRowType.Footer)
             {
-                if ( Convert.ToInt16(Session["_classificacao"]) == 1)
+                if (Convert.ToInt16(Session["_classificacao"]) == 2)
                 {
                     local = "en-US";
                 }

@@ -14,15 +14,13 @@ namespace RelatorioFinanceiroV5
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-
             if (!this.IsPostBack)
             {
                 pnlBordero.Visible = false;
                 var myConn = Connection.conn();
                 ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
-                string[] classificacao = { "Nacional", "Internacional" };
+                string[] classificacao = { "Nuvem de Livros", "Nube de Libros" };
                 ddlClassificacao.DataSource = classificacao;
                 ddlClassificacao.DataBind();
                 myConn.Close();
@@ -51,7 +49,7 @@ namespace RelatorioFinanceiroV5
             Debug.WriteLine(ddlMesReferencia.SelectedItem.ToString());
             var myConn = Connection.conn();
             DataTable dt = new DataTable();
-            dt = Service.GetValoresBordero(myConn, ddlMesReferencia.SelectedItem.ToString(), ddlClassificacao.SelectedItem.ToString());
+            dt = Service.GetValoresBordero(myConn, ddlMesReferencia.SelectedItem.ToString(), ddlClassificacao.SelectedIndex);
             grdBordero.DataSource = dt;
             grdBordero.DataBind();
             myConn.Close();
