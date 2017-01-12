@@ -19,7 +19,7 @@ namespace RelatorioFinanceiroV5
 
             if (!this.IsPostBack)
             {
-                ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
+                ddlMesReferencia.DataSource = Services.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
 
                 Session["_mesReferencia"] = "Jul.16";
@@ -37,7 +37,7 @@ namespace RelatorioFinanceiroV5
             using (conn)
             {
                 
-                dt = Service.GetGrupos(conn);
+                dt = Services.GetGrupos(conn);
                 GridViewQuantidades.DataSource = dt;
                 GridViewQuantidades.DataBind();
             }
@@ -61,12 +61,12 @@ namespace RelatorioFinanceiroV5
 
                 //lblMesReferencia.Text = row.Cells[3].Text;
 
-                lblGrupo.Text = Service.GetNomeGrupo(idGrupo);
+                lblGrupo.Text = Services.GetNomeGrupo(idGrupo);
                
 
                 DataTable acessoGrupo = new DataTable();
 
-                acessoGrupo = Service.GetAcessos(myConn, idGrupo);
+                acessoGrupo = Services.GetAcessos(myConn, idGrupo);
 
                 lblMesReferencia.Text = acessoGrupo.Rows[0].Field<string>("mesReferencia");
 

@@ -18,8 +18,8 @@
                 <div class="col-md-2 text-center">
                     <asp:Label ID="lblMesReferencia" runat="server" Text="Mês Referência" Font-Bold="true"></asp:Label>
                 </div>
-                <div class="col-md-3">
-                    <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="100"></asp:DropDownList>                
+                <div class="col-md-2">
+                    <asp:DropDownList ID="ddlMesReferencia" runat="server" CssClass="form-control" Width="150"></asp:DropDownList>                
                 </div>
 
                 <div class="col-md-2 text-center">
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <asp:DropDownList ID="ddlClassificacao" runat="server" CssClass="form-control" Width="120"></asp:DropDownList>                
+                    <asp:DropDownList ID="ddlClassificacao" runat="server" CssClass="form-control" Width="180"></asp:DropDownList>                
                 </div>
 
                 <div class="col-md-2">

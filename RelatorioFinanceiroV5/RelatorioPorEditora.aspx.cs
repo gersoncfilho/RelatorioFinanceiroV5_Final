@@ -32,7 +32,7 @@ namespace RelatorioFinanceiroV5
         protected void Page_Load(object sender, EventArgs e)
         {
             var myConn = Connection.conn();
-            _quantidadeTotal = Service.QuantidadeTotal(myConn, "Fev_16");
+            _quantidadeTotal = Services.QuantidadeTotal(myConn, "Fev_16");
 
             string[] classificacao = { "Nuvem de Livros", "Nube de Libros" };
 
@@ -43,7 +43,7 @@ namespace RelatorioFinanceiroV5
                 ddlClassificacao.DataSource = classificacao;
                 ddlClassificacao.DataBind();
 
-                ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
+                ddlMesReferencia.DataSource = Services.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
                 BindGrid("Jan_16", 0,  myConn);
                 pnlbody.Visible = true;
@@ -56,7 +56,7 @@ namespace RelatorioFinanceiroV5
             DataTable dt = new DataTable();
             using (conn)
             {
-                dt = Service.getQuantidadeConteudoPorEditora(mesReferencia, classificacao,  conn);
+                dt = Services.getQuantidadeConteudoPorEditora(mesReferencia, classificacao,  conn);
 
 
                 using (dt)
@@ -85,7 +85,7 @@ namespace RelatorioFinanceiroV5
                 {
                     _moeda = 2; //US$
                 }
-                _receita = Service.GetReceita(myConn, row.Cells[1].Text, _moeda);
+                _receita = Services.GetReceita(myConn, row.Cells[1].Text, _moeda);
                 decimal _receita20 = Math.Round((decimal)_receita * (decimal)0.2, 6);
                 decimal _receita10 = Math.Round((decimal)_receita * (decimal)0.1, 6);
                 decimal _valorTotal = _receita10 + _receita20;

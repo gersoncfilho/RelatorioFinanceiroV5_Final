@@ -97,7 +97,7 @@ namespace RelatorioFinanceiroV5
             {
                 myConn.Open();
 
-                query = string.Format("select count(mes_referencia) from bordero where mes_referencia = '{0}' and (id_classificacao = 1 OR id_classificacao = 3)", _mes_referencia);
+                query = string.Format("select count(mes_referencia) from bordero where mes_referencia = '{0}' and (id_classificacao = 1 OR id_classificacao = 2 OR id_classificacao = 3)", _mes_referencia);
 
                 MySqlCommand cmd = new MySqlCommand(query, myConn);
 

@@ -20,7 +20,7 @@ namespace RelatorioFinanceiroV5.Classes
         {
             var myConn = Connection.conn();
 
-            decimal receita = Service.GetReceita(myConn, pdfgrupo.MesReferencia, _classificacao);
+            decimal receita = Services.GetReceita(myConn, pdfgrupo.MesReferencia, _classificacao);
             decimal receita20 = Math.Round((decimal)receita * (decimal)0.2, 6);
             decimal receita10 = Math.Round((decimal)receita * (decimal)0.1, 6);
             decimal receita30 = receita10 + receita20;
@@ -154,7 +154,7 @@ namespace RelatorioFinanceiroV5.Classes
 
             string myFile = HttpUtility.HtmlDecode(pdfgrupo.Grupo);
 
-            string myFileName = Service.RemoveAccents(myFile);
+            string myFileName = Services.RemoveAccents(myFile);
 
 
             string filename = @"c:\teste\" + "RelFin_" + pdfgrupo.MesReferencia + "_" + myFileName + ".pdf";

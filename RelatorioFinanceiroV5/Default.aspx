@@ -13,22 +13,39 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Receita Mês a Mês - Em Reais
-                          
+                            Receita Mês a Mês - Nuvem de Livros                        
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="flot-chart">
-                                <div class="flot-chart-content"  id="receitaMesMes"></div>
+                                <div class="flot-chart-content"  id="receitaNuvemDeLivros"></div>
                             </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                 </div>
+
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Receita Mês a Mês - Nube de Libros                    
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="flot-chart">
+                                <div class="flot-chart-content"  id="receitaNubeDeLibros"></div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+
                 <!-- /.col-lg-12 -->
                 <div class="col-lg-6">
                     <div class="panel panel-default">
@@ -112,7 +129,7 @@
             </div>
             <!-- /.row -->
 
-    <script src="Scripts/jquery-2.2.3.min.js"></script>
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         $(function () {
@@ -135,7 +152,7 @@
             });
         })
         //Variavel global para reter a informacao
-        google.charts.load('visualization', '1', { packages: ['corechart'] });
+        google.charts.load('visualization', '1', { packages: ['corechart','table'] });
 
         google.charts.setOnLoadCallback(drawchart);
 
@@ -156,7 +173,7 @@
                 'is3D': true
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('receitaMesMes'));
+            var chart = new google.visualization.ColumnChart(document.getElementById('receitaNuvemDeLivros'));
             chart.draw(data, options);
         }
 

@@ -13,10 +13,14 @@ namespace RelatorioFinanceiroV5
 {
     public partial class GeraPDF : System.Web.UI.Page
     {
+        int _idMoeda;
+        int _classificacao;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var myConn = Connection.conn();
             string[] classificacao = { "Nuvem de Livros", "Nube de Libros" };
+            
 
 
             if (!this.IsPostBack)
@@ -24,7 +28,7 @@ namespace RelatorioFinanceiroV5
                 ddlClassificacao.DataSource = classificacao;
                 ddlClassificacao.DataBind();
 
-                ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
+                ddlMesReferencia.DataSource = Services.getMesReferencia(myConn);
                 ddlMesReferencia.DataBind();
                 pnlBodyOld.Visible = true;
                 myConn.Close();
@@ -34,11 +38,25 @@ namespace RelatorioFinanceiroV5
         protected void btnOK_Click(object sender, EventArgs e)
         {
             var myConn = Connection.conn();
-            dynamic _quantidade;
-            Session["_classificacao"] = ddlClassificacao.SelectedIndex +1;
+            //dynamic _quantidade;
+
+
+            if (ddlClassificacao.SelectedIndex == 0)
+            {
+                _idMoeda = 1;
+                _classificacao = 0;
+            }
+            else
+            {
+                _idMoeda = 2;
+                _classificacao = 1;
+            }
+
             Session["_mesReferencia"] = ddlMesReferencia.SelectedValue;
             DataTable editoras = new DataTable();
-            editoras = Service.GetValoresBordero(myConn,ddlMesReferencia.SelectedValue, (Convert.ToInt16(Session["_classificacao"])));
+            //editoras = Services.GetValoresBordero(myConn,ddlMesReferencia.SelectedValue, (Convert.ToInt16(Session["_classificacao"])));
+
+            editoras = Services.getQuantidadeConteudoPorGrupo(ddlMesReferencia.SelectedValue, _classificacao, myConn);
 
             if (editoras != null)
             {
@@ -46,19 +64,19 @@ namespace RelatorioFinanceiroV5
                 {
                     //_quantidade = row.ItemArray("Quantidade");
                     PDFGrupo editora = new PDFGrupo();
-                    editora.Grupo = row.ItemArray[0].ToString();
+                    editora.Grupo = row.ItemArray[2].ToString();
                     editora.MesReferencia = Session["_mesReferencia"].ToString();
-                    editora.Quantidade = Convert.ToInt32(row.ItemArray[2].ToString());
-                    editora.Percentual = Convert.ToDecimal(row.ItemArray[3].ToString());
-                    editora.QuantidadeMaisAcessados = Convert.ToInt32(row.ItemArray[4].ToString());
-                    editora.PercentualMaisAcessados = Convert.ToDecimal(row.ItemArray[5].ToString());
-                    editora.ValorConteudo = Convert.ToDecimal(row.ItemArray[6].ToString());
-                    editora.ValorMaisAcessados = Convert.ToDecimal(row.ItemArray[7].ToString());
-                    editora.ValorTotalRepasse = Convert.ToDecimal(row.ItemArray[8].ToString());
+                    editora.Quantidade = Convert.ToInt32(row.ItemArray[3].ToString());
+                    editora.Percentual = Convert.ToDecimal(row.ItemArray[4].ToString());
+                    editora.QuantidadeMaisAcessados = Convert.ToInt32(row.ItemArray[5].ToString());
+                    editora.PercentualMaisAcessados = Convert.ToDecimal(row.ItemArray[6].ToString());
+                    editora.ValorConteudo = Convert.ToDecimal(row.ItemArray[7].ToString());
+                    editora.ValorMaisAcessados = Convert.ToDecimal(row.ItemArray[8].ToString());
+                    editora.ValorTotalRepasse = Convert.ToDecimal(row.ItemArray[9].ToString());
 
                     Debug.WriteLine(editora);
 
-                    PDFSharpHelper.CreatePDF(editora, Convert.ToInt16(Session["_classificacao"]));
+                    PDFSharpHelper.CreatePDF(editora, _idMoeda);
 
                 }
             }

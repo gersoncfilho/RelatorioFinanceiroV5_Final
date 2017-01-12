@@ -22,7 +22,7 @@ namespace RelatorioFinanceiroV5
         {
             var myConn = Connection.conn();
             DataTable dt = new DataTable();
-            dt = Service.GetReceitaGrafico(myConn);
+            dt = Services.GetReceitaGrafico(myConn);
             List<ReceitaChartDetails> dataList = new List<ReceitaChartDetails>();
             foreach (DataRow dtRow in dt.Rows)
             {

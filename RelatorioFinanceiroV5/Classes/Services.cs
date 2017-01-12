@@ -12,7 +12,7 @@ using System.Web;
 
 namespace RelatorioFinanceiroV5.Classes
 {
-    public static class Service
+    public static class Services
     {
         //Popula  DropDownList Mes de Referencia
         public static List<String> getMesReferencia(MySqlConnection myConn)
@@ -285,7 +285,8 @@ namespace RelatorioFinanceiroV5.Classes
             if (myConn.State == System.Data.ConnectionState.Open)
             {
 
-                query = string.Format(@"SELECT idGrupo, mes_referencia, grupo, SUM(quantidade) quantidade, SUM(percentual) percentual, SUM(quantidaderefxmaisacessados) quantidademaisacessados, SUM(percentualmaisacessados) percentualmaisacessados, SUM(valorconteudo) valorconteudo, SUM(valormaisacessados) valormaisacessados, SUM(valor_total_repasse) valortotalrepasse, idGrupo, pdfOk, id_classificacao FROM bordero WHERE mes_referencia = '{0}' AND (id_classificacao = '{1}' or id_classificacao = 3) GROUP BY grupo ORDER BY idGrupo", mesReferencia, classificacao);
+                //query = string.Format(@"SELECT idGrupo, mes_referencia, grupo, SUM(quantidade) quantidade, SUM(percentual) percentual, SUM(quantidaderefxmaisacessados) quantidademaisacessados, SUM(percentualmaisacessados) percentualmaisacessados, SUM(valorconteudo) valorconteudo, SUM(valormaisacessados) valormaisacessados, SUM(valor_total_repasse) valortotalrepasse, idGrupo, pdfOk, id_classificacao FROM bordero WHERE mes_referencia = '{0}' AND (id_classificacao = '{1}' or id_classificacao = 3) GROUP BY grupo ORDER BY idGrupo", mesReferencia, classificacao);
+                query = string.Format(@"SELECT idGrupo, mes_referencia, grupo, SUM(quantidade) quantidade, SUM(percentual) percentual, SUM(quantidaderefxmaisacessados) quantidademaisacessados, SUM(percentualmaisacessados) percentualmaisacessados, SUM(valorconteudo) valorconteudo, SUM(valormaisacessados) valormaisacessados, SUM(valor_total_repasse) valortotalrepasse, idGrupo, pdfOk, id_classificacao FROM bordero WHERE mes_referencia = '{0}' AND internacional = '{1}' GROUP BY grupo ORDER BY idGrupo", mesReferencia, classificacao);
 
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
@@ -329,7 +330,7 @@ namespace RelatorioFinanceiroV5.Classes
             {
 
 
-                query = string.Format("SELECT mes_referencia, editora, quantidade, percentual,  quantidaderefxmaisacessados,  percentualmaisacessados, valorconteudo, valormaisacessados, valor_total_repasse, idEditora, idGrupo FROM bordero WHERE mes_referencia = '{0}' AND (id_classificacao = '{1}' or id_classificacao = 3) ORDER BY idGrupo", mesReferencia, id_classificacao);
+                query = string.Format("SELECT mes_referencia, editora, quantidade, percentual,  quantidaderefxmaisacessados,  percentualmaisacessados, valorconteudo, valormaisacessados, valor_total_repasse, idEditora, idGrupo FROM bordero WHERE mes_referencia = '{0}' AND internacional = '{1}' ORDER BY idGrupo", mesReferencia, id_classificacao);
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 Debug.WriteLine("");
@@ -380,7 +381,7 @@ namespace RelatorioFinanceiroV5.Classes
             }
             if (myConn.State == System.Data.ConnectionState.Open)
             {
-                string query = "select receita, mes_referencia from receita";
+                string query = "select receita, mes_referencia from receita where id_moeda = 1";
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(query, myConn);
                 myAdapter.Fill(ds);
                 dt = ds.Tables[0];

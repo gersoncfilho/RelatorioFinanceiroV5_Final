@@ -16,6 +16,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.Office.Interop.Excel;
 using System.Drawing;
+using RelatorioFinanceiroV5.Classes.Service;
 
 namespace RelatorioFinanceiroV5
 {
@@ -42,22 +43,25 @@ namespace RelatorioFinanceiroV5
         protected void Page_Load(object sender, EventArgs e)
         {
             var myConn = Connection.conn();
-            _quantidadeTotal = Service.QuantidadeTotal(myConn, "Abr_16");
+            _quantidadeTotal = Services.QuantidadeTotal(myConn, "Abr_16");
             string[] classificacao = { "Nuvem de Livros", "Nube de Libros" };
             Debug.WriteLine("Quantidade total: " + _quantidadeTotal);
 
             if (!this.IsPostBack)
             {
+             
+
                 ddlClassificacao.DataSource = classificacao;
                 ddlClassificacao.DataBind();
-               
 
-                ddlMesReferencia.DataSource = Service.getMesReferencia(myConn);
+
+                ddlMesReferencia.DataSource = Services.getMesReferencia(myConn);
+                //ddlMesReferencia.DataSource = DbService.LoadMesReferencia();
                 ddlMesReferencia.DataBind();
                 ddlMesReferencia.SelectedIndex = 4;
 
 
-                BindGrid("Mai_16", 1, myConn);
+                BindGrid("Mai_16", 0, myConn);
                 pnlBodyOld.Visible = true;
                 myConn.Close();
             }
@@ -69,7 +73,7 @@ namespace RelatorioFinanceiroV5
             System.Data.DataTable dt = new System.Data.DataTable();
             using (conn)
             {
-                dt = Service.getQuantidadeConteudoPorGrupo(mesReferencia, classificacao, conn);
+                dt = Services.getQuantidadeConteudoPorGrupo(mesReferencia, classificacao, conn);
                 GridViewQuantidades.DataSource = dt;
                 GridViewQuantidades.DataBind();
             }
@@ -92,7 +96,7 @@ namespace RelatorioFinanceiroV5
                 lblTotalRefMaisAcessados.Text = row.Cells[4].Text;
                 lblPercentual10MaisAcessados.Text = row.Cells[5].Text;
 
-                decimal receita = Service.GetReceita(myConn, row.Cells[1].Text, _moeda);
+                decimal receita = Services.GetReceita(myConn, row.Cells[1].Text, _moeda);
                 if (Convert.ToInt16(Session["_classificacao"]) > 0)
                 {
                     local = "en-US";
@@ -225,7 +229,7 @@ namespace RelatorioFinanceiroV5
 
             string myFile = HttpUtility.HtmlDecode(lblGrupo.Text);
 
-            string myFileName = Service.RemoveAccents(myFile);
+            string myFileName = Services.RemoveAccents(myFile);
 
             PDFHelper.Export(sb.ToString(), "RelFin_" + lblMes.Text + "_" + myFileName + ".pdf", "~/Content/bootstrap.css");
 
@@ -235,21 +239,21 @@ namespace RelatorioFinanceiroV5
         {
             var myConn = Connection.conn();
             var _mes_referencia = ddlMesReferencia.SelectedValue;
-            Session["_classificacao"] = ddlClassificacao.SelectedIndex + 1;
+            Session["_classificacao"] = ddlClassificacao.SelectedIndex;
             Session["_mesReferencia"] = ddlMesReferencia.SelectedItem;
 
 
 
             Debug.WriteLine(_mes_referencia);
             BindGrid(_mes_referencia, Convert.ToInt16(Session["_classificacao"]), myConn);
-            _totalPercentual = Service.QuantidadeTotal(myConn, _mes_referencia);
+            _totalPercentual = Services.QuantidadeTotal(myConn, _mes_referencia);
         }
 
 
         #region Methods
         private decimal getPercentualPorQuantidade(MySqlConnection myConn, string mes_referencia, int quantidade)
         {
-            int quantidadeTotal = Service.QuantidadeTotal(myConn, mes_referencia);
+            int quantidadeTotal = Services.QuantidadeTotal(myConn, mes_referencia);
             decimal percentual = Math.Round(quantidade / (decimal)quantidadeTotal * 100, 6);
             return percentual;
 
