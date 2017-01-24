@@ -2,6 +2,7 @@
 using RelatorioFinanceiroV5.Classes;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
@@ -93,15 +94,18 @@ namespace RelatorioFinanceiroV5
         {
             var myConn = Connection.conn();
             string query = null;
+            DataSet ds = new DataSet();
             try
             {
                 myConn.Open();
 
-                query = string.Format("select count(mes_referencia) from bordero where mes_referencia = '{0}' and (id_classificacao = 1 OR id_classificacao = 2 OR id_classificacao = 3)", _mes_referencia);
+                query = string.Format("select count(*) from bordero where mes_referencia = '{0}'", _mes_referencia);
 
                 MySqlCommand cmd = new MySqlCommand(query, myConn);
 
                 int result = Convert.ToInt32(cmd.ExecuteScalar());
+
+
                 myConn.Close();
 
                 if (result > 0)

@@ -46,7 +46,6 @@ namespace RelatorioFinanceiroV5
 
         protected void btnOK_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine(ddlMesReferencia.SelectedItem.ToString());
             var myConn = Connection.conn();
             DataTable dt = new DataTable();
             dt = Services.GetValoresBordero(myConn, ddlMesReferencia.SelectedItem.ToString(), ddlClassificacao.SelectedIndex);

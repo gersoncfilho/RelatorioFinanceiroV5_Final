@@ -14,7 +14,7 @@
                 <asp:label id="lblMesReferencia" runat="server" text="Mês Referência" font-bold="true"></asp:label>
             </div>
             <div class="col-md-3">
-                <asp:dropdownlist id="ddlMesReferencia" runat="server" cssclass="form-control" width="100"></asp:dropdownlist>
+                <asp:dropdownlist id="ddlMesReferencia" runat="server" cssclass="form-control" width="100" name="Mes Referencia"></asp:dropdownlist>
             </div>
 
             <div class="col-md-2 text-center">
