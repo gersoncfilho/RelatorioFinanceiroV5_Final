@@ -1,5 +1,4 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="RelatorioFinanceiroV5.Site1" %>
-<%@ Register Src="~/UserControl/AutoRedirect.ascx" TagName="AutoRedirect" TagPrefix="uc1" %>
 
 <!DOCTYPE html>
 
@@ -18,11 +17,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
-
-    <uc1:AutoRedirect ID="AutoRedirect1" runat="server" />
     
     <form id="form1" runat="server">
-        
         <asp:ScriptManager runat="server" />
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">

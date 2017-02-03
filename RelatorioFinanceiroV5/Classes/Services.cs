@@ -551,7 +551,40 @@ namespace RelatorioFinanceiroV5.Classes
 
         }
 
+        public static Usuario ValidaUsuario(string nome, string senha)
+        {
+            var query = string.Format("select id, nomeUsuario, senha, perfil from users where nomeUsuario = '{0}' and senha = '{1}'", nome, senha);
+            DataTable dt = new DataTable();
+            var myConn = Connection.conn();
+
+            try
+            {
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, myConn);
+                adapter.Fill(dt);
+                myConn.Close();
+
+                if (dt.Rows.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    Usuario usuario = new Usuario();
+                    usuario.Id = Convert.ToInt32(dt.Rows[0]["id"]);
+                    usuario.NomeUsuario = dt.Rows[0]["nomeUsuario"].ToString();
+                    usuario.Senha = dt.Rows[0]["senha"].ToString();
+                    usuario.Perfil = Convert.ToInt32(dt.Rows[0]["perfil"]);
+                    return usuario;
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine("MySql Error: " + ex.Message);
+                myConn.Close();
+                return null;
+            }
+
+        }
+
     }
-
-
 }

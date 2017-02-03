@@ -116,6 +116,7 @@
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\morris.css" />
     <Content Include="Content\sb-admin-2.css" />
+    <Content Include="Content\signin.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -133,6 +134,7 @@
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <Content Include="SignIn.aspx" />
     <Content Include="Site1.Master" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -162,6 +164,7 @@
     <Content Include="Global.asax" />
     <Content Include="RelatorioPorGrupo.aspx" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="UserControl\AutoRedirect.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -207,6 +210,7 @@
     <Compile Include="Models\Grupo.cs" />
     <Compile Include="Models\PDFGrupo.cs" />
     <Compile Include="Models\ReceitaChartDetails.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="NovoRelatorio.aspx.cs">
       <DependentUpon>NovoRelatorio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -236,12 +240,26 @@
     <Compile Include="RelatorioPorGrupo.aspx.designer.cs">
       <DependentUpon>RelatorioPorGrupo.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SignIn.aspx.cs">
+      <DependentUpon>SignIn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SignIn.aspx.designer.cs">
+      <DependentUpon>SignIn.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site1.Master.cs">
       <DependentUpon>Site1.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Site1.Master.designer.cs">
       <DependentUpon>Site1.Master</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\AutoRedirect.ascx.cs">
+      <DependentUpon>AutoRedirect.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\AutoRedirect.ascx.designer.cs">
+      <DependentUpon>AutoRedirect.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup />
