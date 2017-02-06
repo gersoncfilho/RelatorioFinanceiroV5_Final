@@ -10,8 +10,8 @@ namespace RelatorioFinanceiroV5.SharedKernel
     public interface IHandler<T> : IDisposable where T : IDomainEvent
     {
         void Handle(Task args);
-        IEnumerable<T> notify();
-        bool hasNotifications();
-        void Hanfle<T>(T args) where T : IDomainEvent;
+        IEnumerable<T> Notify();
+        bool HasNotifications();
+        void Handle<T>(T args) where T : IDomainEvent;
     }
 }
