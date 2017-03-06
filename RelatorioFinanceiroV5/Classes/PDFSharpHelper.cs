@@ -56,7 +56,7 @@ namespace RelatorioFinanceiroV5.Classes
 
             //Draw header
             XRect rectHeader = new XRect(10, 10, 575, 165);
-            XImage image = XImage.FromFile(@"C:\Users\gersoncardoso.GOL\Documents\Visual Studio 2015\Projects\RelatorioFinanceiroV5\RelatorioFinanceiroV5\Images\cabecalho.png");
+            XImage image = XImage.FromFile(@"C:\Users\Gerson\Documents\repos\DOTNet\RelatorioFinanceiroV5\RelatorioFinanceiroV5\Images\cabecalho.png");
             double x = (250 - image.PixelWidth * 72 / image.HorizontalResolution) / 2;
             gfx.DrawImage(image, 10, 10);
 
