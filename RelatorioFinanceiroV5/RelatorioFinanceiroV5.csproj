@@ -122,6 +122,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="GeraPDF.aspx" />
     <Content Include="Images\cabecalho.png" />
+    <Content Include="Images\cabecalhoesp.png" />
     <Content Include="Images\logo_gol.png" />
     <Content Include="NovoRelatorio.aspx" />
     <Content Include="packages.config" />
